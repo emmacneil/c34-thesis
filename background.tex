@@ -1,0 +1,57 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                %%%%%
+%%%%%   Background   %%%%%
+%%%%%                %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Background and Motivation}
+
+\note{Generalizing Sato-Tate to higher genus curves requires Sato-Tate groups.
+The theory is outside the scope of this thesis.}
+
+A projective line over $\bb F_q$ has $q + 1$ rational points.
+An elliptic curve over $\bb F_q$ has approximately as many rational points as does a line.
+The actual number of rational points on an elliptic curve differs from that of the line by an error term
+that is small compared to the size of the field $\bb F_q$.
+The following theorem due to Hasse places bounds on this error term.
+\begin{theorem}[Hasse's Theorem]
+  Let $E$ be an elliptic curve over a finite field $\bb F_q$.
+  The number of points on $E$ differs from $q + 1$ by at most $2 \sqrt q$.
+  \[ | \#E(\bb F_q) - (q + 1) | \leq 2 \sqrt q \]
+\end{theorem}
+
+This theorem generalizes in the following way.
+\begin{theorem}[Hasse-Weil Bound]
+  Let $C$ be a curve of genus $g$ over a finite field $\bb F_q$.
+  The number of points on $C$ differs from $q + 1$ by at most $2 g \sqrt q$.
+  \[ | \#C(\bb F_q) - (q + 1) | \leq 2 g \sqrt q \]
+\end{theorem}
+
+Expressed differently, the Hasse-Weil Bound says that the quantity
+\begin{equation}
+  \frac {\#C(\bb F_q) - (q + 1)}{2 g \sqrt q}
+\end{equation}
+is between -1 and 1, so that for some angle $\theta_p$,
+\begin{equation}
+  \label{eq_sato_tate_ratio}
+ \cos \theta_p = \frac {\#C(\bb F_q) - (q + 1)}{2 g \sqrt q}.
+\end{equation}
+
+Now given a fixed curve $C$, one can ask, what the probability is as $p$ varies that the error term should lie in some interval.
+Given real numbers $-1 \leq a < b \leq 1$ (or angles $0 \leq \alpha < \beta \leq \pi$),
+what is the probability that the ratio $\cos \theta_p \in [a, b]$ (or $\theta_p \in [\alpha, \beta]$)?
+The Sato-Tate Conjecture (proven for genus 1), says that this probability follows a $\sin^2$ distribution.
+
+\begin{conjecture}[Sato-Tate]
+  Let $E$ be an elliptic curve without complex multiplication.
+  \note{Complete this thought...}
+  \[ \lim_{N \to \infty} \frac {\#\{ p \leq N : \alpha \leq \theta_p \leq \beta \}} {\pi(N)} = \frac 2 \pi \int_{\alpha}^{\beta} \sin^2 \theta\,d\theta. \]
+\end{conjecture}
+
+Divisor class group computations are used to compute the L-series of a genus 3 curve.
+L-series is raised in
+  * Birch and Swinnerton-Dyer conjecture
+  * Koblitz-Zywina conjecture
+  * Lang-Trotter conjecture
+  * Sato-Tate conjecture

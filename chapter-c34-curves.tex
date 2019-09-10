@@ -1,0 +1,296 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                %%%%%
+%%%%%   C34 Curves   %%%%%
+%%%%%                %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{$C_{3,4}$ Curves}
+\label{chap_curves}
+
+
+
+\subsection{$C_{a,b}$ Curves}
+
+A $C_{3,4}$ curve is a special case of a broader class of $C_{a,b}$ curves.
+
+\begin{definition}
+  A \defn{$C_{a,b}$ curve} $C$ over a (perfect) field $K$
+  is an algebraic projective plane curve
+  given by an affine equation
+  \[ C(x,y) = \sum_{\substack{0 \leq i \leq b \\ 0 \leq j \leq a \\ ai + bj \leq ab }}c_{i,j}x^iy^j = 0 \]
+  where
+  \begin{enumerate}[label=(\roman*)]
+    \item $c_{b,0}$ and $c_{0,a}$ are non-zero;
+    \item $C(x,y)$ is irreducible over $\bar K$;
+    \item $C$ has no singular points, except possibly at infinity.
+  \end{enumerate}
+\end{definition}
+
+
+
+\subsection{$C_{3,4}$ Curves}
+
+\begin{definition}
+  A \defn{$C_{3,4}$ curve} $C$ over a (perfect) field $K$
+  is an non-singular, irreducible, algebraic projective plane curve
+  given by an affine equation
+  \[ C(x,y) = c_{0,3}y^3 + c_{4,0}x^4 + c_{1,2}xy^2 + c_{2,1}x^2y + c_{3,0}x^3 + c_{0,2}y^2 + c_{1,1}xy + c_{2,0}x^2 + c_{0,1}y + c_{1,0}x + c_{0,0}, \]
+  where $c_{0,3}$ and $c_{4,0}$ are non-zero.
+\end{definition}
+This is mostly consistent with the definition of the more general $C_{a,b}$ curve above,
+save for the fact that we are assuming the point at infinity is also non-singular.
+We show below that the point at infinity is always non-singular.
+
+Before proceeding, we will make two simplifying assumptions on the curve equation.
+We may assume that $c_{0,3} = 1$, otherwise we may divide the whole curve equation by $c_{0,3}$.
+We may also assume that $c_{4,0} = 1$, otherwise we may perform the invertible change of variables $x = \frac X {c_{4,0}^{1/4}}$.
+This, however, may require we work over an algebraic extension of $K$ where $c_{4,0}$ has a quartic root.
+In light of these assumptions, we now assume $C$ is of the form
+\begin{equation}
+  \label{eq_c34}
+  C(x,y) = y^3 + x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0.
+\end{equation}
+
+Here, the coefficients are indexed by a single number, rather than a pair, to reflect how they will be represented in code.
+In a Sage implementation, part of the data of a $C_{3,4}$ curve will be a {\tt list} of the curve coefficients,
+in order of the size of their respective monomials.
+\note{Remark on $C_{3,4}$ order.}
+
+In fields of sufficiently large characteristic, one may also assume certain coefficients are zero.
+If $\Char K \neq 2$, then the invertible change of variables $x = X - \frac {c_6} 4, y = Y$ gives
+\begin{equation}
+  \label{eq_c34_char_not_2}
+  C(X,Y) = Y^3 + X^4 + d_8XY^2 + d_7X^2Y + d_5Y^2 + d_4XY + d_3X^2 + d_2Y + d_1X + d_0.
+\end{equation}
+If $\Char K \neq 3$, then the invertible change of variables $x = X, y = Y - \frac{c_8x + c_5}{3}$ gives
+\begin{equation}
+  \label{eq_c34_char_not_3}
+  C(X,Y) = Y^3 + X^4 + d_7X^2Y + d_6X^3 + d_4XY + d_3X^2 + d_2Y + d_1X + d_0.
+\end{equation}
+
+If the characteristic of $K$ is neither 2 nor 3, we may perform both substitutions simultaneously. Let
+\[ a = \frac {27c_6 - 9c_7c_8 + 2c_8^3} {27} \]
+and perform the change of variables
+\begin{align*}
+  x &= X - \frac a 4 \\
+  y &= Y - \frac {c_8} {3} x + \frac {ax_8 - 4c_5} {12}.
+\end{align*}
+Then this gives $C$ in \defn{short form}
+\begin{equation}
+  \label{eq_c34_short}
+  C(X,Y) = Y^3 + X^4 + d_7X^2Y + d_4XY + d_3X^2 + d_2Y + d_1X + d_0.
+\end{equation}
+
+\subsection{Points}
+
+An \defn{affine point} on a $C_{3,4}$ curve is any point in $\bar K \times \bar K$
+at which the polynomial defining $C$ vanishes.
+A \defn{projective point} is any point in projective space at which the homogeneous polynomial of $C$ vanishes.
+
+The projective point $(1 : 0 : 0)$ is never a point on a $C_{3,4}$ curve.
+Thus any projective point $(x:y:z)$ is equivalent to one of the form $(x:y:1)$ or $(x:1:0)$.
+Projective points with $z$-coordinate 1 are in bijection with affine points,
+so we identify $(x,y)$ with $(x:y:1)$.
+Projective points with $z$-coordinate 0 are called \defn{points at infinity}.
+
+We now show that a $C_{3,4}$ curve $C$ has only a single point at infinity.
+We homogenize the affine equation of $C$ with respect to a third variable $z$,
+to get the projective curve equation of $C$,
+  \[ C(x:y:z) = y^3z + x^4 + c_8xy^2z + c_7x^2yz + c_6x^3z + c_5y^2z^2 + c_4xyz^2 + c_3x^2z^2 + c_2yz^3 + c_1xz^3 + c_0z^4 = 0. \]
+The points at infinity are those points with $z = 0$, which must satisfy
+  \[ x^4 = 0. \]
+The points at infinity are therefore those of the form $(0 : y : 0)$, which are all equivalent to $(0 : 1 : 0)$.
+That is to say that a $C_{3,4}$ curve has a single point at infinity, $P_\infty = (0 : 1 : 0)$.
+
+We may next show that this point at infinity is always non-singular.
+Consider the formal partial derivatives of the projective curve equation.
+\begin{align*}
+  C_x(x:y:z) &= 4x^3 + c_8y^2z + 2c_7xyz + 3c_6x^2z + c_4yz^2 + 2c_3xz^2 + c_1z^3 \\
+  C_y(x:y:z) &= 3y^2z + 2c_8xyz + c_7x^2z + 2c_5yz^2 + c_4xz^2 + c_2z^3 \\
+  C_z(x:y:z) &= y^3 + c_8xy^2 + c_7x^2y + c_6x^3 + 2c_5y^2z + 2c_4xyz + 2c_3x^2z + 3c_2yz^2 + 3c_1xz^2 + 4c_0z^3.
+\end{align*}
+Evaluated at the point $P_\infty$, these are
+\begin{align*}
+  C_x(0:1:0) &= 0 \\
+  C_y(0:1:0) &= 0 \\
+  C_z(0:1:0) &= 1 .
+\end{align*}
+The formal partial derivative $C_z$ is always non-zero at $P_\infty$.
+Therefore $C$ is always non-singular at $P_\infty$.
+
+Let $L/K$ be an algebraic extension.
+An automorphism $\sigma \in \Gal(L/K)$ may be extended to a function on points of $C$.
+For a point $P = (x : y : z)$, define
+\[ \sigma(P) = (\sigma(x) : \sigma(y) : \sigma(y)). \]
+A point $P$ is called \defn{$L$-rational} or \defn{defined over $L$} if $P \in L \times L$.
+Equivalently, a point $P \in \bar K \times \bar K$ is $L$-rational if $P = \sigma(P)$ for all $\sigma \in \Gal(\bar K/L)$.
+If $C$ is defined over the base field $K$, then the $K$-rational points are simply called rational.
+The point at infinity on a $C_{3,4}$ curve is $K$-rational.
+Every point on $C$ is $\bar K$-rational.
+The set of $L$-rational points on a curve $C$ is denoted by $C(L)$.
+
+Let $C$ be a curve defined over $K$ and let $P$ be a point in $C(\bar K)$.
+Then the \defn{orbit} of $P$ is
+\[ \orb(P) = \{ \sigma(P) ~|~ \sigma \in \Gal(\bar K/K). \]
+
+
+
+\subsection{The Coordinate Ring}
+
+Let $C$ be a curve defined over a field $K$.
+The \defn{coordinate ring} of $C$, denoted by $K[C]$, is the quotient ring
+\[ K[C] = \frac {K[x,y]} {\pid{C}}. \]
+It is the ring of bivariate polynomials over $K$, modulo the principal ideal generated by the curve equation.
+
+It is well-known fact that, if $C$ is given by an irreducible polynomial, the coordinate ring is a Dedekind domain.
+All non-zero ideals of $K[C]$ may be uniquely (up to order) factored into a product of prime ideals.
+The coordinate ring has Krull dimension 1, meaning that every non-zero prime ideal is a maximal ideal.
+At every prime ideal $\frak p$ of $K[C]$, the localization $K[C]_{\frak p}$ is a discrete valuation ring.
+
+\note{Put this one subsection earlier?}
+\begin{lemma}
+  Let $f \in K[x,y]$ and $\sigma \in \Gal(\bar K/K)$.
+  Let $P = (x_0, y_0)$ be a point in $\bar K \times \bar K$. Then
+  \[ f(\sigma(x_0), \sigma(y_0)) = \sigma(f(x_0, y_0)). \]
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    f(\sigma(x_0), \sigma(y_0))
+      &= \sum a_{i,j}\sigma(x)^i\sigma(y)^j \\
+      &= \sum \sigma(a_{i,j})\sigma(x)^i\sigma(y)^j
+        & \text{$\sigma$ fixes $K$} \\
+      &= \sum \sigma(a_{i,j}x^iy^j)
+        & \text{$\sigma$ is multiplicative} \\
+      &= \sigma \left( \sum a_{i,j}x^iy^j \right)
+        & \text{$\sigma$ is additive} \\
+      &= \sigma(f(x_0, y_0)).
+  \end{align*}
+\end{proof}
+\begin{corollary}
+  \label{cor_orb}
+  Let $f \in K[x,y]$ and $\sigma \in \Gal(\bar K/K)$.
+  Let $P$ be an affine point.
+  Then $f$ has a zero at $P$ if and only if $f$ has a zero at $\sigma(P)$.
+\end{corollary}
+\begin{proof}
+  ($\implies$) Suppose $f$ has a zero at a point $P = (x_0, y_0)$,
+  i.e. $f(x_0, y_0) = 0$.
+  Then at $\sigma(P)$,
+  \[ f(\sigma(x_0), \sigma(y_0)) = \sigma(f(x_0, y_0)) = \sigma(0) = 0. \]  
+
+  ($\impliedby$) Suppose $f$ has a zero at $\sigma(P)$, i.e. $f(\sigma(x_0), \sigma(y_0)) = 0$.
+  Then $\sigma$ has an inverse $\sigma\inv \in \Gal(\bar K/K)$ and
+  \[ f(x_0, y_0) = \sigma\inv(\sigma(f(x_0, y_0))) = \sigma\inv(f(\sigma(x_0), \sigma(y_0))) = \sigma\inv(0) = 0. \] 
+\end{proof}
+
+Let $P \in C(\bar K)$.
+Let $\frak p$ be the ideal
+  \[ \frak p = \pid{ f \in K[C] ~|~ f(P) = 0 }. \]
+\note{It can be shown that this is a prime ideal.}
+Then $K[C]_{\frak p}$ is a DVR with the unique maximal ideal $\frak m_P = \frak p K[C]_{\frak p}$.
+This maximal ideal is principally generated by an element $u$, called the \defn{uniformizer}
+(or \defn{uniformizing parameter} or \defn{local paramater}).
+Let $f \in K[C]$. The \defn{valuation} of $f$ at $P$ is
+  \[ \nu_P(f) = \max_{n \in \bb Z} \{ f \in \frak m_P^n \}. \]
+
+\begin{proposition}
+  \[ \nu_P(f) = \nu_{\sigma(P)}(f). \]
+\end{proposition}
+\begin{proof}
+  \note{Follows from Corollary \ref{cor_orb}.}
+\end{proof}
+
+
+
+\subsection{The Function Field}
+
+The \defn{function field} $K(C)$ of $C$ is the field of fractions of the coordinate ring,
+\[ K(C) = \Frac(K[C]). \]
+Equivalently, it is the field of fractions of $K[x,y]$, modulo the curve equation,
+\[ K(C) = \frac {\Frac(K[x,y])} {\pid{C}} = \frac {K(x,y)}{\pid C}. \]
+We will not work much with the function field itself.
+We will use it in Chapter \ref{chap_ideals} in defining the ideal class group,
+though one of the goals of Chapter \ref{chap_ideals} is to show that we can work entirely in $K[C]$.
+
+Given a point $P$, the valuation function $\nu_P(f)$ on polynomials extends to a valuation on rational functions in $K(C)$.
+If $r = f/g$ is a rational function, then define
+\[ \nu_P(r) = \nu_P(f) - \nu_P(g). \]
+
+\begin{proposition}
+  This map is well-defined.
+\end{proposition}
+\begin{proof}
+  Suppose $\frac f g = \frac h k$. Then
+  \begin{align*}
+    fk &= gh \\
+    \nu_P(fk) &= \nu_P(gh) \\
+    \nu_P(f) + \nu_P(k) &= \nu_P(g) + \nu_P(h) \\
+    \nu_P(f) - \nu_P(g) &= \nu_P(h) - \nu_P(k) \\
+    \nu_P\left(\frac f g\right) &= \nu_P\left(\frac h k\right).
+  \end{align*}
+\end{proof}
+
+
+
+\subsection{Unsorted Stuff}
+
+\begin{proposition}
+  Let $C$ be a $C_{3,4}$ curve.
+  The line $x = 0$ intersects $C$ at 3 affine places, counting multiplicity.
+  The line $y = 0$ intersects $C$ at 4 affine places, counting multiplicity.
+  The polynomial $x$ has a pole of order 3 at $P_\infty$.
+  The polynomial $y$ has a pole of order 4 at $P_\infty$.
+\end{proposition}
+\begin{proof}
+  When $x = 0$, we have $C(x,y) = C(0,y) = y^3 + c_5y^2 + c_2y + c_0 = 0$,
+  which factors over $\bar K$ as $(y - y_1)(y - y_2)(y - y_3) = 0$
+  for some field elements $y_1, y_2, y_3$, not necessarily distinct.
+  Thus line $x = 0$ intersect $C$ at the points $(0 : y_i : 1)$, $i = 1, 2, 3$.
+  
+  The result for the line $y = 0$ also holds, \emph{mutatis mutandis}.
+  
+  \note{Finish this proof}
+\end{proof}
+
+Some authors \note{(which?)} characterize $C_{3,4}$ by this proposition.
+They define a $C_{3,4}$ curve as a \note{(non-singular?)} algebraic plane curve
+with a rational point $P$
+for which there exist two functions $x$ and $y$ whose pole orders at $P$ are 3 and 4, respectively.
+It can then be shown that the curve is defined by an equation of the form of Equation \ref{eq_c34}.
+
+\begin{proposition}
+  Let $P$ be an affine point on a curve $C$ and let
+  \[ \frak p = \{ f \in K[C] ~|~ f(P) = 0 \}. \]
+  Then $\frak p$ is a non-zero prime ideal of $K[C]$.
+\end{proposition}
+\begin{proof}
+  \begin{description}
+    \item[$\frak p$ is non-zero:]
+      Let $P = (x_0, y_0)$.
+      Then $x_0$ is an element of some finite algebraic extension $L$ of $K$.
+      Let $m(x)$ be the minimal polynomial of $x_0$.
+      Then $m(x) \in K[x]$ is univariate, non-zero, and may be viewed instead as $m(x,y) \in K[x,y]$.
+      Then $m(x_0, y_0) = m(x_0) = 0$, hence $m(x,y) \in \frak p$.
+    \item[$\frak p$ is prime:]
+      Suppose $fg \in \frak p$. Then
+      \begin{align*}
+        & (fg)(P) = 0 \\
+        \implies & f(P)g(P) = 0 \\
+        \implies & f(P) = 0 \text{ or } g(P) = 0 \\
+        \implies & f \in \frak p \text{ or } g \in \frak p.
+      \end{align*}
+  \end{description}
+\end{proof}
+
+\begin{proposition}
+  Let $P$ be an affine point on a curve $C$ and let
+  \[ \cal O_P = \{ \frac f g \in K(C)^* ~|~ g(P) \neq 0 \} \]
+  be the \defn{ring of regular functions at $P$}.
+  \note{This differs from the usual definition where functions live in $\bar K(C)^*$}.
+  Then $\cal O_P$ is a discrete valuation ring.
+\end{proposition}
+\begin{proof}
+  Let $\frak p$ be the prime ideal of polynomials zero at the point $P$.
+  Then $\cal O_P$ is the localization of $K[C]$ at $\frak p$.
+  The localization of a Dedekind domain at a non-zero prime ideal is a DVR.
+\end{proof}

@@ -1,0 +1,403 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% This is file `ucalgarythesis.tex'  -- a document template for      %%
+%% graduate theses at the University of Calgary.                      %%
+%%                                                                    %%
+%% This template document is to be used in conjunction with the       %%
+%% thesis class file `ucalgarythesis.cls'.                            %%
+%%                                                                    %%
+%% Created by M.W. Girard, last updated 10 April 2016.                %%
+%%                                                                    %%
+%% This template was created to be in compliance with the University  %%
+%% of Calgary thesis guidelines (version 14 April 2014)               %%
+%%       https://grad.ucalgary.ca/current/thesis/guidelines.          %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% By default, the text of the thesis is doublespaced and should be   %%
+%% printed single-sided. All margins must be exactly one inch on all  %%
+%% sides, and should not be bound or have binding edges. This is      %%
+%% required by the University of Calgary thesis guidelines.           %%
+%% All theses are now required to be submitted electronically.        %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Load the `ucalgarythesis.cls' document class
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{ucalgarythesis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% If you would like to print a personal copy of your thesis for    %%
+%% your own record, you may print it double-sided and with extra    %%
+%% margins for binding. Use the following line instead of the above %%
+%% \documentclass{ucalgarythesis} for compiling personal copies of  %%
+%% the thesis to be printed double-sided and bound.                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[twoside,binding]{ucalgarythesis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Imported packages & custom user commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Include extra packages here
+
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb,amsthm,amsmath}
+%\usepackage[hidelinks]{hyperref}
+\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
+\usepackage{comment}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{pgfplots}
+\usepackage{tikz-cd}
+
+\usepackage[style=numeric, backend=biber]{biblatex}
+\bibliography{biblio}
+%\bibliographystyle{plain}
+
+%\usepackage{biblatex}
+
+%%  Include other user-defined commands here
+
+\let\div\undefined
+\renewcommand{\bar}{\overline}
+
+\algnewcommand{\algorithmicgoto}{\textbf{go to}}
+\algnewcommand{\GoTo}[1]{\algorithmicgoto~{#1}}
+
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\coim}{coim}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\Der}{Der}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\div}{div}
+\DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\Jac}{Jac}
+\DeclareMathOperator{\LM}{LM}
+\DeclareMathOperator{\LT}{LT}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\nullity}{null}
+\DeclareMathOperator{\Pic}{Pic}
+\DeclareMathOperator{\Princ}{Princ}
+\DeclareMathOperator{\orb}{orb}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\type}{type}
+%\DeclareMathOperator{\KVec}{K-Vec}
+
+\newcommand{\inv}{^{-1}}
+\newcommand{\pid}[1]{\left\langle #1 \right\rangle}
+
+%\newcommand{\der}{\partial}
+\newcommand{\defn}{\textbf}
+\newcommand{\note}[1]{{\color{red}#1}}
+\newcommand{\bb}[1]{\mathbb{#1}}
+\newcommand{\tensor}[1]{\underset{#1}{\otimes}}
+\renewcommand{\cal}[1]{\mathcal{#1}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\renewcommand*{\arraystretch}{0.8} % Adjust spacing between lines in matrices
+
+\renewcommand\thesection{\arabic{section}} % Fix section/subsection numbering style
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Begin document                                                     %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Title page                                                         %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Instructions for title page information:                           %%
+%%                                                                    %%
+%%  Fill in the following fields with the required information:       %%
+%%   - \title{...}        Title of the thesis                         %%
+%%   - \author{...}       Your full name                              %%
+%%   - \thesis{Thesis}    Type of document (may change to `Thesis' to %%
+%%                           `Dissertation' depending on type of work)%%
+%%   - \dept{...}         Full name of the graduate department or     %%
+%%                           degree program                           %%
+%%   - \degree{...}       Full name of the degree obtained            %%
+%%                          (i.e. Doctor of Philosophy,               %%
+%%                                 Master of Science, etc)            %%
+%%   - \gradyear{...}     Year of submission                          %%
+%%   - \monthname{...}    Month of submission                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{
+ [Thesis Title (Title case, no more than 240 characters. No bold font or symbols, except Greek)]
+ \\ \bigskip
+ [Thesis Title Second Line (optional)]
+ }
+ 
+\author{Evan MacNeil}
+\thesis{Thesis}
+\dept{Graduate Program in Mathematics and Statistics}
+\degree{Master of Science}
+\gradyear{2019}
+\monthname{August}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+%% Make the thesis title page.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter           %% Don't remove this line.
+\makethesistitle       %% Don't remove this line.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Prefatory pages                                                    %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The following sections are in the correct order as specified by    %%
+%% the April 2014 thesis guidelines set by the University of Calgary. %%
+%%                                                                    %%
+%% You may remove optional sections, but do not change the order.     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Abstract page (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{thesisabstract}  
+
+Computing in the divisor class group of an algebraic curve is a non-trivial component in computing $L$-series.
+$L$-series in turn are at the heart of the Sato-Tate conjecture and related conjectures.
+The Sato-Tate conjecture has been proven for elliptic curves with complex multiplication,
+but remains open for other families of algebraic curves.
+In order to test these conjectures against other curve families, it is desirable to have efficient algorithms to perform divisor class group arithmetic.
+
+Fast explicit formulas exist to perform divisor class group arithmetic for genus 1 and genus 2 curves.
+However, the picture for genus 3 curves is incomplete.
+Existing explicit formulas for arithmetic on non-hyperelliptic genus 3 curves ($C_{3,4}$ curves) have been developed with cryptographic applications in mind.
+They make certain generacity assumptions on their inputs that hold with high probability in cryptographic settings,
+but are unsuited for number theoretic use cases.
+More general algorithms exist that can perform divisor class arithmetic over any curve, but they are slow.
+The goal of this project is to bridge the gap --
+to find fast explicit formulas describing $C_{3,4}$ curve arithmetic that are correct for all inputs.
+
+\end{thesisabstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Preface page (OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% This section is required if the work presented in the thesis is 
+%% done as part of a collaboration. In this case, the preface must 
+%% state which part of the thesis are the author's original work.
+%% Otherwise this section is optional.
+
+  \chapter{Preface}
+ 
+  This thesis is an original work by the author. No part of this thesis has been previously published.
+ 
+  % Some of the research conducted for this thesis forms part of an international research collaboration, led by Professor R.C. Smith at the University of Hogwarts
+   
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Acknowledgements page (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \chapter{Acknowledgements}  
+  
+    [Don't forget to thank someone.]
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Dedication page (this section is OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \chapter[Dedication]{}
+  
+  \begin{dedication}
+     \emph{To all the time I've wasted...}
+  \end{dedication}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Various lists
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The Table of Contents and all Lists should be single spaced.
+
+  \begin{singlespace}   %% Do not remove this line
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Table of Contents (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \renewcommand\contentsname{Table of Contents}
+  \cleardoublepage\phantomsection
+  \addcontentsline{toc}{chapter}{\contentsname}
+  \tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% List of figures (required, if any)
+  \renewcommand{\listfigurename}{List of Figures and Illustrations}
+  \cleardoublepage\phantomsection
+  \addcontentsline{toc}{chapter}{\listfigurename}
+  \listoffigures
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% List of tables (required, if any)
+  \renewcommand{\listtablename}{List of Tables}
+  \cleardoublepage\phantomsection
+  \addcontentsline{toc}{chapter}{\listtablename}
+  \listoftables
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% List of Symbols, abbreviations, and nomenclature (required, if any)   
+%%
+%% (Note: You may use your own format for your list of symbols, 
+%%  abbreviations, etc. This format is just a guideline.)
+%%
+  \chapter{List of Symbols, Abbreviations and Nomenclature}      
+  \begin{tabbing}
+    Symbol or abbreviation~~~~~\= \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \parbox{5in}{Definition}\\
+
+    \addsymbol \mbox{$\alpha$}: {The first letter of the Greek alphabet}
+    \addsymbol \mbox{$\beta$}: {The second letter of the Greek alphabet}
+    %
+    % Add more symbols here...
+    % . 
+    % .
+    % .
+    %
+    
+    % Always keep the following line if you are using a list of symbols:
+  \end{tabbing}
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% End single spacing after last list
+  \end{singlespace}     %% Do not remove this line
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Epigraph (this section is OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \chapter{Epigraph}
+
+  \begin{epiquote} 
+   \textit{A quotation is a handy thing to have about, saving one the trouble of thinking for oneself, always a laborious business.} 
+  \end{epiquote}    
+  \begin{flushright} - A.A. Milne, \textit{If I May}\end{flushright}\bigskip
+   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Main matter                                                        %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \mainmatter           %% Do not remove this line
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Chapters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\include{background}  
+\include{chapter1}  
+\include{chapter2}
+%\include{chapter3}
+\include{chapter-c34-curves}
+\include{chapter-divisors}
+\include{chapter-ideals}
+\include{chapter-addition}
+\include{chapter-flipping}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                     %%
+% Bibliography                                                        %%
+%                                                                     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% As required by the 2014 thesis guidelines, the bibliography must
+%% appear in the table of contents. Do not remove the following lines. 
+  \cleardoublepage\phantomsection
+  \addcontentsline{toc}{chapter}{Bibliography}
+  
+%% There are multiple options for assembling a bibliography in LaTeX.
+%% Some of these options include:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Standard bibliography format
+%  \begin{thebibliography}{9}
+%
+%    \bibitem{anybody} N. E. Body, {\em Anybody Can Write a Book}. 2015.
+%    %\bibitem{}
+%    
+%  \end{thebibliography}
+   
+%%%%%%%%% or %%%%%%%%%%%%%%%%%%%%
+%% include separate bibliography file
+ 
+%  \include{references} 
+
+%%%%%%%%% or %%%%%%%%%%%%%%%%%%%%
+%% Use BiBTeX. No really, use BiBTeX!
+   
+%\bibliography{biblio}
+%\bibliographystyle{plain}
+\printbibliography
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Appendicies                                                        %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix             %% Do not remove this line
+
+%\include{appendixa}
+%\include{appendixb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% End of document                                                    %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}          %% Do not remove this line
+
+%%
+%% End of file `ucalgarythesis.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

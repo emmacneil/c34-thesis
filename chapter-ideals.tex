@@ -1,0 +1,847 @@
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%            %%%%%
+%%%%%   Ideals   %%%%%
+%%%%%            %%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Ideal Class Group}
+\label{chap_ideals}
+
+Divisors may be cumbersome to compute with.
+The coordinates of the points in the support of the divisor may live in some algebraic extension of the base field.
+In the arithmetic described in this thesis, we would only need to work in extensions of degree at most 3.
+Still, working in $\bb F_{q^3}$ is more expensive than working in $\bb F_q$.
+It would be preferable to work in the base field only, if it can be helped.
+
+It can be helped by representing divisors by ideals of the curve's coordinate ring.
+There is a correspondence between divisors defined over $K$ and rational functions in $K(x,y)/C$.
+These rational functions, of course, have coefficients in $K$.
+The equivalence relation on the divisor class group allows us to simplify things even more.
+We will see that, just as we can clear out negative points assume a divisor $D$ is written as $D^+ - D^\infty$,
+we can clear out denominators and assume our rational functions are merely polynomials.
+
+In this chapter, we will define the ideal class group of the curve,
+show that the ideal class group and divisor class group are isomorphic,
+and show how to move back and forth between the groups as desired.
+
+
+
+\subsection{Prime Ideals, Prime Divisors}
+
+In order to show that the divisor class group and ideal class group (once defined) are isomorphic,
+we will exhibit an explicit isomorphism between the two groups.
+Since the coordinate ring $K[C]$ is a Dedekind domain, its ideals have a unique factorization.
+We first define a map from prime ideals to divisors before extending this map to ideals and fractional ideals.
+
+Let $\frak p$ be a prime ideal of $K[C]$.
+Define the \defn{divisor of $\frak p$} to be
+  \[ \div \frak p = \sum_{P \in C - P_\infty} \min_{f \in \frak p - \{0\}}\{\ord_P(f)\}(P - P_\infty). \]
+By construction, this divisor is of degree zero.
+We will see that it is accurate to call such a divisor a \defn{prime divisor} --
+this section will show that the divisors of prime ideals are exactly the prime divisors as defined in the previous chapter.
+
+\begin{comment}
+The theorems that follow highlight what characterizes prime divisors.
+Let $P$ be a point in $\bar K \times \bar K$.
+The \defn{orbit} of $P$ is the set
+  \[ \orb(P) = \{ \sigma(P) ~|~ \sigma \in \Gal(\bar K/K)\}. \]
+Since $P$ resides in a finite algebraic extension of $K$, this orbit is finite.
+Given an affine point $P$, define the divisor
+  \[ [P] = \sum_{P_0 \in \orb(P)} (P_0 - P_\infty). \]
+The support of $[P]$ is exactly the orbit of $P$, each point appearing with multiplicity 1,
+minus some appropriate multiple of the point at infinity, $P_\infty$.
+The theorems that follow will demonstrate that the prime divisors of a curve are exactly the divisors of the form $[P]$ for some point $P$.
+This, we demonstrate by defining a map from divisors of this form back to prime ideals,
+and showing that this acts as a two-sided inverse to our map on prime ideals.
+\end{comment}
+\begin{comment}
+First, a simple lemma. \note{This and its corollary are also in Chapter - C34 Curves.}
+\begin{lemma}
+  Let $f \in K[x,y]$ and $\sigma \in \Gal(\bar K/K)$.
+  Let $P = (x_0, y_0)$ be a point in $\bar K \times \bar K$. Then
+  \[ f(\sigma(x_0), \sigma(y_0)) = \sigma(f(x_0, y_0)). \]
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    f(\sigma(x_0), \sigma(y_0))
+      &= \sum a_{i,j}\sigma(x)^i\sigma(y)^j \\
+      &= \sum \sigma(a_{i,j})\sigma(x)^i\sigma(y)^j
+        & \text{$\sigma$ fixes $K$} \\
+      &= \sum \sigma(a_{i,j}x^iy^j)
+        & \text{$\sigma$ is multiplicative} \\
+      &= \sigma \left( \sum a_{i,j}x^iy^j \right)
+        & \text{$\sigma$ is additive} \\
+      &= \sigma(f(x_0, y_0)).
+  \end{align*}
+\end{proof}
+\begin{corollary}
+%  \label{cor_orb}
+  Let $f \in K[x,y]$ and $\sigma \in \Gal(\bar K/K)$.
+  Let $P$ be an affine point.
+  Then $f$ has a zero at $P$ if and only if $f$ has a zero at $\sigma(P)$.
+\end{corollary}
+\begin{proof}
+  ($\implies$) Suppose $f$ has a zero at a point $P = (x_0, y_0)$,
+  i.e. $f(x_0, y_0) = 0$. Then
+  \[ f(\sigma(x_0), \sigma(y_0)) = \sigma(f(x_0, y_0)) = \sigma(0) = 0. \]  
+
+  ($\impliedby$) Suppose $f$ has a zero at $\sigma(P)$, i.e. $f(\sigma(x_0), \sigma(y_0)) = 0$.
+  Then $\sigma$ has an inverse $\sigma\inv \in \Gal(\bar K/K)$ and
+  \[ f(x_0, y_0) = \sigma\inv(\sigma(f(x_0, y_0))) = \sigma\inv(f(\sigma(x_0), \sigma(y_0))) = \sigma\inv(0) = 0. \] 
+\end{proof}
+\end{comment}
+
+If $P$ is an affine point on $C$, then define
+\[ I_{[P]} = \pid{ f \in K[C] ~|~ f(P) = 0 }. \]
+This is the ideal of polynomials in $K[C]$ that pass through the point $P$.
+In light of the previous lemma and corollary,
+this may equivalently be described as the ideal of polynomials that pass through the orbit of $P$.
+
+\begin{proposition}
+  Let $P$ be an affine point on $C$ and let $\frak p = I_{[P]}$. Then
+  \begin{enumerate}[label=(\roman*)]
+    \item $\frak p$ is a $K[C]$-ideal;
+    \item $\frak p$ is non-zero;
+    \item $\frak p$ is prime;
+    \item $\frak p$ is maximal;
+    \item $\frak m_P = \frak p \cal O_P$;
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{enumerate}[label=(\roman*)]
+    \item
+    Suppose $f \in \frak p$ and $g \in \frak p$.
+    Then $(f + g)(P) = f(P) + g(P) = 0$, so $f + g \in \frak p$.
+    Suppose $f \in \frak p$ and $h \in K[C]$.
+    Then $(hf)(P) = h(P)f(P) = h(P)\cdot 0 = 0$, so $hf \in \frak p$.
+    
+    \item
+    Let $P = (x_0, y_0)$.
+    Let $m(x) \in K[x]$ be the minimal polynomial of $x_0$.
+    Let $\tilde m(x,y)$ be the image of $m$ in $K[C]$.
+    Then $\tilde m$ is non-zero and $\tilde m(P) = \tilde m(x_0, y_0) = m(x_0) = 0$,
+    so $\tilde m \in \frak p$.
+    
+    \item
+    Suppose $fg \in \frak p$ for some $f, g \in K[C]$.
+    Then $(fg)(P) = 0 = f(P)g(P)$.
+    Since $f(P)$ and $g(P)$ are field elements, one of them must be non-zero.
+    Therefore one of $f$ and $g$ is in $\frak p$.
+    
+    \item
+    In a Dedekind domain, all non-zero prime ideals are maximal.
+    
+    \item
+    \note{TODO}
+  \end{enumerate}
+\end{proof}
+\note{Maybe combine this prop with the previous, and also cut unneeded facts/shorten the previous.}
+\begin{proposition}
+  Let $P = (x_0, y_0)$ be an affine point on $C$.
+  Let $\frak q = \pid{x - x_0, y - y_0}$ as a $\bar K[C]$-ideal. Then
+  \[ I_{[P]} = \frak q \cap K[C]. \]
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    I_{[P]}
+      &= \pid{ f \in K[C] | f(P) = 0 } \\
+      &= \pid{ f | f \in K[C], f(P) = 0 } \\
+      &= \pid{ f | f \in K[C], f \in \frak q } \\
+      &= \frak q \cap K[C].
+  \end{align*}
+\end{proof}
+
+We have now that $I_{[-]}$ defines map from some subset of divisors to prime ideals.
+We show now that this map is one-to-one.
+\begin{proposition}
+  Let $P$ and $Q$ be affine points on $C$ and suppose $\orb(P) \neq \orb(Q)$.
+  Then $I_{[P]} \neq I_{[Q]}$.
+\end{proposition}
+\begin{proof}
+  Let $X$ and $Y$ be the sets
+    \[ X = \{ x_i ~|~ (x_i, y_i) \in \orb(P) \} \triangle \{ x_i ~|~ (x_i, y_i) \in \orb(Q) \} \]
+    \[ Y = \{ y_i ~|~ (x_i, y_i) \in \orb(P) \} \triangle \{ y_i ~|~ (x_i, y_i) \in \orb(Q) \}, \]
+    where $\triangle$ denotes the symmetric difference of sets.
+  So, e.g., $X$ is the set of $x$-coordinates found in the orbit of $P$ or $Q$, but not both.
+  Suppose that $X$ is non-empty and contains an element $x_0$.
+  Let $m(x_0)$ be the minimal polynomial of $x_0$, viewed as a polynomial in $K[C]$.
+  Then $m$ is zero everywhere on the orbit of $P$, but is non-zero on the orbit of $Q$.
+  Simlarly, if $Y$ contains an element $y_0$, then the minimal polynomial of $y_0$ gives the same result.
+
+  Now suppose $X$ and $Y$ are both empty.
+  Then there is a point $Q_0 \in \orb(Q)$ with the same $x$-coordinate as $P$, but whose $y$-coordinate is a conjugate of $P$'s.
+  Without loss of generality, let $P = (x_1, y_1)$ and $Q_0 = (x_1, \sigma(y_1))$.
+  
+  Suppose, for contradiction, that $I_{[P]} = I_{[Q]}$.
+  Let $\frak p = I_{[P]}$.
+  Then $\frak p$ is precisely the polynomials in $K[C]$ passing through the point $(x_1, y_1)$.
+  Likewise, $\frak p$ is simultaneously the ideal of polynomials in $K[C]$ passing through $(x_1, \sigma(y_1))$.
+  Let $\frak q_1 = \pid{x - x_1, y - y_1}$ and $\pid{x - x_1, y - \sigma(y_1)}$ be prime ideals in $\bar K[C]$.
+  Then
+  \begin{align*}
+    \frak p &= \frak q_1 \cap K[C] \\
+    \frak p &= \frak q_2 \cap K[C]
+  \end{align*}
+  and
+  \begin{align*}
+    \frak p
+      &= \frak p + \frak p \\
+      &= (\frak q_1 \cap K[C]) + (\frak q_2 \cap K[C]) \\
+      &= (\frak q_1 + \frak q_2) \cap K[C] \\
+      &= \bar K[C] \cap K[C] & \text{$\frak q_1, \frak q_2$ coprime} \\
+      &= K[C],
+  \end{align*}
+  a contradiction, since $\frak p$ is prime.
+\end{proof}
+
+\begin{corollary}
+  Let $P$ and $Q$ be affine points on $C$. The following are equivalent:
+  \begin{enumerate}[label=\roman*]
+    \item $Q \in \orb(P)$;
+    \item $\orb(P) = \orb(Q)$;
+    \item $[P] = [Q]$;
+    \item $I_{[P]} = I_{[Q]}$.
+  \end{enumerate}
+\end{corollary}
+\begin{proof}
+  \begin{description}
+    \item [(i) $\implies$ (ii):]
+      For some $\sigma \in \Gal(\bar K/K)$, we have $Q = \sigma(P)$ and $\sigma\inv(Q) = P$.
+      
+      Suppose $R \in \orb(P)$.
+      Then $R = \phi(P)$ for some $\phi \in \Gal(\bar K/K)$ and
+      \[ \sigma\phi\inv R = \sigma\phi\inv\phi(P) = \sigma(P) = Q \in \orb(Q). \]
+      
+      Suppose $R \in \orb(Q)$.
+      Then $R = \phi(Q)$ for some $\phi \in \Gal(\bar K/K)$ and
+      \[ \sigma\inv\phi\inv R = \sigma\inv\phi\inv\phi(Q) = \sigma\inv(Q) = P \in \orb(P). \]
+    
+    %\item [(ii) $\implies$ (i):]
+    %  $Q \in \orb(Q)$ and $\orb(Q) = \orb(P)$, so $Q \in \orb(P)$.
+
+    \item [(ii) $\implies$ (iv):]
+      \begin{align*}
+        I_{[P]}
+          &= \pid{ f \in K[C] ~|~ f(P) = 0 } \\
+          &= \pid{ f \in K[C] ~|~ \forall P_0 \in \orb(P) : f(P_0) = 0 } \\
+          &= \pid{ f \in K[C] ~|~ \forall P_0 \in \orb(Q) : f(P_0) = 0 } \\
+          &= \pid{ f \in K[C] ~|~ f(Q) = 0 } \\
+          &= I_{[Q]}
+      \end{align*}
+      
+    \item [(iv) $\implies$ (i):]
+      By the previous proposition.
+    
+    \item [(ii) $\implies$ (iii):]
+      By definition.
+
+    \item [(iii) $\implies$ (ii):]
+      \begin{align*}
+        \sum_{P_0 \in \orb(P)}(P_0 - P_\infty) &= \sum_{Q_0 \in \orb(Q)}(Q_0 - P_\infty) \\
+        \sum_{P_0 \in \orb(P)}P_0 &= \sum_{Q_0 \in \orb(Q)}Q_0 \\
+        \{P_0 \in \orb(P)\} &= \{Q_0 \in \orb(Q)\} \\
+        \orb(P) &= \orb(Q)
+      \end{align*}
+  \end{description}
+\end{proof}
+
+The following proposition demonstrates a relationship between orbits of points and prime ideals.
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point on $C$. Then
+  \[ P \in \supp(\div \frak p) \iff \frak p = I_{[P]}. \]
+\end{proposition}
+\begin{proof}
+  ($\implies$)
+  Suppose $P$ is in the support of $\div \frak p$.
+  Let $\frak q = I_{[Q]}$.
+  By an above proposition, $\frak q$ is prime.
+  Since every polynomial in $\frak p$ vanishes at $P$, we have $\frak p \subseteq \frak q$.
+  However, every non-zero prime ideal of $K[C]$ is maximal, so $\frak p = \frak q$.
+  
+  ($\impliedby$)
+  Suppose $\frak p = I_{[P]}$.
+  For every non-zero polynomial $f \in \frak p$, $f(P) = 0$, hence $\nu_P(f) > 0$.
+  Now the order of $\div \frak p$ at $P$ is
+  \[ \ord_P(\div \frak p) = \min_{0 \neq f \in \frak p}\{ \nu_P(f) \} > ,0 \]
+  therefore $P \in \supp(\div \frak p)$.
+\end{proof}
+
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point in the support of $\div \frak p$.
+  Then $\ord_P(\div \frak p) = 1$.
+\end{proposition}
+\begin{proof}
+  Clearly, $\ord_P(\div \frak p) \geq 1$.
+  We must show that there is a polynomial in $\frak p$ whose valuation at $P$ is exactly 1.
+  
+  Let $P = (x_0, y_0)$ and consider the lines determined by $x - x_0$ and $y - y_0$.
+  Since $C$ is non-singular, at most one of these lines is tangent to $C$ at $P$.
+  Without loss of generality, suppose $x - x_0$ is not tangent to $C$ at $P$.
+  Let $m(x, y)$ be the minimum polynomial of $x_0$, seen as an element of $K[C]$.
+  Then $\nu_P(m) = \nu_P(x - x_0) = 1$.
+  Moreover, $m(x, y)$ is zero on the orbit of $P$,
+  and by the above proposition, $m(x, y) \in I_{[P]} = \frak p$.
+\end{proof}
+
+This proposition shows that every prime divisor has the form $[P]$ for some affine point $P$.
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point in the support of $\div \frak p$.
+  Then $\div \frak p = [P]$.
+\end{proposition}
+\begin{proof}
+  By an above proposition, $P$ is in the support of $\div \frak p$ with order 1.
+  So too are the other points in its orbit. \note{Prove this.}
+  We must show that these are all the affine points.
+  
+  Suppose $\div \frak p = [P] + [Q]$ for some $Q \not\in [P]$.
+  Then $Q \in \supp(\div \frak p)$.
+  Then by an above proposition $\frak p = I_{[Q]}$.
+  However $\frak p = I_{[P]}$.
+  So $I_{[P]} = I_{[Q]}$, and by an above proposition, $Q \in [P]$, a contradiction.
+\end{proof}
+
+Now we show that these maps are inverses of one another.
+
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal. Then
+  \[ I_{\div \frak p} = \frak p. \]
+\end{proposition}
+\begin{proof}
+  The divisor $\div \frak p$ is non-trivial with an affine point $P$ in its support.
+  Then by above proposition, $\div \frak p = [P]$,
+  and by another $\frak p = I_{[P]}$.
+  Putting these together,
+  \[ \frak p = I_{[P]} = I_{\div \frak p}. \]
+\end{proof}
+
+\begin{proposition}
+  Let $P$ be an affine point on $C$. Then
+  \[ \div(I_{[P]}) = [P]. \]
+\end{proposition}
+\begin{proof}
+  Let $\frak p := I_{[P]}$.
+  Then $\frak p$ is prime and non-zero.
+  By an above proposition, $P \in \supp(\div \frak p)$.
+  By another above proposition, $\div \frak p = [P]$.
+  Putting these together,
+  \[ \div(I_{[P]}) = \div \frak p = [P]. \]
+\end{proof}
+
+
+\begin{comment}
+\begin{lemma}
+  Let $D = \div \frak p$ be a prime divisor.
+  If $P$ is an affine point in the support of $D$, then $\ord_P(D) = 1$.
+\end{lemma}
+Certainly if $P \in \supp(D)$, then $\ord_P(D) \geq 1$.
+To prove this lemma, we look for a polynomial with order exactly 1 at $P$.
+One such polynomial is the uniformizer at $P$.
+\begin{proof}
+  Let $f$ be any non-zero polynomial in $\frak p$.
+  \note{Need caveat that $\frak p$ is non-zero. This mistake is probably elsewhere in this section.}
+  Let $n = \ord_P(f)$. Then $n \geq 1$.
+  Let $u$ be a uniformizer at $P$.
+  Then $f = \frac r s u^n$ for some $r$ and $s$ that are non-zero at $P$.
+  Then $sf = ru^n$, which implies $ru^n \in \frak p$.
+  However, $r$ is non-zero at $P$, so $r \not \in \frak p$.
+  Since $\frak p$ is prime, we get $u \in \frak p$.
+  However, $\ord_P(u) = 1$, so
+  \[ \ord_P(D) = \min_{f \in \frak p - \{ 0 \}} \ord_P(f) = \ord_P(u) = 1. \]
+\end{proof}
+
+\begin{lemma}
+  Let $f \in K[x,y]$ and $\sigma \in \Gal(\bar K/K)$.
+  Let $P = (x_0, y_0)$ be a point in $\bar K \times \bar K$. Then
+  \[ f(\sigma(x_0), \sigma(y_0)) = \sigma(f(x_0, y_0)). \]
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    f(\sigma(x_0), \sigma(y_0))
+      &= \sum a_{i,j}\sigma(x)^i\sigma(y)^j \\
+      &= \sum \sigma(a_{i,j})\sigma(x)^i\sigma(y)^j
+        & \text{$\sigma$ fixes $K$} \\
+      &= \sum \sigma(a_{i,j}x^iy^j)
+        & \text{$\sigma$ is multiplicative} \\
+      &= \sigma \left( \sum a_{i,j}x^iy^j \right)
+        & \text{$\sigma$ is additive} \\
+      &= \sigma(f(x_0, y_0)).
+  \end{align*}
+\end{proof}
+\begin{corollary}
+  \label{cor_orb}
+  Let $f \in K[x,y]$ and $\sigma \in \Gal(\bar K/K)$.
+  Let $P$ be an affine point.
+  Then $f$ has a zero at $P$ if and only if $f$ has a zero at $\sigma(P)$.
+\end{corollary}
+\begin{proof}
+  ($\implies$) Suppose $f$ has a zero at a point $P = (x_0, y_0)$,
+  i.e. $f(x_0, y_0) = 0$. Then
+  \[ f(\sigma(x_0), \sigma(y_0)) = \sigma(f(x_0, y_0)) = \sigma(0) = 0. \]  
+
+  ($\impliedby$) Suppose $f$ has a zero at $\sigma(P)$, i.e. $f(\sigma(x_0), \sigma(y_0)) = 0$.
+  Then $\sigma$ has an inverse $\sigma\inv \in \Gal(\bar K/K)$ and
+  \[ f(x_0, y_0) = \sigma\inv(\sigma(f(x_0, y_0))) = \sigma\inv(f(\sigma(x_0), \sigma(y_0))) = \sigma\inv(0) = 0. \] 
+\end{proof}
+
+\note{Not sure where to place following lemma.}
+\begin{lemma}
+  Let $P$ be an affine point.
+  Let $I_P$ be the ideal of polynomials vanshing on $\orb(P)$.
+  Then $I_P$ is a prime ideal.
+\end{lemma}
+\begin{proof}
+  Suppose $fg \in I_P$.
+  Then $0 = (fg)(P) = f(P)g(P)$.
+  Since $f(P)$ and $g(P)$ are field elements in $\bar K$, either $f(P) = 0$ or $g(P) = 0$.
+  By Corollary \ref{cor_orb}, either $f$ vanishes on $\orb(P)$ or $g$ vanishes on $\orb(P)$.
+  Therefore at least one of $f$ or $g$ is in $I_P$.
+\end{proof}
+\end{comment}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Ideals and Divisors}
+
+The coordinate ring $K[C]$ is a Dedekind domain.
+The non-zero ideals of $K[C]$ may be factored into a product of prime ideals, and this factorization is unique.
+Our map from prime ideals to divisors can now be extended to act on any non-zero ideal of $K[C]$.
+
+Let $I$ be a non-zero ideal of $K[C]$.
+Let its factorization into prime ideals be $\frak p_1^{k_1} \dots \frak p_n^{k_n}$.
+Then define the divisor of $I$ to be
+\[ \div I = \sum_{i=1}^n k_i \div \frak p_i. \]
+Essentially, the divisor of $I$ is the sum of the divisors of its prime factors.
+As for the whole ring $K[C]$ itself,
+its prime factorization is the empty product which maps to the empty sum:
+  \[ \div (K[C]) = 0. \]
+Note that the divisor of $I$ is of degree zero and defined over $K$,
+since it is a sum of divisors in $\Div_K^0(C)$, which is a group under addition.
+
+Let $\cal I_C$ be the monoid of non-zero ideals of $K[C]$.
+We have now a map $\div : \cal I_C \to \Div_K^0(C)$.
+\begin{theorem}
+  The map
+    \[ \div(-) : \cal I_C \to \Div_K^0(C) \]
+  is a homomorphism of monoids.
+\end{theorem}
+\begin{proof}
+  The proof is quite immediate after factoring each ideal.
+  It has already been established that $\div$ maps the identity $K[C]$ of $\cal I_C$ to the identity $0$ of $\Div_K^0(C)$.
+  Let $\frak a$ and $\frak b$ be non-zero ideals with prime factorizations
+  \[ \frak a = \prod \frak p_i^{k_i}, ~~~ \frak b = \prod \frak q_i^{\ell_i}. \]
+  Then
+  \begin{align*}
+    \div (\frak a \frak b)
+      &= \div \left( \left( \prod \frak p_i^{k_i} \right) \left( \prod \frak q_j^{\ell_j} \right) \right) \\
+      &= \sum k_i \div \frak p_i + \sum \ell_j \div \frak q_i \\
+      &= \div \frak a + \div \frak b.
+  \end{align*}
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Fractional Ideals and $\Div_K^0$}
+
+
+
+Let $\cal J_C$ denote the Abelian group of fractional ideals of $K[C]$.
+Let $\frak a \in \cal J_C$.
+Then $\frak a$ is of the form $\pid{\frac 1 f} \frak b$ for some polynomial $f \in K[C]$ and some integral ideal $\frak b$ of $K[C]$.
+Define
+\[ \div \frak a = \div \frak b - \div f. \]
+
+\begin{proposition}
+  This map is well-defined.
+\end{proposition}
+\begin{proof}
+  Suppose that $\frak a$ is a fractional ideal,
+  $\frak b$ and $\frak c$ are integral ideals,
+  $f$ and $g$ are non-zero polynomials, and
+    \[ \frac 1 f \frak b = \frak a = \frac 1 g \frak c. \]
+  Then $g \frak b = f \frak c$ are integral ideals and
+  \begin{align*}
+    \div \left( \frac 1 f \frak b \right)
+      &= \div \frak b - \div f \\
+      &= \div \frak b - \div f + \div g - \div g \\
+      &= \div (g \frak b) - \div f - \div g \\
+      &= \div (f \frak c) - \div f - \div g \\
+      &= \div f + \div \frak c - \div f - \div g \\
+      &= \div \frak c - \div g \\
+      &= \div \left( \frac 1 g \frak c \right).
+  \end{align*}
+\end{proof}
+
+Once again, note that for a fractional ideal $\frak a \in \cal J_C$,
+the divisor $\div \frak a$ is in $\Div_K^0(C)$.
+This establishes a function (of sets) from $\cal J_C$ to $\Div_K^0(C)$.
+The domain and codomain are both Abelian groups, so we show that this function is in fact a group homomorphism.
+
+\begin{theorem}
+  The map
+    \[ \div(-) : \cal J_C \to \Div_K^0(C) \]
+  is a group homomorphism.
+\end{theorem}
+\begin{theorem}
+  It has been established already $\div(-)$ maps the identities $K[C] \mapsto 0$.
+  Let $\frak a$ and $\frak b$ be fractional ideals, with
+  \[ \frak a = \frac 1 f \frak A, ~~~ \frak b = \frac 1 g \frak B \]
+  and where $\frak A$ and $\frak B$ are integral ideals.
+  Using the fact that $\div(-)$ is a monoid homomorphism,
+  \begin{align*}
+    \div(\frak a \frak b)
+      &= \div \left( \frac 1 {fg} \frak A \frak B \right) \\
+      &= \div (\frak A \frak B) - \div (fg) \\
+      &= \div \frak A  + \div \frak B - (\div f + \div g) \\
+      &= (\div \frak A - \div f) + (\div \frak B - \div g) \\
+      &= \div \frak a + \div \frak b.
+  \end{align*}
+\end{theorem}
+
+In fact, this map is a group \emph{isomorphism}.
+To show this, we wish to exhibit a homomorphism in the other direction.
+
+For an effective divisor $D$ defined over $K$, define the \defn{ideal of $D$} to be
+\[ I_D = \pid{ f \in K(C)^* ~|~ \forall P \in C(\bar K) - \{P_\infty\} : \nu_P(f) \geq \ord_P(D) }. \]
+It is the ideal generated by all rational functions that are regular on the (affine) support of $D$,
+vanishing with the appropriate multiplicity at each point.
+As $D$ is effective, no function in $I_D$ has a pole at any affine point.
+Consequently, every rational function in $I_D$ is equivalent to a polynomial function
+and $I_D$ may be seen as an ideal of $K[C]$ as well.
+
+\begin{proposition}
+  The map
+  \[ I_{(-)} : \Div_{\geq 0}^K \to \cal I_C \]
+  is a homomorphism of monoids.
+\end{proposition}
+\begin{proof}
+  For the divisor $0$,
+  \begin{align*}
+    I_0 &= \pid{ f \in K(C)^* ~|~ \forall P \in C(\bar K) - \{P_\infty\} : \nu_P(f) \geq \ord_P(0) } \\
+        &= \pid{ f \in K(C)^* ~|~ \forall P \in C(\bar K) - \{P_\infty\} : \nu_P(f) \geq 0 } \\
+        &= \pid{ K[C] } = K[C].
+  \end{align*}
+  So $I_{(-)}$ maps identity to identity.
+  
+  Let $A$ and $B$ be effective divisors. Then
+  \begin{align*}
+    I_AI_B &= \pid{ f \in K(C)^* ~|~ \nu_P(f) \geq \ord_P(A) } \pid{ g \in K(C)^* ~|~ \nu_P(g) \geq \ord_P(B) } \\
+           &= \pid{ fg \in K(C)^* ~|~ \nu_P(f) + \nu_P(g) \geq \ord_P(A) + \ord_P(B) } \\
+           &= \pid{ fg \in K(C)^* ~|~ \nu_P(fg) \geq \ord_P(A + B)} \\
+           &= \pid{ h \in K(C)^* ~|~ \nu_P(h) \geq \ord_P(A + B)} \\
+           &= I_{A+B}.
+  \end{align*}
+  The quantifier ``$\forall P \in C(\bar K) - \{P_\infty\}$'' is omitted here for space constraints.
+  \note{Do I need to justify moving from line 3 to 4?}
+\end{proof}
+
+Now suppose $D$ is a degree zero divisor defined over $K$.
+Then $D$ can be written uniquely in the form
+  \[ D = D^+ - D^- + D^\infty, \]
+where $D^+$ and $D^-$ are effective divisors and $D^\infty = \deg(D^- - D^+)P_\infty$.
+We are merely breaking $D$ up into affine points with positive multiplicity,
+affine points with negative multiplicity, and a multiple of the point at infinity.
+Define the ideal of $D$ to be
+%\[ I_D = I_{D^+}(K[C] : I_{D^-}). \]
+\[ I_D = I_{D^+}I_{D^-}\inv. \]
+\begin{theorem}
+  The map 
+    \[ I_{(-)} : \Div_K^0 \to \cal J_C \]
+  is a group homomorphism.
+\end{theorem}
+\begin{proof}
+  Let $A$ and $B$ be degree zero divisors defined over $K$.
+  Write $A = A^+ - A^- + A^\infty$ and $B = B^+ - B^- + B^\infty$.
+  Then
+  \begin{align*}
+    I_{A + B}
+      &= I_{A^+ + B^+}(I_{A^- + B^-})\inv \\
+      &= I_{A^+}I_{B^+}(I_{A^-}I_{B^-})\inv \\
+      &= I_{A^+} I_{A^-}\inv I_{B^+} I_{B^-}\inv \\
+      &= I_A I_B \\
+  \end{align*}
+\end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{???}
+
+\begin{theorem}
+  Let $F(K[C])$ denote the group of fractional ideals of $K[C]$ and define the maps
+  \[ \div(-) : F(K[C]) \to \Div_K^0(C) \]
+  \[ I \mapsto \sum_{P \in C - P_\infty} \min_{f \in I - \{0\}}\{\ord_P(f)\}(P - P_\infty) \]
+  and
+  \[ I_{(-)} : \Div_K^0(C) \to F(K[C]) \]
+  \[ D \mapsto \{ f \in K(C)^* ~|~ \div(f) \geq D \} \cup \{ 0 \}. \]
+  Then $\div(-)$ is an isomorphism of groups and $I_{(-)}$ is its inverse.
+\end{theorem}
+\begin{lemma}
+  If $I$ is a fractional ideal of $K[C]$, then $\div I$ is a degree zero divisor.
+\end{lemma}
+\begin{proof}
+  This is clear by construction,
+  as $\div I$ is a sum of divisors of the form $(P - P_\infty)$,
+  each of degree zero.
+\end{proof}
+\begin{lemma}
+  If $I$ is a fractional ideal of $K[C]$, then $\div I$ is defined over $K$.
+\end{lemma}
+\begin{proof}
+  \note{TODO}
+\end{proof}
+\begin{lemma}
+  If $D$ is a degree zero divisor on $C$ defined over $K$,
+  then $I_D$ is a fractional ideal of $K[C]$.
+\end{lemma}
+\begin{proof}
+\end{proof}
+\begin{lemma}
+  Let $\frak a \in \cal J_C$ be a fractional ideal. Then
+  \[ I_{\div \frak a} = \frak a. \]
+\end{lemma}
+\begin{proof}
+  Let $a \in \frak a$ be non-zero. Then at every affine point $P$ on $C$,
+  \[ \ord_P(\div \frak a) = \min_{0 \neq f \in \frak a}\{ \nu_P(f) \} \leq \nu_P(a). \]
+  So $a \in I_{\div \frak a}$.
+  
+  Let $b \in I_{\div \frak a}$.
+  Let $P$ be any point in the support of $\div \frak a$.
+  Let $a$ factor into $\frak p_1^{k^1} \dots \frak p_n^{k_n}$. Then
+  \begin{align*}
+    \nu_P b
+      &\geq \ord_P(\div \frak a) \\
+      &= \ord_P \left( \div \left( \prod_{i=1}^n \frak p_i^{k_i} \right) \right) \\
+      &= \ord_P \left( \sum_{i=1}^n k_i \div \frak p_i \right) \\
+      &= \sum_{i=1}^n k_i \ord_P \left( \div \frak p_i \right) \\
+      &= k_r \ord_P \left( \div \frak p_r \right)
+  \end{align*}
+  for some $1 \leq r \leq n$ (since prime ideals correspond to distinct orbits of points).
+  
+  \note{Try again}
+  
+  Let $b \in I_{\div \frak a}$.
+  Let $a$ factor into $\frak p_1^{k^1} \dots \frak p_n^{k_n}$.
+  We will show that $b$ is in each prime power.
+  Let $r$ be an integer $1 \leq r \leq n$.
+  Let $P$ be any point in the support of $\div \frak p_r$. Then
+  \begin{align*}
+    \nu_P(b)
+      &\geq \ord_P(\div \frak a) \\
+      &= \ord_P \left( \div \left( \prod_{i=1}^n \frak p_i^{k_i} \right) \right) \\
+      &= \ord_P \left( \sum_{i=1}^n k_i \div \frak p_i \right) \\
+      &= \sum_{i=1}^n k_i \ord_P \left( \div \frak p_i \right) \\
+      &= k_r \ord_P \left( \div \frak p_r \right),
+  \end{align*}
+  where the last line follows from the fact that distinct prime ideals correspond to distinct orbits of points.
+  Then there is an integer $\ell \geq k_r$ such that $b \in \frak p_r^\ell$, hence $b \in \frak p_r^{k_r}$.
+  As $r$ was chosen arbitrarily, $b$ is in each prime power in the factorization of $\frak a$ and therefore in their intersection.
+  Finally, since all prime powers are pairwise coprime, $\bigcap \frak p_i^{k_i} = \prod \frak p_i^{k_i} = \frak a$.
+\end{proof}
+\begin{lemma}
+  Let $D \in \Div_K^0(C)$ be a degree zero divisor defined over $K$. Then
+  \[ \div(I_D) = D. \]
+\end{lemma}
+\begin{proof}
+  \note{roughly}
+  \begin{align*}
+    \div(I_D)
+      &= \sum_{P \in C - P_\infty} \min_{f \in I_D - \{0\}}\{\ord_P(f)\}(P - P_\infty) \\
+      &= D
+  \end{align*}
+  if and only if at every affine point $P$,
+  \[ \min_{f \in I_D - \{0\}}\{\ord_P(f)\} = \ord_P(D), \]
+  and at infinity,
+  \[ \sum_{P \in C - P_\infty} \min_{f \in I_D - \{0\}}\{\ord_P(f)\} = - \ord_{P_\infty}(D). \]
+  For the former, let $P$ be any affine point.
+  By definition of $I_D$, we have $\div f \geq D$ for all non-zero $f \in I_D$,
+  so we get $\ord_P(f) \geq \ord_P(D)$ for free.
+  Suppose this inequality is strict.
+  That is, for every non-zero polynomial $f \in I_D$, $\ord_P(f) > \ord_P(D)$.
+\end{proof}
+\begin{lemma}
+  $\div(IJ) = \div(I) + \div(J)$.
+\end{lemma}
+\begin{proof}
+\end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Reorganization of Prime Ideals section}
+
+\begin{proposition}
+  Let $P$ be an affine point on $C$ and let $f \in K[C]$. Then
+  \[ f(P) = 0 \iff f(\sigma(P)) = 0. \]
+\end{proposition}
+\begin{proof}
+\end{proof}
+
+\begin{proposition}
+  Let $P$ be an affine point on $C$ and let $\frak p$ be the set of polynomials that vanish on $\orb(P)$. Then
+  \begin{enumerate}[label=(\roman*)]
+    \item $\frak p$ is a $K[C]$-ideal;
+    \item $\frak p$ is non-zero;
+    \item $\frak p$ is prime;
+    \item $\frak p$ is maximal;
+    \item $\frak m_P = \frak p \cal O_P$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+\end{proof}
+
+\begin{proposition}
+  Let $P$ and $Q$ be affine points on $C$ and suppose $\orb(P) \neq \orb(Q)$.
+  Then $I_{[P]} \neq I_{[Q]}$.
+\end{proposition}
+\begin{proof}
+  Let $X$ and $Y$ be the sets
+    \[ X = \{ x_i ~|~ (x_i, y_i) \in \orb(P) \} \triangle \{ x_i ~|~ (x_i, y_i) \in \orb(Q) \} \]
+    \[ Y = \{ y_i ~|~ (x_i, y_i) \in \orb(P) \} \triangle \{ y_i ~|~ (x_i, y_i) \in \orb(Q) \}, \]
+    where $\triangle$ denotes the symmetric difference of sets.
+  So, e.g., $X$ is the set of $x$-coordinates found in the orbit of $P$ or $Q$, but not both.
+  Suppose that $X$ is non-empty and contains an element $x_0$.
+  Let $m(x_0)$ be the minimal polynomial of $x_0$, viewed as a polynomial in $K[C]$.
+  Then $m$ is zero everywhere on the orbit of $P$, but is non-zero on the orbit of $Q$.
+  Simlarly, if $Y$ contains an element $y_0$, then the minimal polynomial of $y_0$ gives the same result.
+
+  Now suppose $X$ and $Y$ are both empty.
+  Then there is a point $Q_0 \in \orb(Q)$ with the same $x$-coordinate as $P$, but whose $y$-coordinate is a conjugate of $P$'s.
+  Without loss of generality, let $P = (x_1, y_1)$ and $Q_0 = (x_1, \sigma(y_1))$.
+  
+  Suppose, for contradiction, that $I_{[P]} = I_{[Q]}$.
+  Let $\frak p = I_{[P]}$.
+  Then $\frak p$ is precisely the polynomials in $K[C]$ passing through the point $(x_1, y_1)$.
+  Likewise, $\frak p$ is simultaneously the ideal of polynomials in $K[C]$ passing through $(x_1, \sigma(y_1))$.
+  Let $\frak q_1 = \pid{x - x_1, y - y_1}$ and $\frak{x - x_1, y - \sigma(y_1)}$ be prime ideals in $\bar K[C]$.
+  Then
+  \begin{align*}
+    \frak p &= \frak q_1 \cap K[C] \\
+    \frak p &= \frak q_2 \cap K[C]
+  \end{align*}
+  and
+  \begin{align*}
+    \frak p
+      &= \frak p + \frak p \\
+      &= (\frak q_1 \cap K[C]) + (\frak q_2 \cap K[C]) \\
+      &= (\frak q_1 + \frak q_2) \cap K[C]) \\
+      &= \bar K[C] \cap K[C] & \text{$\frak q_1, \frak q_2$ coprime} \\
+      &= K[C],
+  \end{align*}
+  a contradiction, since $\frak p$ is prime.
+\end{proof}
+
+\begin{proposition}
+  Let $P$ and $Q$ be affine points on $C$. The following are equivalent:
+  \begin{enumerate}[label=\roman*]
+    \item $Q \in \orb(P)$;
+    \item $\orb(P) = \orb(Q)$;
+    \item $[P] = [Q]$;
+    \item $I_{[P]} = I_{[Q]}$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+\end{proof}
+
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point on $C$. Then
+  \[ P \in \supp(\div \frak p) \iff \frak p = I_{[P]}. \]
+\end{proposition}
+\begin{proof}
+  ($\implies$)
+  Suppose $P$ is in the support of $\div \frak p$.
+  Let $\frak q$ be the ideal of polynomials vanishing at $P$.
+  By an above proposition, $\frak q$ is prime.
+  Moreover,
+  \begin{align*}
+    q &= \pid{ f \in K[C] ~|~ \text{$f$ vanishes at $P$}} \} \\
+      &= \pid{ f \in K[C] ~|~ \text{$f$ vanishes on $[P]$}} \} \\
+      &= I_{[P]}
+  \end{align*}
+  Since every polynomial in $\frak p$ vanishes at $P$, we have $\frak p \subseteq \frak q$.
+  However, every non-zero prime ideal of $K[C]$ is maximal, so $\frak p = \frak q$.
+  \note{This feels like it was more work than necessary.}
+  
+  ($\impliedby$)
+  Suppose $\frak p = I_{[P]}$.
+  For every non-zero polynomial $f \in \frak p$, $f(P) = 0$, hence $\nu_P(f) > 0$.
+  Now the order of $\div \frak p$ at $P$ is
+  \[ \ord_P(\div \frak p) = \min_{0 \neq f \in \frak p}\{ \nu_P(f) \} > ,0 \]
+  therefore $P \in \supp(\div \frak p)$.
+\end{proof}
+
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point in the support of $\div \frak p$.
+  Then $\ord_P(\div \frak p) = 1$.
+\end{proposition}
+\begin{proof}
+  Clearly, $\ord_P(\div \frak p) \geq 1$.
+  We must show that there is a polynomial in $\frak p$ whose valuation at $P$ is exactly 1.
+  \note{Verify that the uniformizer of $\frak m_P$ works.}
+\end{proof}
+
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point in the support of $\div \frak p$.
+  Then $\div \frak p = [P]$.
+\end{proposition}
+\begin{proof}
+  By an above proposition, $P$ is in the support of $\div \frak p$ with order 1.
+  So too are the other points in its orbit. \note{Prove this.}
+  We must show that these are all the affine points.
+  
+  Suppose $\div \frak p = [P] + [Q]$ for some $Q \not\in [P]$.
+  Then $Q \in \supp(\div \frak p)$.
+  Then by an above proposition $\frak p = I_{[Q]}$.
+  However $\frak p = I_{[P]}$.
+  So $I_{[P]} = I_{[Q]}$, and by an above proposition, $Q \in [P]$, a contradiction.
+\end{proof}
+
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal. Then
+  \[ I_{\div \frak p} = \frak p. \]
+\end{proposition}
+\begin{proof}
+  The divisor $\div \frak p$ is non-trivial with an affine point $P$ in its support.
+  Then by above proposition, $\div \frak p = [P]$,
+  and by another $\frak p = I_{[P]}$.
+  Putting these together,
+  \[ \frak p = I_{[P]} = I_{\div \frak p}. \]
+\end{proof}
+\begin{comment}
+\begin{proof}
+  Let $a \in \frak p$.
+  Then at every affine point $P$ on $C$,
+  \[ \ord_P(\div \frak p) = \min_{0 \neq f \in \frak p}\{ \nu_P(f) \} \leq \nu_P(a), \]
+  so $a \in I_{\div \frak p}$.
+  
+  Let $b \in I_{\div \frak p}$.
+  At every affine point $P$ on $C$, $\nu_P(b) \geq 0$.
+  At every affine point $P \in \supp(\div \frak p)$,
+  \[ \nu_P(b) \geq \ord_P(D). \]
+  
+  Let $b \in I_{\div \frak p}$.
+  Let $P \in \supp(\div \frak p)$.
+  By above proposition, $I_{\div \frak p} = I_{[P]}$, so $b \in I_{[P]}$.
+  By another proposition above, $\frak p = I_{[P]}$, so $b \in \frak p$.
+  Then $b \in I_{[P]}$.
+\end{proof}
+\end{comment}
+
+\begin{proposition}
+  Let $P$ be an affine point on $C$. Then
+  \[ \div(I_{[P]}) = [P]. \]
+\end{proposition}
+\begin{proof}
+  Let $\frak p := I_{[P]}$.
+  Then $\frak p$ is prime and non-zero.
+  By an above proposition, $P \in \supp(\div \frak p)$.
+  By another above proposition, $\div \frak p = [P]$.
+  Putting these together,
+  \[ \div(I_{[P]}) = \div \frak p = [P]. \]
+\end{proof}
+
+

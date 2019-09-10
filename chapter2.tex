@@ -1,0 +1,500 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                 %%%%%
+%%%%%   Derivations   %%%%%
+%%%%%                 %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Derivations}
+\label{chap_differentials}
+
+\begin{definition}
+  Let $R$ be a ring, $A$ an $R$-algebra, and $M$ an $A$-module.
+  A map $D : A \to M$ is called a \defn{derivation} (from $A$ to $M$) if it is $K$-linear and satisfies the product rule:
+    \[ D(ab) = D(a)b + aD(b). \]
+\end{definition}
+
+Some authors do not require a derivation to be $R$-linear,
+and they distinguish between derivations and $R$-linear derivations.
+We will assume all derivations are $R$-linear.
+
+As the name suggest, many familiar properties of the derivative from calculus are an immediate consequence of this definition.
+
+\begin{proposition}
+  \label{prop_derivation}
+  A derivation satisfies the following properties.
+  \begin{enumerate}[label=(\roman*)]
+    \item If $A$ is unital, then $D(1) = 0$.
+    \item If $A$ is unital, then $D(r) = 0$ for all $r \in R$.
+    \item If $A$ is commutative, then $D(x^2) = 2xD(x)$.
+    \item If $A$ is commutative, then for all integers $n > 0$, $D(x^n) = nx^{n-1}D(x)$.
+    \item If $x$ is a unit, then $D(x\inv) = -x^{-2}D(x)$.
+    \item If $x$ is a unit, then for all $n \in \bb Z$, $D(x^n) = nx^{n-1}D(x)$.
+    \item If $y$ is a unit, then $D(xy\inv) = (D(x)y - xD(y))y^{-2}$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{enumerate}[label=(\roman*)]
+    \item
+      We have
+        \[ D(1) = D(1 \cdot 1) = D(1) \cdot 1 + 1 \cdot D(1) = D(1) + D(1) \]
+      which implies $D(1) = 0$.
+    \item
+      Follows from (i) by $R$-linearity.
+    \item
+        \[ D(x^2) = D(x)x + xD(x) = xD(x) + xD(x) = 2xD(x). \]
+    \item
+      Follows from (iii) by induction.
+      Suppose $D(x^k) = kx^{k-1}D(x)$ for some $k > 0$. Then
+      \begin{align*}
+        D(x^{k+1})
+          &= D(x^k \cdot x) \\
+          &= D(x^k)x + x^kD(x) \\
+          &= kx^{k-1}D(x)x + x^kD(x) \\
+          &= kx^kD(x) + x^kD(x) \\
+          &= (k + 1)x^kD(x).
+      \end{align*}
+    \item
+      By part (i) and the product rule, we have
+        \[ 0 = D(1) = D(xx\inv) = D(x)x\inv + xD(x\inv). \]
+      This implies
+        \[ xD(x\inv) = -D(x)x\inv, \]
+      hence
+        \[ D(x\inv) = -x^{-2}D(x). \]
+    \item
+      The case where $n \geq -1$ is handled by parts (i), (iv), and (v).
+      The rest follows by induction.
+      Suppose $D(x^k) = kx^{k-1}D(x)$ for some $k \leq -1$. Then
+      \begin{align*}
+        D(x^{k-1})
+          &= D(x^kx\inv) \\
+          &= D(x^k)x\inv + x^kD(x\inv) \\
+          &= kx^{k-1}D(x)x\inv - x^kx^{-2}D(x) \\
+          &= kx^{k-2}D(x) - x^{k-2}D(x) \\
+          &= (k - 1)x^{k-2}D(x).
+      \end{align*}
+    \item
+      Immediate from the product rule and part (v).
+      \begin{align*}
+        D(xy\inv)
+          &= D(x)y\inv + xD(y\inv) \\
+          &= D(x)y\inv - xy^{-2}D(y) \\
+          &= (D(x)y - xD(y))y^{-2}.
+      \end{align*}
+  \end{enumerate}
+\end{proof}
+
+We can define the sum of two derivations $\delta_1$ and $\delta_2$ by
+  \[ (\delta_1 + \delta_2)(x) = \delta_1(x) + \delta_2(x). \]
+After we define scalar multiplication
+  \[ (k\delta)(x) = k (\delta(x)), \]
+the set of derivations from a $R$-algebra $A$ to an $A$-module $A$ becomes an $R$-module,
+denoted by $\Der_R(A,M)$.
+This is the \defn{module of derivations from $A$ to $M$}.
+In the case where $M = A$, this may be denoted by $\Der_R(A)$.
+
+Properties (v), (vi), and (vii) of Proposition \ref{prop_derivation}
+show that image of a unit and its inverse under a derivation are interdependent.
+This suggests the following.
+
+\begin{proposition}
+  \label{prop_derivation_unique_extension}
+  Let $D \in \Der_R(A,M)$.
+  Let $B = \Frac A$.
+  ($A$ is a ring with a $R$-action.
+  $\Frac A$ is the field of fractions of the ring $A$ and inherits the $R$-action.)
+  There is a unique $D' \in \Der_R(B, M)$ such that $D'|_{D} = D$.
+\end{proposition}
+That is to say that if $D$ is a derivation from $A$ to $M$,
+it extends uniquely to a derivation from $A$'s field of fractions.
+\note{Field of fractions requires that $A$ is an integral domain.}
+\begin{proof}
+  If $A = B$, we are done.
+  So suppose instead there is a $b \in B$ such that $b\in A$ but $b\inv \not \in A$.
+  Suppose $D', D'' \in \Der_R(B, M)$ are such that $D'|_{D} = D''|_{D} = D$.
+  Then $D'(b) = D''(b) = D(b)$ and
+    \[ D'(b\inv) = -b^{-2}D'(b) = -b^{-2}D''(b) = D''(b\inv). \]
+  It follows that $D'(ab\inv) = D''(ab\inv)$ for all $ab\inv \in B$.
+\end{proof}
+
+In order to understand how a derivation acts on $\Frac A$, it is enough to know how it acts on $A$.
+In the case of a derivation over the field $R(x_1, \ldots, x_n)$,
+it is enough to know how it acts on the polynomial ring $R[x_1, \ldots, x_n]$.
+In the univariate case, we can say even more.
+The behaviour of a derivation $D: R(x) \to M$ is entirely determined by the value of $D(x)$.
+
+\begin{proposition}
+  \label{prop_derivation_unique_x}
+  Let $R(x)$ be the ring of rational functions over a ring $R$ in a single variable $x$.
+  Let $\delta, \eta \in \Der_R(R(x))$.
+  If $\delta(x) = \eta(x)$, then $\delta = \eta$.
+\end{proposition}
+\begin{proof}
+  For all $r \in R$, we have $\delta(r) = \eta(r) = 0$.
+  For all $f \in R[x]$, we have $\delta(f) = \eta(f)$ by $R$-linearity.
+  Now $\delta$ and $\eta$ agree on all of $R[x]$.
+  By Proposition \ref{prop_derivation_unique_extension}, they must agree on all of $R(x)$.
+\end{proof}
+
+Up to this point, we have discussed derivations without showing that such a thing even exists.
+The following proposition establishes the existence of derivations by exhibiting one that should be familiar.
+
+\begin{proposition}
+  \label{prop_derivation_formal_derivative}
+  Let $R(x)$ be the ring of rational functions over a ring $R$ in a single variable $x$.
+  There is a unique derivation $D_x : R(x) \to R(x)$ satisfying $D_x(x) = 1$.
+\end{proposition}
+Given a rational function $f(x)$, the function $D_x(f(x))$ is the \defn{formal derivative} of $f(x)$, often written $f'(x)$.
+\begin{proof}
+  We need only show existence of a derivation on $R[x]$ with the desired property.
+  By propositions \ref{prop_derivation_unique_extension} and \ref{prop_derivation_unique_x},
+  this derivation is unique and extends uniquely to a derivation on $R(x)$ with the desired property.
+  
+  We set $D_x(x) = 1$ and extend by linearity to get its action on all of $R[x]$.
+  If $f(x) = \sum f_ix^i \in R[x]$, then
+    \[ D(f(x)) = \sum if_ix^{i-1}D(x) = \sum if_ix^{i-1}. \]
+  We must show that this satisfies the product rule.
+  Let $g(x) = \sum g_jx^j$. Then for all $f(x), g(x) \in R[x]$,
+  
+  \begin{align*}
+    D_x(f(x)g(x))
+      &= D_x \left( \left( \sum_{i=0}^m f_ix^i \right) \left( \sum_{j=0}^n g_jx^j \right) \right) \\
+      &= D_x \left( \sum_{i=0}^m \sum_{j=0}^n f_ix^i g_jx^j \right) \\
+      &= D_x \left( \sum_{i=0}^m \sum_{j=0}^n f_ig_jx^{i+j} \right) \\
+      &= \sum_{i=0}^m \sum_{j=0}^n f_ig_jD_x(x^{i+j}) \\
+      &= \sum_{i=0}^m \sum_{j=0}^n (i+j)f_ig_jx^{i+j-1} \\
+      &= \sum_{i=0}^m \sum_{j=0}^n (if_ig_jx^{i+j-1} + jf_ig_jx^{i+j-1}) \\
+      &= \sum_{i=0}^m \sum_{j=0}^n if_ig_jx^{i+j-1} + \sum_{i=0}^m \sum_{j=0}^n jf_ig_jx^{i+j-1} \\
+      &= \left( \sum_{i=0}^m if_ix^{i-1} \right) \left( \sum_{j=0}^n g_jx^j \right) + \left( \sum_{i=0}^m f_ix^i \right) \left( \sum_{j=0}^n jg_jx^{j-1} \right) \\
+      &= D_x(f(x)) g(x) + f(x)D(g(x)).
+  \end{align*}
+\end{proof}
+\begin{example}
+  Let $f(x) = 3x^3 + 6x^2 + 1 \in \bb Z[x]$. Then
+  \begin{align*}
+    D_x(f(x))
+      &= 3D_x(x^3) + 6D_x(x^2) + D_x(1) \\
+      &= 3 \cdot 3 x^2 D_x(x) + 6 \cdot 2 x D_x(x) + 0 \\
+      &= 9 x^2 + 12 x. \\
+  \end{align*}
+\end{example}
+
+Now consider the $R$-algebra $A = R(x_1, \ldots, x_n)$.
+For any fixed $1 \leq t \leq r$, we can set $S = R(x_1, \ldots, x_{t-1}, x_{t+1}, \ldots, x_n)$
+so that $A = S(x_t)$.
+Then there is a unique derivation $D_{x_t} \in \Der_S(A,M)$ satisfying $D_{x_t}(x_t) = 1$.
+This derivation is also a member of $\Der_R(A,M)$.
+For any $f \in A$, the function $D_{x_t}(f)$ is the \defn{formal partial derivative} of $f$, often written $f_{x_t}$.
+This is the unique derivation with the properties
+\begin{align*}
+  D_{x_t}(x_k) &= \begin{cases} 1 & k = t \\ 0 & k \neq t \end{cases}.
+\end{align*}
+\begin{example}
+  In the case of $A = \bb Z[x,y]$, we have derivations $D_x$ and $D_y$ with
+  $D_x(x) = 1$, $D_x(y) = 0$, $D_y(x) = 0$, and $D_y(y) = 1$.
+  Let $f(x,y) = x^2 + xy + y^3 \in \bb Z[x,y]$.
+  Then $D_x(f) = 2x + y$ and $D_y(f) = x + 3y^2$.
+\end{example}
+
+\begin{proposition}
+  Let $D \in \Der_K(A)$ be a derivation.
+  Let $I$ be an ideal of $A$.
+  Then $D$ induces a derivation $D^* \in \Der_K(A/I)$ defined by
+    \[ D^*([a]) = [D(a)]. \]
+\end{proposition}
+\begin{proof}
+  For each $a \in A$, denote the equivalence class containing $a$ in $A/I$ by $\bar a$.
+  We show first that this map is well-defined.
+  Suppose $\bar a = \bar b$.
+  Then $\bar{a-b} = \bar 0$ and
+    \[ D^*(\bar a) = D^*(\bar a - \bar{a-b}) = D^*(\bar{a-a+b}) = D^*(\bar b). \]
+  We must also show that $D^*(\bar k \cdot \bar a) = \bar k \cdot D^*(\bar a)$
+  and $D^*(\bar a \cdot \bar b) = D^*(\bar a) \cdot \bar b + \bar a \cdot D^*(\bar b)$.
+    \[ D^*(\bar k \cdot \bar a) = D^*(\bar{ka}) = \bar{D(ka)} = \bar{kD(a)} = \bar k \cdot \bar{D(a)} = \bar k \cdot D^*(\bar a) \]
+  \begin{align*}
+    D^*(\bar a \cdot \bar b)
+      &= D^*(\bar{ab})
+       = \bar{D(ab)}
+       = \bar{D(a)b + aD(b)} \\
+       &= \bar{D(a)} \cdot \bar b + \bar a \cdot \bar{D(b)}
+       = D^*(\bar a) \cdot \bar b + \bar a \cdot D^*(\bar b)
+  \end{align*}
+\end{proof}
+With this we can extend formal derivatives of functions in $K[x,y]$ and $K(x,y)$ to formal derivatives of functions in $K[C]$ and $K(C)$.
+
+\begin{proposition}
+  \label{prop_precompose_derivation}
+  Let $f \in \Hom_R(A,B)$ be a morphism of $R$-algebras and let $D \in \Der_R(B,M)$ be an $R$-linear derivation.
+  \[ \begin{tikzcd} A \arrow{r}{f} & B \arrow{r}{D} & M \end{tikzcd} \]
+  Then $D \circ f \in \Der_R(A,M)$.
+\end{proposition}
+\begin{proof}
+  While $M$ is a $B$-module, it becomes an $A$-module under the $A$-action
+    \[ A \times M \to M : (a, m) \mapsto f(a)m. \]
+  Both $f$ and $D$ are $R$-linear, so $D \circ f$ is also $R$-linear.
+  As for the product rule, let $a, b \in A$. Then
+  \begin{align*}
+    (D \circ f)(ab)
+      &= D(f(ab)) \\
+      &= D(f(a)f(b)) \\
+      &= D(f(a))f(b) + f(a)D(f(b)) \\
+      &= (D \circ f(a))f(b) + f(a)(D \circ f(b)) \\
+      &= (b, D \circ f(a)) + (a, D \circ f(b)).
+  \end{align*}
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                          %%%%%
+%%%%%   Universal Derivation   %%%%%
+%%%%%                          %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Universal Derivation}
+
+\note{Notes based on Eisenbud's Commutative Algebra with a View Towards Algebraic Geometry.}
+
+\begin{itemize}
+  \item Module of Kahler Differentials $\Omega$
+  \item Universal Derivation mapping algebra to $\Omega$
+  \item Local properties of $\Omega$
+  \item $\Omega$ can be realized locally as $m/m^2$.
+\end{itemize}
+
+\begin{definition}
+  Let $A$ be an $R$-algebra.
+  The \defn{module of K\"ahler differentials} of $A$ over $R$,
+  denoted by $\Omega_{A/R}$,
+  is the $A$-module generated by the set $\{ d(a) ~|~ a \in A \}$
+  modulo the relations
+  \begin{align*}
+    d(ab) &= d(a)b + ad(b) \\
+    d(ra + sb) &= rd(a) + sd(b)
+  \end{align*}
+  for all $r, s \in R$ and $a, b \in A$.
+\end{definition}
+
+\begin{definition}
+  The map
+    \[ d : A \to \Omega_{A/R} : a \mapsto d(a) \]
+  is an $R$-linear derivation, called the \defn{universal derivation}.
+\end{definition}
+
+It is universal in the following sense.
+If $e : A \to M$ is another $R$-linear derivation,
+then there is a unique morphism of $R$-modules $e' : \Omega_{A/R} \to M$ such that
+\[ \begin{tikzcd}
+  A \arrow{r}{d} \arrow[swap]{dr}{e} & \Omega_{A/R} \arrow[dashed]{d}{!\exists e'} \\ & M
+\end{tikzcd} \]
+commutes.
+This map is defined by $e' : da \mapsto e(a)$.
+
+\begin{proposition}
+  A morphism $f : A \to B$ of $R$-algebras induces a map $\Omega_{A/R} \to \Omega_{B/R}$.
+\end{proposition}
+\begin{proof}
+  We have the following maps,
+  \[ \begin{tikzcd}
+      A \arrow{r}{d} \arrow[swap]{d}{f} & \Omega_{A/R} \\ B \arrow[swap]{r}{d'} & \Omega_{B/R}.
+    \end{tikzcd} \]
+  By Proposition \ref{prop_precompose_derivation}, the composition $d' \circ f : A \to \Omega_{B/R}$ is an $R$-linear derivation.
+  By the universal property of the universal derivation, there is a unique map $f' : \Omega_{A/R} \to \Omega_{B/R}$.
+  \[ \begin{tikzcd}
+      A \arrow{r}{d} \arrow[swap]{dr}{d' \circ f} & \Omega_{A/R} \arrow[dashed]{d}{} \\ & \Omega_{B/R}
+    \end{tikzcd} \]
+\end{proof}
+The induced map sends $da \mapsto d'(f(a))$.
+
+\begin{proposition}
+  Let $A = R[x_1, \ldots, x_n]$. Then
+  \[ \Omega_{A/R} \cong \bigoplus_{i=1}^n Adx_i. \]
+\end{proposition}
+\begin{corollary}
+  Let $A = R[x_1, \ldots, x_n]$, let $I$ be an ideal of $A$, and let $B = A/I$.
+  Then $B$ is an $R$-algebra and
+  \[ B \otimes_{R} \Omega_{A/R} \cong \bigoplus_{i=1}^n Bdx_i. \]
+\end{corollary}
+\begin{proof}
+  \note{Extension of scalars.}
+\end{proof}
+
+Since $\Omega_{A/R}$ is a direct sum of $R$-algebras $Adx_i$,
+there is a family of natural projection maps 
+  \[ \pi_i : \Omega_{A/R} \to Adx_i : \sum f_jdx_j \mapsto f_idx_i. \]
+We can compose the maps
+  \[ \begin{tikzcd}
+    A \arrow{r}{d} & \Omega_{A/R} \arrow{r}{\pi_i} & Adx_i \arrow{r}{} & A
+  \end{tikzcd} \]
+where the right-most map sends $dx_i \mapsto 1$.
+The composition of the three maps is the formal partial derivative with respect to $x_i$.
+
+\begin{proposition}
+  \label{prop_exact_sequence_cokernel}
+  If $A \xrightarrow f B \xrightarrow g C \to 0$ is an exact sequence, then
+    \[ C \cong \coker f = B / \im f = B / \ker g = \coim g. \]
+\end{proposition}
+\begin{proof}
+  \note{Hungerford, p.176}
+\end{proof}
+
+\begin{proposition}
+  \label{prop_conormal_sequence}
+  Let $\pi : A \to B$ is an epimorphism of $R$-algebras.
+  Let $I = \ker \pi$.
+  There is an exact sequence of $B$-modules
+    \[ I/I^2 \xrightarrow{d} B \tensor A \Omega_{A/R} \xrightarrow{D\pi} \Omega_{B/R} \to 0 \]
+  where $d : [f] \mapsto 1 \otimes df$ and $D\pi : b \otimes da \mapsto b(da)$.
+\end{proposition}
+\begin{proof}
+  \note{Eisenbud, CAwaVtAG, Prop. 16.3.}
+\end{proof}
+
+We can apply Proposition \ref{prop_conormal_sequence} in the following way.
+Let $A = K[x,y]$.
+Let $C$ be a $C_{3,4}$ curve defined by the polynomial $f$.
+Then $\pi : A \mapsto K[C]$ is an epimorphism with kernel $\pid f$.
+We can compute the image of the map
+  \[ d : \frac{\pid f}{\pid{f^2}} \to K[C] \tensor A \Omega_{A/R}. \]
+Let $[gf]$ be an arbitrary element of $\pid f / \pid{f^2}$. Then
+\begin{align*}
+  d(gf)
+    &= 1 \tensor A d(gf) \\
+    &= 1 \tensor A (d(g)f + gd(f)) \\
+    &= 1 \tensor A d(g)f + 1 \tensor A gd(f) \\
+    &= f \tensor A d(g) + g \tensor A d(f) \\
+    &= 0 \tensor A d(g) + g \tensor A d(f)
+      & f \equiv 0 \text{ in } K[C] \\
+    &= g \tensor A df
+\end{align*}
+We have also that $K[C] \tensor A \Omega_{A/R} = K[C]dx \oplus K[C]dy$, since
+\begin{align*}
+  K[C] \tensor A \Omega_{A/R}
+    &= K[C] \tensor A \left( Adx \oplus Ady \right) \\
+    &= \left( K[C] \tensor A Adx \right) \oplus \left( K[C] \tensor A Ady \right) \\
+    &= K[C]dx \oplus K[C]dy.
+\end{align*}
+The element $1 \otimes df \in K[C] \otimes \Omega_{A/R}$ corresponds to $f_xdx + f_ydy \in K[C]dx \oplus K[C]dy$.
+Applying Propositions \ref{prop_exact_sequence_cokernel} and \ref{prop_conormal_sequence},
+we have that
+  \[ \Omega_{K[C]/K} = \frac {K[C] \tensor A \Omega_{A/R}} {\im d} = \frac {K[C]dx \oplus K[C]dy} {\im d}, \]
+which is the free $K[C]$-algebra generated by $dx$ and $dy$, modulo the relation $f_xdx + f_ydy = 0$.
+\note{(Double check this.)}
+
+
+
+
+
+
+\subsection{Unsorted Stuff}
+
+\begin{theorem}
+  Let $A = K[x_1, \ldots, x_n]$ and let $I$ be an ideal of $A$.
+  If $f \in I^2$, then $f \equiv 0$ and $df \equiv 0$ modulo $I$.
+\end{theorem}
+\begin{proof}
+  Let $f \in I^2$.
+  Then $f \in I$, so $f \equiv 0 \pmod I$.
+  As for its differential, we have that $f$ is generated by a Gr\"obner basis {$g_i$}
+  \[ f = \sum a_{i,j}g_ig_j, \]
+  so
+  \begin{align*}
+    df &= d \left( \sum_{\substack{1 \leq i \leq j \leq m}} a_{i,j}g_ig_j \right) \\
+       &= \sum_{\substack{1 \leq i \leq j \leq m}} d \left( a_{i,j}g_ig_j \right) \\
+       &= \sum_{\substack{1 \leq i \leq j \leq m}} \left( d(a_{i,j})g_ig_j + a_{i,j}d(g_i)g_j + a_{i,j}g_id(g_j) \right) \\
+       &\equiv 0 \pmod I
+  \end{align*}
+\end{proof}
+
+The converse is not true in general.
+A simple counterexample is to let $A = \bb F_2[x]$, let $f = x^2$, and let $I = \pid f$.
+Then $f \equiv 0 \pmod I$ and $df = 2xdx \equiv 0 \pmod I$.
+However, $f \not\in I^2 = \pid{x^4}$.
+
+It is true under additional assumptions.
+
+\begin{theorem}
+  Let $A = K[x_1, \ldots, x_n]$ and let $I$ be an ideal of $A$.
+  Let $f \in A$ be a polynomial whose formal partial derivatives do not all vanish.
+  If $f, df \equiv 0 \pmod I$, then $f \in I^2$.
+\end{theorem}
+\begin{proof}
+  We prove the contrapositive.
+  Suppose $f \not\in I^2$.
+  If $f \not\equiv 0 \pmod I$, we are done, so suppose $f \equiv 0 \pmod I$ (i.e. $f \in I$).
+  We wish to show that $df \not\equiv 0 \pmod I$.
+
+  By Theorem \ref{thm_groebner_basis_remainder}, we can write $f$ as
+  \[ f = g + r \]
+  where $g \in I^2$ and $r \not\in \LT(I^2)$. Furthermore, $0 \neq r \in I$.
+  Since $r \not\in \LT(I^2)$, $D_{x_k}(r) \not\in \LT(I^2)$ for any $1 \leq k \leq n$.
+  \begin{align*}
+    df &= dg + dr \\
+       &\equiv dr \pmod I \\
+       &= \sum D_{x_i}(r)dx_i
+  \end{align*}
+  We must argue now that for each summand $D_{x_i}(r)dx_i$ is non-zero modulo $I$.
+  
+  Suppose that $D_{x_k}(r) \equiv 0$ for some $1 \leq k \leq n$.
+  \begin{align*}
+    & D_{x_k}(r) \equiv 0 \pmod I \\
+    \implies & D_{x_k}(r) \in I \\
+    \implies & \LT(D_{x_k}(r)) \in \LT(I) \\
+    \implies & \LT(D_{x_k}(r)) \in \LT(I)\LT(I) \\
+    \implies & \LT(D_{x_k}(r)) \in \LT(I^2).
+  \end{align*}
+  However, as noted earlier, no term in $D_{x_k}(r)$ is in $\LT(I^2)$.
+  \note{(Wording.)}
+\end{proof}
+
+\begin{proof}
+  We prove the contrapositive.
+  Suppose $f \not\in I^2$.
+  If $f \not\equiv 0 \pmod I$, we are done, so suppose $f \equiv 0 \pmod I$ (i.e. $f \in I$).
+  We wish to show that $df \not\equiv 0 \pmod I$.
+
+  By Theorem \ref{thm_groebner_basis_remainder}, we can write $f$ as
+  \[ f = g + r \]
+  where $g \in I^2$ and $r \not\in \LT(I^2)$.
+  Taking the differential of $f$,
+  \begin{align*}
+    df &= \sum_{i=1}^n D_{x_i}(f)dx_i.% \\
+%       &= \sum_{i=1}^n D_{x_i}(g + r)dx_i \\
+  \end{align*}
+  We must show that one of $df$'s summands is non-zero modulo $I$.
+  Since $f$ has a non-zero formal partial derivative, let $k$ be such that $D_{x_k}(f) \neq 0$.
+  Then
+  \begin{align*}
+    D_{x_k}(f)
+      &= D_{x_k}(g + r) \\
+      &= D_{x_k}(g) + D_{x_k}(r) \\
+      &\equiv D_{x_k}(r) \pmod I.
+  \end{align*}
+  Now suppose $D_{x_k}(r) \equiv 0 \pmod I$. Then
+  \begin{align*}
+    & D_{x_k}(r) \equiv 0 \pmod I \\
+    \implies & D_{x_k}(r) \in I \\
+    \implies & \LT(D_{x_k}(r)) \in \LT(I) \\
+    \implies & \LT(D_{x_k}(r)) \in \LT(I)\LT(I) \\
+    \implies & \LT(D_{x_k}(r)) \in \LT(I^2).
+  \end{align*}
+  %However, as noted earlier, no term in $D_{x_k}(r)$ is in $\LT(I^2)$.
+  %\note{(Wording.)}
+\end{proof}
+
+\begin{proof}
+  \note{(Supposing $I = \sqrt I$.)}
+  We prove the contrapositive.
+  Suppose $f \not\in I^2$.
+  If $f \not\equiv 0 \pmod I$, we are done, so suppose $f \equiv 0 \pmod I$ (i.e. $f \in I$).
+  We wish to show that $df \not\equiv 0 \pmod I$.
+
+  By Theorem \ref{thm_groebner_basis_remainder}, we can write $f$ as
+  \[ f = g + r \]
+  where $g \in I^2$ and $r \not\in \LT(I^2)$.
+  Taking the differential of $f$,
+  \begin{align*}
+    df &= dg + dr \\
+       &\equiv dr \pmod I \\
+       &= d\left(\sum_{i=1}^m a_ig_i \right) \\
+       &\equiv \sum_{i=1}^m a_id(g_i) \pmod I.
+  \end{align*}
+\end{proof}
