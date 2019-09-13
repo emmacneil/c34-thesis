@@ -91,12 +91,10 @@ First, a simple lemma. \note{This and its corollary are also in Chapter - C34 Cu
 \end{proof}
 \end{comment}
 
-If $P$ is an affine point on $C$, then define
+If $[P]$ is a prime divisor on $C$, then define
 \[ I_{[P]} = \pid{ f \in K[C] ~|~ f(P) = 0 }. \]
-This is the ideal of polynomials in $K[C]$ that pass through the point $P$.
-In light of the previous lemma and corollary,
-this may equivalently be described as the ideal of polynomials that pass through the orbit of $P$.
 
+\note{Put Some or all of this in earlier section?}
 \begin{proposition}
   Let $P$ be an affine point on $C$ and let $\frak p = I_{[P]}$. Then
   \begin{enumerate}[label=(\roman*)]
@@ -171,32 +169,26 @@ We show now that this map is one-to-one.
   Now suppose $X$ and $Y$ are both empty.
   Then there is a point $Q_0 \in \orb(Q)$ with the same $x$-coordinate as $P$, but whose $y$-coordinate is a conjugate of $P$'s.
   Without loss of generality, let $P = (x_1, y_1)$ and $Q_0 = (x_1, \sigma(y_1))$.
-  
-  Suppose, for contradiction, that $I_{[P]} = I_{[Q]}$.
-  Let $\frak p = I_{[P]}$.
-  Then $\frak p$ is precisely the polynomials in $K[C]$ passing through the point $(x_1, y_1)$.
-  Likewise, $\frak p$ is simultaneously the ideal of polynomials in $K[C]$ passing through $(x_1, \sigma(y_1))$.
-  Let $\frak q_1 = \pid{x - x_1, y - y_1}$ and $\pid{x - x_1, y - \sigma(y_1)}$ be prime ideals in $\bar K[C]$.
-  Then
+  Let $\frak q_1 = \pid{x - x_1, y - y_1}$ and $\frak q_2 = \pid{x - x_1, y - \sigma(y_1)}$. Then
   \begin{align*}
-    \frak p &= \frak q_1 \cap K[C] \\
-    \frak p &= \frak q_2 \cap K[C]
+    I_{[P]} &= \frak q_1 \cap K[C] \\
+    I_{[Q]} &= \frak q_2 \cap K[C],
   \end{align*}
+  \[ \frak q_1 + \frak q_1 = \bar K[C], \]
   and
   \begin{align*}
-    \frak p
-      &= \frak p + \frak p \\
+    I_{[P]} + I_{[Q]}
       &= (\frak q_1 \cap K[C]) + (\frak q_2 \cap K[C]) \\
-      &= (\frak q_1 + \frak q_2) \cap K[C] \\
-      &= \bar K[C] \cap K[C] & \text{$\frak q_1, \frak q_2$ coprime} \\
-      &= K[C],
+      &= (\frak q_1  + \frak q_1) \cap K[C] \\
+      &= \bar K[C] \cap K[C] \\
+      &= K[C] \neq I_{[P]}.
   \end{align*}
-  a contradiction, since $\frak p$ is prime.
+  Hence $I_{[P]} \neq I_{[Q]}$.
 \end{proof}
 
 \begin{corollary}
   Let $P$ and $Q$ be affine points on $C$. The following are equivalent:
-  \begin{enumerate}[label=\roman*]
+  \begin{enumerate}[label=(\roman*)]
     \item $Q \in \orb(P)$;
     \item $\orb(P) = \orb(Q)$;
     \item $[P] = [Q]$;
@@ -245,7 +237,7 @@ We show now that this map is one-to-one.
   \end{description}
 \end{proof}
 
-The following proposition demonstrates a relationship between orbits of points and prime ideals.
+The following proposition essentially shows that divisors of prime ideals are prime divisors as defined in Chapter \ref{chap_divisors}.
 \begin{proposition}
   Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point on $C$. Then
   \[ P \in \supp(\div \frak p) \iff \frak p = I_{[P]}. \]
@@ -266,10 +258,16 @@ The following proposition demonstrates a relationship between orbits of points a
   therefore $P \in \supp(\div \frak p)$.
 \end{proof}
 
-\begin{proposition}
-  Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point in the support of $\div \frak p$.
+Now if $\frak p = I_{[P]}$, then $\frak p = I_{[\sigma(P)]}$ for every conjugate point of $P$,
+so that the entire orbit of $P$ is in the support of $\div \frak p$.
+Conversely, if $Q$ is not in the orbit of $P$, then $\frak p \neq I_{[Q]}$, so $Q \not\in \supp(\div \frak p)$.
+
+\note{Expansion of previous prop.}
+\begin{lemma}
+  \label{lem_order_is_1}
+  Let $P$ be an affine point on $C$ and let $\frak p = I_{[P]}$.
   Then $\ord_P(\div \frak p) = 1$.
-\end{proposition}
+\end{lemma}
 \begin{proof}
   Clearly, $\ord_P(\div \frak p) \geq 1$.
   We must show that there is a polynomial in $\frak p$ whose valuation at $P$ is exactly 1.
@@ -280,9 +278,71 @@ The following proposition demonstrates a relationship between orbits of points a
   Let $m(x, y)$ be the minimum polynomial of $x_0$, seen as an element of $K[C]$.
   Then $\nu_P(m) = \nu_P(x - x_0) = 1$.
   Moreover, $m(x, y)$ is zero on the orbit of $P$,
-  and by the above proposition, $m(x, y) \in I_{[P]} = \frak p$.
+  so $m(x, y) \in I_{[P]} = \frak p$.
 \end{proof}
 
+\begin{proposition}
+  Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point on $C$.
+  The following are equivalent
+  \begin{enumerate}[label=(\roman*)]
+    \item $P \in \supp(\div \frak p)$;
+    \item $\frak p = I_{[P]}$.
+    \item $\div \frak p = [P]$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{description}
+    \item [(i) $\implies$ (ii):]
+      Suppose $P$ is in the support of $\div \frak p$.
+      Let $\frak q = I_{[Q]}$.
+      By an above proposition, $\frak q$ is prime.
+      Since every polynomial in $\frak p$ vanishes at $P$, we have $\frak p \subseteq \frak q$.
+      However, every non-zero prime ideal of $K[C]$ is maximal, so $\frak p = \frak q$.
+
+    \item [(ii) $\implies$ (i):]
+      Suppose $\frak p = I_{[P]}$.
+      For every non-zero polynomial $f \in \frak p$, $f(P) = 0$, hence $\nu_P(f) > 0$.
+      Now the order of $\div \frak p$ at $P$ is
+      \[ \ord_P(\div \frak p) = \min_{0 \neq f \in \frak p}\{ \nu_P(f) \} > ,0 \]
+      therefore $P \in \supp(\div \frak p)$.
+
+    \item [(ii) $\implies$ (iii):]
+      Suppose $\frak p = I_{[P]}$.
+      Since $I_{[P]} = I_{[\sigma(P)]}$ for every $\sigma \in \Gal(\bar K/K)$,
+      we have $\sigma(P) \in \supp(\div \frak p)$.
+      That is, the entire orbit of $P$ is in the support of $\div \frak p$.
+      Conversely, if $Q$ is not in the orbit of $P$, then $\frak p \neq I_{[Q]}$,
+      so that $Q \not \in \supp(\div \frak p)$.
+      By Lemma \ref{lem_order_is_1}, $P$ appears with multiplicity 1, so that $\div \frak p = [P]$.
+      
+    \item [(iii) $\implies$ (i):]
+      \note{Obvious.}
+  \end{description}
+\end{proof}
+
+\begin{proposition}
+  Let $P$ be an affine point in $C(\bar K)$ and let $\frak p$ be a non-zero prime ideal of $K[C]$. Then
+  \begin{enumerate}[label=(\roman*)]
+    \item $I_{\div \frak p} = \frak p$;
+    \item $\div I_{[P]} = [P]$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{enumerate}[label=(\roman*)]
+    \item
+      Let $\frak p$ be a non-zero prime idea of $K[C]$.
+      Then there is an affine point $P \in \supp(\div \frak p)$,
+      and $\frak p = I_{[P]}$. Then
+      \[ \div I_{[P]} = \div \frak p = [P]. \]
+    
+    \item
+      Let $P$ be an affine point in $C(\bar K)$.
+      Let $\frak p = I_{[P]}$. Then $\frak p$ is a non-zero prime ideal and
+      \[ I_{\div \frak p} = I_{[P]} = \frak p. \]
+  \end{enumerate}
+\end{proof}
+
+\begin{comment}
 This proposition shows that every prime divisor has the form $[P]$ for some affine point $P$.
 \begin{proposition}
   Let $\frak p$ be a non-zero prime ideal and let $P$ be an affine point in the support of $\div \frak p$.
@@ -326,6 +386,7 @@ Now we show that these maps are inverses of one another.
   Putting these together,
   \[ \div(I_{[P]}) = \div \frak p = [P]. \]
 \end{proof}
+\end{comment}
 
 
 \begin{comment}
@@ -404,28 +465,52 @@ One such polynomial is the uniformizer at $P$.
 
 \subsection{Ideals and Divisors}
 
+\note{Error in this section. Monoid of divisors consists only of divisors \emph{greater than or equal to 0}.}
 The coordinate ring $K[C]$ is a Dedekind domain.
 The non-zero ideals of $K[C]$ may be factored into a product of prime ideals, and this factorization is unique.
-Our map from prime ideals to divisors can now be extended to act on any non-zero ideal of $K[C]$.
+Our maps between prime ideals and prime divisors can now be extended to act on any non-zero ideal of $K[C]$ or any prime divisor of $\Div_K^0(C)$.
 
 Let $I$ be a non-zero ideal of $K[C]$.
 Let its factorization into prime ideals be $\frak p_1^{k_1} \dots \frak p_n^{k_n}$.
 Then define the divisor of $I$ to be
 \[ \div I = \sum_{i=1}^n k_i \div \frak p_i. \]
-Essentially, the divisor of $I$ is the sum of the divisors of its prime factors.
+The divisor of $I$ is the sum of the divisors of its prime factors.
 As for the whole ring $K[C]$ itself,
 its prime factorization is the empty product which maps to the empty sum:
   \[ \div (K[C]) = 0. \]
-Note that the divisor of $I$ is of degree zero and defined over $K$,
-since it is a sum of divisors in $\Div_K^0(C)$, which is a group under addition.
+Note that the divisor of $I$ is of degree zero and defined over $K$.
+
+In the other direction, let $D$ be a divisor in $\Div_K^0(C)$.
+Then it factors into a sum of prime divisors, say $D = k_1[P_1] + \dots + k_n[P_n]$.
+Define the ideal of $D$ to be
+\[ I_D = \prod_{i=1}^n I_{[P_i]}^{k_i}. \]
+The divisor 0 is the empty sum.
+Let it map to the empty product, which is the whole ring $K[C]$:
+\[ I_{0} = K[C]. \]
 
 Let $\cal I_C$ be the monoid of non-zero ideals of $K[C]$.
-We have now a map $\div : \cal I_C \to \Div_K^0(C)$.
+We now have maps $\div(-) : \cal I_C \to \Div_K^0(C)$ and $I_{(-)} : \Div_K^0(C) \to \cal I_C$.
 \begin{theorem}
-  The map
-    \[ \div(-) : \cal I_C \to \Div_K^0(C) \]
-  is a homomorphism of monoids.
+  The maps $\div(-)$ and $I_{(-)}$ are isomorphisms of monoids and mutual inverses.
 \end{theorem}
+\begin{proof}
+  Let $I \in \cal I_C$. Let its prime factorization be $\prod \frak p_i^{k^i}$. Then
+  \begin{align*}
+    I &= \prod_{i=1}^n \frak p_i^{k_i} \\
+    \div I &= \sum_{i=1}^n k_i[P_i]
+      & P_i \in \supp(\div \frak p_i) \\
+    I_{\div I} &= \prod_{i=1}^n I_{[P_i]}^{k_i} \\
+               &= \prod_{i=1}^n \frak p_i^{k_i} \\
+               &= I.
+  \end{align*}
+  Let $D \in \Div_K^0(C)$. Let its prime factorization be $\sum k_i[P_i]$. Then
+  \begin{align*}
+    D &= \sum_{i=1}^n k_i[P_i] \\
+    I_D &= \prod_{i=1}^n I_{[P_i]}^{k_i} \\
+    \div(I_D) &= \sum_{i=1}^n k_i [P_i] \\ &= D.
+  \end{align*}
+\end{proof}
+\begin{comment}
 \begin{proof}
   The proof is quite immediate after factoring each ideal.
   It has already been established that $\div$ maps the identity $K[C]$ of $\cal I_C$ to the identity $0$ of $\Div_K^0(C)$.
@@ -439,13 +524,15 @@ We have now a map $\div : \cal I_C \to \Div_K^0(C)$.
       &= \div \frak a + \div \frak b.
   \end{align*}
 \end{proof}
+\end{comment}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Fractional Ideals and $\Div_K^0$}
+\subsection{Fractional Ideals and $\Div_K^0(C)$}
 
-
+We may extend the maps even further to fractional ideals and the entirety of $\Div_K^0(C)$.
 
 Let $\cal J_C$ denote the Abelian group of fractional ideals of $K[C]$.
 Let $\frak a \in \cal J_C$.
@@ -484,7 +571,7 @@ The domain and codomain are both Abelian groups, so we show that this function i
     \[ \div(-) : \cal J_C \to \Div_K^0(C) \]
   is a group homomorphism.
 \end{theorem}
-\begin{theorem}
+\begin{proof}
   It has been established already $\div(-)$ maps the identities $K[C] \mapsto 0$.
   Let $\frak a$ and $\frak b$ be fractional ideals, with
   \[ \frak a = \frac 1 f \frak A, ~~~ \frak b = \frac 1 g \frak B \]
@@ -498,7 +585,34 @@ The domain and codomain are both Abelian groups, so we show that this function i
       &= (\div \frak A - \div f) + (\div \frak B - \div g) \\
       &= \div \frak a + \div \frak b.
   \end{align*}
+\end{proof}
+
+\begin{theorem}
+  The maps $\div(-) : \cal J_C \to \Div_K^0(C)$ and $I_{(-)} : \Div_K^0(C) \to \cal J_C$
+  are group isomorphisms and mutual inverses.
 \end{theorem}
+\begin{proof}
+  Let $\frak a$ be a fractional ideal.
+  Then $\frak a = \frac 1 f \frak b$ for some integral ideal $\frak b$ and some $f \in K[C]$ and
+  \begin{align*}
+    \div \frak a &= \div \frak b - \div f \\
+    I_{\div \frak a} &= I_{\div \frak b - \div f} \\
+      &= I_{\div \frak b} I_{\div f}\inv \\
+      &= \frak b f\inv = I.
+  \end{align*}
+  Let $D \in \Div_K^0(C)$.
+  Then $D = A - B$ for some divisors $0 \leq A$, $0 \leq B$.
+  There is a polynomial $f$ with $B \leq \div f$
+  \note{(Does this need proof? Just take any polynomial through the support of $B$.)}
+  and a divisor $E$ such that $B + E = \div f$.
+  Then
+  \begin{align*}
+    D &= A - B = (A + E) - \div f \\
+    I_D &= I_{A + E}I_{\div f}\inv = I_{A + E}f\inv \\
+    \div I_D &= \div I_{A + E} - \div f \\
+    &= A + E - \div f = D.
+  \end{align*}
+\end{proof}
 
 In fact, this map is a group \emph{isomorphism}.
 To show this, we wish to exhibit a homomorphism in the other direction.
@@ -565,6 +679,167 @@ Define the ideal of $D$ to be
 \end{proof}
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The Ideal Class Group}
+
+Let $\cal J_C$ be the group of fractional ideals of $K[C]$ and let $\cal P_C$ denote its subgroup of principal ideals.
+The \defn{ideal class group} of $K[C]$ is
+\[ \cal H_C = \frac {\cal J_C} {\cal P_C}. \]
+Since $\cal J_C$ is isomorphic to $\Div_K^0(C)$ and $\cal P_C$ to $\Princ_K(C)$, we have
+\[ \cal H_C \simeq \Cl_K^0(C). \]
+
+In the ideal class group, two fractional ideals $\frak a$ and $\frak b$ are equivalent
+if there is a rational function $\frac f g \in K(C)$ such that $\frak a = \frac f g \frak b$.
+Under this relation, every fractional ideal is equivalent to an integral ideal.
+Thus every ideal class has an integral representative.
+
+Since the divisor and ideal class groups are isomorphic, and every ideal class has an integral representative,
+we may now represent divisor classes by integral ideals, i.e. ideals generated by polynomials.
+There is no need to work with fractional ideals and rational functions.
+Representation of divisors by ideals is discussed more in Chapter \ref{chap_representation}.
+For now, we show how to compute an integral ideal equivalent to the inverse of an integral ideal. \note{I hate this wording.}
+
+Let $\frak a$ and $\frak b$ be \emph{integral} ideals of a ring $R$.
+The \defn{ideal quotient} of $\frak a$ by $\frak b$, also called the \defn{colon ideal}, is
+\[ \frak a : \frak b = \{ r \in R ~|~ r \frak b \subseteq \frak a \}. \]
+The following proposition sums up several useful, well-known properties of the colon ideal.
+\begin{proposition}
+  Let $\frak a$, $\frak b$, and $\frak c$ be $R$-ideals. Then
+  \begin{enumerate}[label=(\roman*)]
+    \item $\frak a : \frak b$ is an $R$-ideal;
+    \item $\frak a \subseteq \frak a : \frak b$;
+    \item $\frak a : R = \frak a$;
+    \item $R : \frak a = R$;
+    \item $\frak a \frak b \subseteq \frak c \iff \frak a \subseteq \frak c : \frak b$;
+    \item $\frak a : \frak b = R \iff \frak b \subseteq \frak a$;
+    \item $\frak a : (\frak b + \frak c) = (\frak a : \frak b) \cap (\frak a : \frak c)$;
+    \item $(\frak a \cap \frak b) : \frak c = (\frak a : \frak c) \cap (\frak b : \frak c)$;
+    \item $(\frak a : \frak b) : \frak c = \frak a : \frak b \frak c$.
+  \end{enumerate}
+\end{proposition}
+These properties are given as propositions in \cite{cox07},
+though the statements are given for a multivariate polynomial ring over a field, $K[x_1, \ldots, x_n]$
+rather than for an arbitrary \note{commutative} ring \note{with identity} $R$,
+and most of the proofs are left as exercises.
+\begin{proof}
+  \begin{enumerate}[label=(\roman*)]
+    \item Let $a, b \in \frak a : \frak b$.
+          Then $aJ, bJ \subseteq I$.
+          Then $(a + b)J = aJ + bJ \subseteq I$
+          (since $aJ + bJ$ is the join of $aJ$ and $bJ$ in the lattice of $R$-ideals).
+          So $a + b \in \frak a : \frak b$.
+          
+          Let $a \in \frak a : \frak b$, $r \in R$.
+          Then $a \frak b \subseteq \frak a$ and $ra \frak b \subseteq a \frak b$,
+          so $ra \frak b \subseteq \frak a$ and $ra \in \frak a : \frak b$.
+
+    \item
+      We have that
+      \begin{align*}
+             & \frak a \subseteq \frak a : b \\
+        \iff & \forall a \in \frak a : a \frak b \subseteq \frak a \\
+        \iff & \forall a \in \frak a : \forall b \in \frak b : ab \in \frak a.
+      \end{align*}
+      The last statement is true since ideals are closed under multiplication by $R$.
+      
+    \item
+      By part (ii), we have $\frak a \subseteq \frak a : R$.
+      Suppose $a \in \frak a : R$.
+      Then $aR \subseteq \frak a$.
+      In particular, $a = a \cdot 1_R \in \frak a$,
+      so $\frak a : R \subseteq \frak a$.
+      
+    \item
+      By definition, $R : \frak a \subseteq R$.
+      By part (ii), $R \subseteq R : \frak a$.
+      
+    \item
+      ($\implies$) Let $a \in \frak a$. Then $a \frak b \subseteq \frak a \frak b$,
+      and by hypothesis, $\frak a \frak b \subseteq \frak c$,
+      so $a \frak b \subseteq \frak c$,
+      and $a \in \frak c : \frak b$.
+      
+      ($\impliedby$) Let $a \in \frak a$.
+      By hypothersis, $a \in \frak c : \frak b$, so $a \frak b \subseteq \frak c$.
+      Since the choice of $a$ was arbitrary, this means $\frak a \frak b \subseteq \frak c$.
+      
+    \item
+      ($\implies$) Suppose $\frak a : \frak b = R$.
+      Then $\frak b = 1_R \frak b \subseteq \frak a$.
+      
+      ($\impliedby$) Suppose $b \subseteq \frak a$.
+      For all $r \in R$, $r \frak b \subseteq \frak b$.
+      So $r \frak b \subseteq \frak a$ and $\frak a : \frak b = R$.
+      
+    \item
+      Let $r \in R$. We have
+      \begin{align*}
+           & r(\frak b + \frak c) \subseteq \frak a \\
+      \iff & r \frak b + r \frak c \subseteq \frak a \\
+      \iff & r \frak b \subseteq \frak a \text{ and } r \frak c \subseteq \frak a.
+      \end{align*}
+      So
+      \begin{align*}
+        \frak a : (\frak b + \frak c)
+          &= \{ r \in R ~|~ r(\frak b + \frak c) \subseteq \frak a \} \\
+          &= \{ r \in R ~|~ r \frak b \subseteq \frak a \text{ and } r \frak c \subseteq \frak a \} \\
+          &= \{ r \in R ~|~ r \frak b \subseteq \frak a \} \cap \{ r \in R ~|~ r \frak c \subseteq \frak a \} \\
+          &= (\frak a : \frak b) \cap (\frak a : \frak c).
+      \end{align*}
+    
+    \item
+      Similarly to part (vii),
+      \begin{align*}
+        (\frak a \cap \frak b) : \frak c
+          &= \{ r \in R ~|~ r \frak c \subseteq \frak a \cap \frak b \} \\
+          &= \{ r \in R ~|~ r \frak c \subseteq \frak a \text{ and } r \frak c \subseteq \frak b \} \\
+          &= \{ r \in R ~|~ r \frak c \subseteq \frak a \} \cap \{ r \in R ~|~ r \frak c \subseteq \frak b \} \\
+          &= (\frak a : \frak c) \cap (\frak b : \frak c).
+      \end{align*}
+    
+    \item
+      Let $r \in R$. We have
+      \begin{align*}
+           & r \frak c \subseteq \frak a : \frak b \\
+      \iff & r \frak b \frak c \subseteq \frak a & \text{by (v)} \\
+      \iff & r \in \frak a : \frak b \frak c,
+      \end{align*}
+      so
+      \begin{align*}
+        (\frak a : \frak b) : \frak c
+          &= \{ r \in R ~|~ r \frak c \subseteq \frak a : \frak b \} \\
+          &= \{ r \in R ~|~ r \in \frak a : \frak b \frak c \} \\
+          &= \frak a : \frak b \frak c.
+      \end{align*}
+  \end{enumerate}
+\end{proof}
+
+\begin{proposition}
+  Let $R$ be a Dedekind domain.
+  Let $\frak p$, $\frak q$ be non-zero prime ideals of $R$.
+  Then \[ \frak p \frak q : \frak p = \frak q. \]
+\end{proposition}
+\begin{proof}
+  \note{Use ref labels...}
+  Clearly, $\frak q \frak p \subseteq \frak p \frak q$.
+  Using part (v) of above, this gives $\frak q \subseteq \frak p \frak q : \frak p$.
+  However, $\frak p \not\subseteq \frak p \frak q$, so by part (vi),
+  $\frak p \frak q : \frak p \neq R$.
+  We have
+  \[ \frak q \subseteq \frak p \frak q : \frak p \neq R. \]
+  Since $\frak q$ is maximal, we get our result.
+\end{proof}
+
+\begin{proposition}
+  Let $\frak a$ be an ideal of a Dedekind Domain.
+  Let $a \in \frak a$.
+  Then \[ \frak a (a : \frak a) = \pid a. \]
+\end{proposition}
+\begin{proof}
+  \note{TODO}
+\end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

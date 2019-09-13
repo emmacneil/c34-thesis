@@ -1,0 +1,12 @@
+*.aux
+*.pdf
+ucalgarythesis.bbl
+ucalgarythesis.bcf
+ucalgarythesis.blg
+ucalgarythesis.lof
+ucalgarythesis.log
+ucalgarythesis.lot
+ucalgarythesis.out
+ucalgarythesis.run.xml
+ucalgarythesis.toc
+ucalgarythesis-blx.bib
