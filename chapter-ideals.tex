@@ -10,12 +10,13 @@
 Performing arithmetic on divisors themselves is cumbersome.
 As shown in examples in Chapter \ref{chap_divisors},
 even if a divisor is defined over a field $K$,
-the coordinates of its points may live in an algebraic extension $L/K$,
-slowing down computations.
+the coordinates of its points may live in an algebraic extension $L/K$.
+Performing arithmetic on the points therefore requires operations in $L$,
+which is computationally slower than working in $K$.
 
-In this chapter, we shall see that the divisor class group of a curve
+In this chapter, we will see that the divisor class group of a curve
 is isomorphic to the ideal class group of the curve's coordinate ring, $K[C]$.
-Every divisor may therefore be represented by polynomials with coefficient in $K$,
+Every divisor may therefore be represented by polynomials with coefficients in $K$,
 rather than by points in $\bar K \times \bar K$.
 By interpreting divisors as ideals,
 we may perform our divisor arithmetic over the base field $K$.
@@ -34,7 +35,6 @@ Let $\frak p$ be a non-zero prime ideal of $K[C]$.
 Define the \defn{divisor of $\frak p$} to be
   \[ \div \frak p = \sum_{P \in C - P_\infty} \min_{f \in \frak p - \{0\}}\{\ord_P(f)\}(P - P_\infty). \]
 The affine support of this divisor consists of those points at which \emph{every} polynomial in $\frak p$ is zero.
-\note{(This is the affine variety $V(\frak p)$.)}
 It is balanced by a negative multiple of the point at infinity,
 so that, by construction, this divisor is of degree zero.
 We will see that it is accurate to call such a divisor a \defn{prime divisor} --
@@ -53,7 +53,7 @@ The following proposition shows that this set is in fact a prime (and therefore 
     \item $\frak p$ is non-zero;
     \item $\frak p$ is prime;
     \item $\frak p$ is maximal;
-    \item $\frak m_P = \frak p \cal O_P$;
+%    \item $\frak m_P = \frak p \cal O_P$;
   \end{enumerate}
 \end{proposition}
 \begin{proof}
@@ -82,8 +82,8 @@ The following proposition shows that this set is in fact a prime (and therefore 
     \item
     In a Dedekind domain, all non-zero prime ideals are maximal.
     
-    \item
-    \note{TODO. Is this fact even needed?}
+%    \item
+%    \note{TODO. Is this fact even needed?}
   \end{enumerate}
 \end{proof}
 
@@ -106,9 +106,9 @@ in terms of a prime ideal $\frak q$ of $\bar K[C]$ that ``lies over'' $I_{[P]}$.
 \end{proof}
 Intuitively, while $I_{[P]}$ is prime as a $K[C]$-ideal, it might be non-prime as a $\bar K[C]$-ideal.
 In $\bar K[C]$, we may have that $I_{[P]}$ factors into a product $\prod \frak q_i$.
-For any of those factors $\frak q_i$, we may restrict back down to $K[C]$, and we have $I_{[P]} = \frak q_i \cap K[C]$. 
+For any of those factors $\frak q_i$, we may restrict back down to $K[C]$ to get $I_{[P]} = \frak q_i \cap K[C]$. 
 
-We have now that $I_{[-]}$ defines map from prime divisors to prime ideals.
+We have now that $I_{[-]}$ defines a map from prime divisors to prime ideals.
 We show now that this map is one-to-one.
 \begin{proposition}
   Let $P$ and $Q$ be affine points on $C$ and suppose $\orb(P) \neq \orb(Q)$.
@@ -123,7 +123,7 @@ We show now that this map is one-to-one.
   Suppose that $X$ is non-empty and contains an element $x_0$.
   Let $m(x_0)$ be the minimal polynomial of $x_0$, viewed as a polynomial in $K[C]$.
   Then $m$ is zero everywhere on the orbit of $P$, but is non-zero on the orbit of $Q$.
-  Simlarly, if $Y$ contains an element $y_0$, then the minimal polynomial of $y_0$ gives the same result.
+  Similarly, if $Y$ contains an element $y_0$, then the minimal polynomial of $y_0$ gives the same result.
 
   Now suppose $X$ and $Y$ are both empty.
   Then there is a point $Q_0 \in \orb(Q)$ with the same $x$-coordinate as $P$, but whose $y$-coordinate is a conjugate of $P$'s.
@@ -133,12 +133,12 @@ We show now that this map is one-to-one.
     I_{[P]} &= \frak q_1 \cap K[C] \\
     I_{[Q]} &= \frak q_2 \cap K[C],
   \end{align*}
-  \[ \frak q_1 + \frak q_1 = \bar K[C], \]
+  \[ \frak q_1 + \frak q_2 = \bar K[C], \]
   and
   \begin{align*}
     I_{[P]} + I_{[Q]}
       &= (\frak q_1 \cap K[C]) + (\frak q_2 \cap K[C]) \\
-      &= (\frak q_1  + \frak q_1) \cap K[C] \\
+      &= (\frak q_1  + \frak q_2) \cap K[C] \\
       &= \bar K[C] \cap K[C] \\
       &= K[C] \neq I_{[P]}.
   \end{align*}
@@ -249,14 +249,14 @@ We show now that this map is one-to-one.
       By Lemma \ref{lem_order_is_1}, $P$ appears with multiplicity 1, so that $\div \frak p = [P]$.
       
     \item [(iii) $\implies$ (i):]
-      \note{Obvious.}
+      Immediate from the definitions.
   \end{description}
 \end{proof}
 
 Proposition \ref{prop_prime_ideals_prime_divisors} has two important consequences.
 It shows that every prime ideal $\frak p$ of $K[C]$ is of the form $I_{[P]}$ for a prime divisor $[P]$.
 It also shows that every prime divisor $[P]$ is of the form $\div \frak p$ for a prime ideal $\frak p$.
-We end this section with the main result.
+This leads to the main result of the section.
 Prime ideals and prime divisors are in bijection via the maps $I_{(-)}$ and $\div(-)$, which are mutual inverses.
 
 \begin{proposition}
@@ -270,13 +270,13 @@ Prime ideals and prime divisors are in bijection via the maps $I_{(-)}$ and $\di
   \begin{enumerate}[label=(\roman*)]
     \item
       Let $\frak p$ be a non-zero prime idea of $K[C]$.
-      Then there is an affine point $P \in \supp(\div \frak p)$,
-      and $\frak p = I_{[P]}$. Then
+      Then there is an affine point $P \in \supp(\div \frak p)$.
+      Applying Proposition \ref{prop_prime_ideals_prime_divisors} twice,
       \[ \div I_{[P]} = \div \frak p = [P]. \]
     
     \item
-      Let $P$ be an affine point in $C(\bar K)$.
-      Let $\frak p = I_{[P]}$. Then $\frak p$ is a non-zero prime ideal and
+      Let $P$ be an affine point in $C(\bar K)$ and let $\frak p = I_{[P]}$.
+      Applying Proposition \ref{prop_prime_ideals_prime_divisors} twice,
       \[ I_{\div \frak p} = I_{[P]} = \frak p. \]
   \end{enumerate}
 \end{proof}
@@ -299,11 +299,16 @@ The divisor of $\frak a$ is the sum of the divisors of its prime factors.
 As for the whole ring $K[C]$ itself,
 its prime factorization is the empty product which maps to the empty sum:
   \[ \div (K[C]) = 0. \]
-Note that the divisor of $\frak a$ is of degree zero and defined over $K$.
+Note that the divisor of $\frak a$ is of degree zero and defined over $K$,
+by virtue of it being a sum of prime divisors in $\Div_K^0(C)$.
 
 In the other direction, denote by $\Div_K^{\geq 0}(C)$ the subset
   \[ \Div_K^{\geq 0} = \{ D \in \Div_K^0(C) ~|~ D \geq 0 \}. \]
-Then $\Div_K^{\geq 0}(C)$ is a monoid under addition.
+This notation is misleading and will not be used outside this chapter.
+These are not divisors of degree greater than 0, but rather divisor of degree 0 that are greater than 0
+as per the relation $\leq$ on $\Div_K^0(C)$ defined in Chapter \ref{chap_divisors}.
+
+This set $\Div_K^{\geq 0}(C)$ is a monoid under addition.
 Let $D$ be a non-zero divisor in $\Div_K^{\geq 0}(C)$.
 Then it factors into a sum of prime divisors, say $D = k_1[P_1] + \dots + k_n[P_n]$.
 Define the ideal of $D$ to be
@@ -318,11 +323,14 @@ We now have maps $\div(-) : \cal I_C \to \Div_K^0(C)$ and $I_{(-)} : \Div_K^0(C)
   The maps $\div(-)$ and $I_{(-)}$ are isomorphisms of monoids and mutual inverses.
 \end{theorem}
 \begin{proof}
+  That these maps are monoid homomorphisms should be clear from their definitions.
+  We show that they are mutual inverses.
+
   Let $I \in \cal I_C$. Let its prime factorization be $\prod \frak p_i^{k^i}$. Then
   \begin{align*}
     I &= \prod_{i=1}^n \frak p_i^{k_i} \\
     \div I &= \sum_{i=1}^n k_i[P_i]
-      & P_i \in \supp(\div \frak p_i) \\
+      & \text{where }P_i \in \supp(\div \frak p_i) \\
     I_{\div I} &= \prod_{i=1}^n I_{[P_i]}^{k_i} \\
                &= \prod_{i=1}^n \frak p_i^{k_i} \\
                &= I.
@@ -368,8 +376,10 @@ Let $D \in \Div_K^0(C)$.
 Then $D$ can be written in the form $D = A - \div(f)$ where $A \in \Div_K^{\geq 0}(C)$.
 \note{(Maybe this should be a proposition in chapter \ref{chap_divisors}.)}
 Define
-\[ I_D = \pid{\frac 1 f} I_A \inv. \]
+\[ I_D = \pid{\frac 1 f} I_A. \]
 We show that these two maps are well-defined.
+Afterwards, we show that they are group homomorphisms.
+Then, in similar fashion to the previous section, we end by showing they are isomorphisms and mutual inverses.
 
 \begin{proposition}
   The map $\div(-) : \cal J_C \to \Div_K^0(C)$ is well defined.
@@ -483,14 +493,18 @@ if there is a rational function $\frac f g \in K(C)$ such that $\frak a = \frac 
 Under this relation, every fractional ideal is equivalent to an integral ideal.
 Thus every ideal class has an integral representative.
 In particular, given an ideal class $[\frak a]$, the inverse class $[\frak a\inv]$ has an integral representative.
-For the rest of this section, we see how to use the ideal quotient to find an integral ideal $\frak b \equiv \frak a \inv$.
+For the rest of this section, we see how to use the ideal quotient to find an integral ideal $\frak b$ equivalent to $\frak a \inv$.
 
-Let $\frak a$ and $\frak b$ be \emph{integral} ideals of a ring $R$.
+Let $\frak a$ and $\frak b$ be \emph{integral} ideals of a commutative ring with identity $R$.
 The \defn{ideal quotient} of $\frak a$ by $\frak b$, also called the \defn{colon ideal}, is
 \[ \frak a : \frak b = \{ r \in R ~|~ r \frak b \subseteq \frak a \}. \]
+When the ideal quotient involves a principal ideal $\pid a$, we may write $a : \frak a$ and $\frak a : a$,
+rather than $\pid a : \frak a$ and $\frak a : \pid a$.
+
 The following proposition sums up several useful, well-known properties of the colon ideal.
 \begin{proposition}
   \label{prop_colon_ideal}
+  Let $R$ be a commutative ring with identity.
   Let $\frak a$, $\frak b$, and $\frak c$ be $R$-ideals. Then
   \begin{enumerate}[label=(\roman*)]
     \item $\frak a : \frak b$ is an $R$-ideal;
@@ -504,10 +518,13 @@ The following proposition sums up several useful, well-known properties of the c
     \item $(\frak a : \frak b) : \frak c = \frak a : \frak b \frak c$.
   \end{enumerate}
 \end{proposition}
+
 These properties are given as propositions in \cite{cox07},
 though the statements are given for a multivariate polynomial ring over a field, $K[x_1, \ldots, x_n]$
-rather than for an arbitrary \note{commutative} ring \note{with identity} $R$,
+rather than for an arbitrary commutative ring with identity,
 and most of the proofs are left as exercises.
+Proofs, in slightly greater generality, are given here.
+
 \begin{proof}
   \begin{enumerate}[label=(\roman*)]
     \item Let $a, b \in \frak a : \frak b$.
@@ -601,7 +618,7 @@ and most of the proofs are left as exercises.
   \end{enumerate}
 \end{proof}
 
-The following proposition and its corollary illustrate why this ideal might be called the ideal quotient.
+The following proposition and its corollary illustrate why this ideal is called the ideal quotient.
 In a Dedekind domain, we have $\frak a \frak b : \frak b = \frac {\frak a \frak b}{\frak b} = \frak a$.
 
 \begin{proposition}
@@ -618,7 +635,8 @@ In a Dedekind domain, we have $\frak a \frak b : \frak b = \frac {\frak a \frak 
   Suppose $\alpha \in \frak a \frak p : \frak p$.
   Then $(\alpha)\frak p \subseteq \frak a \frak p$
   and there exists a non-zero ideal $\frak b$ such that $(\alpha)\frak p = \frak a \frak b \frak p$.
-  By \note{Conrad\footnote{{\tt https://kconrad.math.uconn.edu/blurbs/gradnumthy/idealfactor.pdf}} Corollary 3.3}, $(\alpha) = \frak a \frak b$,
+  %By \note{Conrad\footnote{{\tt https://kconrad.math.uconn.edu/blurbs/gradnumthy/idealfactor.pdf}} Corollary 3.3}, $(\alpha) = \frak a \frak b$,
+  By Corollary 3.3 in \cite{conrad}, $(\alpha) = \frak a \frak b$,
   so $(\alpha) \subseteq \frak a$ and $\alpha \in \frak a$.
 \end{proof}
 
