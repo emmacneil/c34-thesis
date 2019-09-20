@@ -155,6 +155,7 @@ then $\bar D$ is reduced.
 \end{definition}
 
 \begin{proposition}
+  \label{prop_flip_properties}
   Let $A, B \in \Div_K^{\geq 0}(C)$.
   \begin{enumerate}[label=(\roman*)]
     \item $\bar A \equiv -A$;
@@ -202,13 +203,31 @@ This proposition shows that if we flip a divisor $D$, we get a \emph{reduced} di
 By flipping $D$ twice, we obtain a \emph{reduced} divisor equivalent to $D$ itself.
 To reduce a divisor, we may flip it twice.
 
+\begin{theorem}
+  Every divisor class $[D]$ has a unique reduced representative.
+\end{theorem}
+\begin{proof}
+  Existence is easy to demonstrate.
+  Let $[D]$ be a divisor class with a representative $D$.
+  Then $\bar{\bar D}$ is a reduced representative of $[D]$.
+  
+  Now we show uniqueness.
+  Suppose $A$ and $B$ are reduced divisors in the same divisor class.
+  Then $A \equiv B$.
+  Applying Proposition \ref{prop_flip_properties}.(iii) twice,
+  we have $\bar A = \bar B$ and $\bar{\bar A} = \bar{\bar B}$.
+  By Definition \ref{def_reduced_divisor},
+    \[ A = \bar{\bar A} = \bar{\bar B} = B. \]
+\end{proof}
+
 If $D$ is a divisor, then the degree and type of $\bar D$ is determined by the type of $D$.
 We may use the formula
 \begin{equation}
   \label{eq_flip_degree}
   \deg \bar D = \deg \div f - \deg D,
 \end{equation}
-where $f$ is the minimal polynomial in $I_D$ and is determined by the type of $D$.
+where $f$ is the minimal polynomial in $I_D$. The degree of $\div f$ is determined by $\LM(f)$,
+which is determined in turn by the type of $D$.
 \begin{example}
   Suppose $D$ is a type 51 divisor.
   Then the minimal polynomial of $I_D$ is of the form
@@ -233,8 +252,7 @@ where $f$ is the minimal polynomial in $I_D$ and is determined by the type of $D
   \end{tabular}
 \end{center}
 
-\begin{comment}
-Not only is the degree of $\bar D$ determined by the type of $D$, but so too is the type of $\bar D$.
+For each divisor $D$ of degree 3 or less, we can determine the type of $\bar D$.
 \begin{example}
   Let $D$ be a type 11 divisor.
   Then the minimal polynomial of $I_D$ is of the form $f = x + f_0$,
@@ -245,30 +263,80 @@ Not only is the degree of $\bar D$ determined by the type of $D$, but so too is 
   Now $\bar D$ cannot be of type 21, because $x \not\in \pid{y, x^2}$.
   so $\bar D$ must be of type 22.
 \end{example}
-\end{comment}
 
-Every reduced divisor is of degree 3 or less.
-We can now determine exactly which types correspond to reduced divisors.
+Applying this reasoning to each divisor type of degree 3 or less,
+we can fill the table
+\begin{center}
+  \begin{tabular}{r|cccccccccc}
+    $\type(D)$             & 0 & 11 & 21 & 22 & 31 & 32 & 33 \\
+    \hline
+    $\type(\bar D)$        & 0 & 22 & 21 & 11 & 31 & 11 & 0 \\
+    $\type(\bar {\bar D})$ & 0 & 11 & 21 & 22 & 31 & 22 & 0
+  \end{tabular}
+\end{center}
 
 \begin{theorem}
   A divisor is reduced if and only if it is of type 0, 11, 21, 22, or 31.
 \end{theorem}
 \begin{proof}
-  Using Equation \ref{eq_flip_degree}, we may immediately de
+  A reduced divisor has degree 3 or less, therefore it must be of type 0, 11, 21, 22, 31, 32, or 33.
+  On examination of the above table, if $D$ is of type 32 or 33, then $\bar{\bar D}$ is of a different type.
+  Hence $D \neq \bar{\bar D}$ and $D$ is not reduced.
+  However, if $D$ is of a type other than 32 or 33,
+  then $\deg D = \deg \bar{\bar D}$ and $D \equiv \bar{\bar D}$,
+  so $D = \bar{\bar D}$ and $D$ is reduced.
 \end{proof}
-
-If $D$ is a divisor, then the type of $\bar D$ is determined by the type of $D$.
-
-
-\begin{itemize}
-  \item How to determine type of $\bar D$.
-  \item Definition of reduced divisor
-  \item Types 0, 11, 21, 22, 31 reduced
-\end{itemize}
 
 
 
 \subsection{Typical Divisors}
+
+Recent publications on $C_{3,4}$ curve divisor arithmetic focused only on so-called ``typical'' divisors.
+Authors have recognized some types of divisors as being more commonly encountered than others.
+When the curve $C$ is defined over a sufficiently large base field,
+the probability of encountering an atypical divisor is vanishingly small.
+
+In \cite{kmakdisi18}, the author defines semi-typical and typical divisors
+and in Proposition 2.12 of the same article gives a characterization of degree 3 semi-typical and typical divisors.
+We adopt the same definition here.
+\begin{definition}
+  A divisor $D$ is called \defn{semi-typical} if $I_D = \pid{f, g, h}$ where
+  \begin{enumerate}[label=(\roman*)]
+    \item $\{f, g, h\}$ are a reduced Gr\"obner basis for $I_D$;
+    \item $-\nu_{P_\infty}(f) = \deg D + 3$;
+    \item $-\nu_{P_\infty}(g) = \deg D + 4$; and
+    \item $-\nu_{P_\infty}(h) = \deg D + 5$.
+  \end{enumerate}
+\end{definition}
+Divisors of types 31, 41, 51, and 61 are semi-typical.
+There exist also semi-typical divisors of degrees 7 and greater.
+\begin{definition}
+  A divisor $D$ is called \defn{typical} if $D$ is semi-typical and $I_D = \pid{f, g}$.
+\end{definition}
+That is, while $\{f, g\}$ alone are not a Gr\"obner basis for $I_D$,
+they are still enough to generate $I_D$ if $D$ is typical.
+
+\begin{proposition}
+  Let $D$ be a type 31 divisor.
+  The minimal polynomial in $I_D$ is $f = x^2 + f_2y + f_1x + f_0$.
+  Then $D$ is typical if and only if $f_2 \neq 0$.
+\end{proposition}
+\begin{proof}
+  If $D$ is of type 31, then $I_D$ is generated by three polynomials
+  \begin{align*}
+    f &= x^2 + f_2y + f_1x + f_0 \\
+    g &= xy  + g_2y + g_1x + g_0 \\
+    h &= y^2 + h_2y + h_1x + h_0.
+  \end{align*}
+  Suppose $f_2 \neq 0$. Let
+  \[ k = \frac {(y + g_1)f - (x + f_1 - g_2)g} {f_2}. \]
+  One can verify that $k$ is monic, has leading monomial $y^2$,
+  and has no $xy$ or $x^2$ terms. Thus
+  \[ k = y^2 + k_2y + k_1x + k_0 \]
+  for some coefficients $k_0, k_1, k_2$.
+  Since $\{f,g,h\}$ is a reduced Gr\"obner basis, $h$ is the unique polynomial of this form, so $k = h$.
+  Hence $I_D = \pid{f,g,h} = \pid{f,g}$.
+\end{proof}
 
 \begin{itemize}
   \item Oyono's definition
