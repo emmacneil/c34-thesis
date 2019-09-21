@@ -346,6 +346,39 @@ they are still enough to generate $I_D$ if $D$ is typical.
 \end{itemize}
 
 \begin{theorem}
+  A divisor $D$ is semi-typical if and only if its flip $\bar D$ is semi-typical.
+\end{theorem}
+\begin{proof}
+  ($\implies$)
+  Suppose $D$ is semi-typical.
+  Let $f$ be the minimal polynomial in $I_D$.
+  Then $-\nu_{P_\infty}(f) = \deg D + 3$.
+  By Equation \ref{eq_flip_degree}, $\deg \bar D = 3$.
+  Since $\bar D$ is reduced and of degree 3, $\bar D$ is of type 31, hence semi-typical.
+  
+  ($\impliedby$)
+  Suppose $\bar D$ is semi-typical.
+  Then $\bar D$ is of type 31.
+  So, too, is $\bar{\bar D}$ of type 31, and $\bar{\bar D} \equiv D$.
+  Let $I_{\bar {\bar D}} = \pid{u,v,w}$.
+  Then $u$ is minimal in $I_{\bar{\bar D}}$,
+  $-\nu_{P_\infty}(u) = 6$, $-\nu_{P_\infty}(v) = 7$, and $-\nu_{P_\infty}(w) = 8$.
+  Now let $f$ be minimal in $I_D$.
+  By Equation \ref{eq_flip_degree}, $-\nu_{P_\infty}(f) = \deg D + 3$.
+  By \note{a lemma I haven't proven yet},
+  \[ fI_{\bar{\bar D}} = uI_D, \]
+  hence $\pid{fu, fv, fw} = \pid{fu, gu, hu}$, and $fv = gu$ and $fw = hu$.
+  Then
+  \begin{align*}
+    -\nu_{P_\infty}(fv) &= -\nu_{P_\infty}(gu) \\
+    -\nu_{P_\infty}(v) + \nu_{P_\infty}(u) &= -\nu_{P_\infty}(g) + \nu_{P_\infty}(f) \\
+    7 - 6 &= -\nu_{P_\infty}(g) - \deg D - 3\\
+    -\nu_{P_\infty}(g) &=  \deg D + 4.
+  \end{align*}
+  Likewise, $-\nu_{P_\infty}(h) =  \deg D + 5$.
+\end{proof}
+
+\begin{theorem}
   A divisor $D$ is typical if and only if its flip $\bar D$ is typical.
 \end{theorem}
 \begin{proof}
