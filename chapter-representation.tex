@@ -345,19 +345,73 @@ they are still enough to generate $I_D$ if $D$ is typical.
   \item Type *1 can typically be represented by first two polys.
 \end{itemize}
 
+\begin{theorem}
+  A divisor $D$ is typical if and only if its flip $\bar D$ is typical.
+\end{theorem}
+\begin{proof}
+  \note{TODO}
+\end{proof}
 
 
-\subsection{Geometric Interpretation}
 
-\begin{itemize}
-  \item Type 0 : nothing 
-  \item Type 11 : a single rational affine point
-  \item Type 21 : two points with distinct x-coordinates or a double point with non-vertical tangent line
-  \item Type 22 : two points with same x-coordinates or a double point with vertical tangent line
-  \item Type 31 : three distinct non-colinear points. Non-distinct : no straight line passes through the points with correct multiplicity
-  \item Type 32 : three colinear points, distinct x-coordinates. Or non-distinct points interpolated by a non-vertical line
-  \item Type 33 : three colinear points, same x-coordinates, or non-distinct points interpolated by vertical line.
-\end{itemize}
+\subsection{Geometric Interpretations}
+
+Here, we ascribe some geometric meaning to each divisor type of degree 3 or less.
+
+\subsubsection{Type 0}
+  There is only one type 0 divisor, the zero divisor, i.e. the empty sum.
+
+\subsubsection{Type 11}
+  If $D$ is of type 11, then $I_D = \pid{x - x_0, y - y_0}$, and $D = P$ where $P$ is the point $(x_0, y_0)$.
+  Since $x - x_0$ and $y - y_0$ have $K$-rational coefficients, $P$ is a $K$-rational point.
+  By the Hasse-Weil Bound \note{Source?}, there are approximately $q$ type 11 divisors if $C$ is defined over $\bb F_q$.
+
+\subsubsection{Type 21}
+  If $D$ is of type 21, then $I_D = \pid{f, g}$, where $f$ is the non-vertical line $y + f_1x + f_0$
+  and $g$ is the univariate polynomial $x^2 + g_1x + g_0$.
+  Thus $D$ is the sum of two points on the line $f$, whose $x$-coordinates are the roots of $g$.
+  
+  There are two possibilities.
+  If $g$ has two distinct roots, then $D = P + Q$ for two distinct points $P$ and $Q$.
+  If $g$ has a double root, then $D = 2P$ and $f$ is the tangent line at $P$.
+  
+  So either $D$ is the sum of two distinct points with different $x$-coordinates,
+  or $D$ is a double point $D = 2P$ and the tangent line at $P$ is non-vertical.
+
+\subsubsection{Type 22}
+  If $D$ is of type 21, then $I_D = \pid{f, g}$, where $f$ is the vertical line $x + f_0$
+  and $g$ is the univariate polynomial $y^2 + g_2y + g_0$.
+  
+  Either $D = P + Q$ is the sum of two distinct points with the same $x$-coordinate but different $y$-coordinates,
+  or $D = 2P$ is a double point and the tangent line at $P$ is vertical.
+
+\subsubsection{Type 31}
+  If $D$ is of type 31, then $I_D = \pid{f, g, h}$, where $f$ is the parabola $x^2 + f_2y + f_1x + f_0$,
+  $g$ is the hyperbola $xy + g_2y + g_1x + g_0$, and $h$ is the parabola $y^2 + h_2y + h_1x + h_0$.
+  
+  Either $D$ is the sum of three, two, or one distinct points.
+  
+  If $D = P + Q + R$ is the sum of three distinct points, then these points are non-colinear.
+  If $D = 2P + Q$ is the sum of two distinct points, then the tangent line at $P$ does not pass through $Q$.
+  If $D = 3P$ is a triple point, then the $P$ is not an inflection point.
+
+\subsubsection{Type 32}
+  If $D$ is of type 32, then $I_D = \pid{f, g}$, where $f$ is the non-vertical line $y + f_1x + f_0$
+  and $g$ is the univariate polynomial $x^3 + g_3x^2 + g_1x + g_0$.
+  Thus all points in $D$ must be colinear, falling on the line $f$.
+  
+  If $D = P + Q + R$ is the sum of three distinct points, then their $x$-coordinates are the roots of $g$.
+  If $D = 2P + Q$ is the sum of two points, then the tangent line at $P$ is $f$, which also passes through $Q$,
+  and the $x$-coordinate of $P$ is a double root of $g$.
+  If $D = 3P$ is a triple point, then $P$ is an inflection point, $f$ is the tangent line at $P$, and $g$ has a triple root,
+  the $x$-coordinate of $P$.
+
+\subsubsection{Type 33}
+  If $D$ is of type 32, then $I_D = \pid{f}$ is a principal ideal and $f$ is the vertical line $x + f_0$.
+  The points in $D$ necessarily have the same $x$-coordinate, $-f_0$.
+  If $D = P + Q + R$ is the sum of three distinct points, then these points have pairwise distinct $y$-coordinates.
+  If $D = 2P + Q$, then $P$ and $Q$ have distinct $y$-coordinates and $f$ is the tangent line at $P$, which passes also through $Q$.
+  If $D = 3P$ is a triple point, then $P$ is an inflection point and $f$ is the tangent line at $P$.
 
 
 
