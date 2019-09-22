@@ -365,7 +365,7 @@ they are still enough to generate $I_D$ if $D$ is typical.
   $-\nu_{P_\infty}(u) = 6$, $-\nu_{P_\infty}(v) = 7$, and $-\nu_{P_\infty}(w) = 8$.
   Now let $f$ be minimal in $I_D$.
   By Equation \ref{eq_flip_degree}, $-\nu_{P_\infty}(f) = \deg D + 3$.
-  By \note{a lemma I haven't proven yet},
+  By Proposition \ref{prop_aI_B_is_bI_A},
   \[ fI_{\bar{\bar D}} = uI_D, \]
   hence $\pid{fu, fv, fw} = \pid{fu, gu, hu}$, and $fv = gu$ and $fw = hu$.
   Then
@@ -465,6 +465,23 @@ Here, we ascribe some geometric meaning to each divisor type of degree 3 or less
 
 
 \subsection{Figure out how to organize this}
+
+\begin{proposition}
+  \label{prop_aI_B_is_bI_A}
+  Let $I_A$ and $I_B$ be ideals with $I_A \equiv I_B$.
+  Let $a$ and $b$ be minimal in $I_A$ and $I_B$, respectively.
+  Then $aI_B = bI_A$.
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    I_A &\equiv I_B \\
+    A &\equiv B \\
+    \bar A &= \bar B \\
+    a : I_A &= b : I_B \\
+    (a : I_A)I_AI_B &= (b : I_B)I_BI_A \\
+    aI_B &= bI_A.
+  \end{align*}
+\end{proof}
 
 \begin{lemma}
   Let $D$ be a divisor with ideal $I_D$.
