@@ -200,7 +200,7 @@ Prop 7.3 does not depend on this.}
 \end{proposition}
 \begin{proof}
   \begin{enumerate}[label=(\roman*)]
-    \item 
+    \item This is simply Corollary \ref{cor_integral_ideal_inverse} translated into the language of divisors.
     \item Immediate by part (i).
     \item
       ($\implies$)
@@ -240,11 +240,10 @@ To reduce a divisor, we may flip it twice.
   Every divisor class $[D]$ has a unique reduced representative.
 \end{theorem}
 \begin{proof}
-  Existence is easy to demonstrate.
-  Let $[D]$ be a divisor class with a representative $D$.
-  Then $\bar{\bar D}$ is a reduced representative of $[D]$.
+  If $[D]$ is a divisor class, then $\bar{\bar D}$ is a reduced divisor in the same class,
+  establishing existence.
   
-  For uniqueness, suppose $A \equiv B$ are equivalent reduced divisors.
+  For uniqueness, suppose $A$ and $B$ are equivalent reduced divisors.
   Applying Proposition \ref{prop_flip_properties}.(iii) twice,
   we have $\bar A = \bar B$ and $\bar{\bar A} = \bar{\bar B}$.
   By Definition \ref{def_reduced_divisor},
@@ -286,7 +285,7 @@ we can compute the degree of $\bar D$ for $D$ of any divisor type.
     $\deg \bar D$ & 0  & 3  & 2  & 2  & 1  & 3  & 2  & 2  & 1  & 0
   \end{tabular}
 \end{center}
-\caption{Divisor types and the degree of their flips}
+\caption{Divisor types and the degrees of their flips}
 \end{table}
 
 We can do even better.
@@ -296,13 +295,11 @@ After classifying reduced divisors, we will be able to do the same for divisors 
 
 \begin{example}
   Let $D$ be a type 11 divisor.
-  Then the minimal polynomial of $I_D$ is of the form $f = x + f_0$,
-  and $\deg \bar D = \deg \div f - \deg D = 3 - 1 = 2$.
-  So $\bar D$ is of type 21 or 22.
-  However, $f \in f : I_D = I_{\bar D}$,
-  so $\LT(f) = x \in \LT(I_{\bar D})$.
-  Now $\bar D$ cannot be of type 21, because $x \not\in \pid{y, x^2}$.
-  so $\bar D$ must be of type 22.
+  Then the minimal polynomial of $I_D$ is $f = x + f_0$ for some $f_0 \in K$.
+  By equation \ref{eq_flip_degree}, $\deg(\bar D) = 2$, so $\bar D$ is of type 21 or 22.
+  Since $f \in f : I_D = I_{\bar D}$, $\bar D$ must be of type 22 ---
+  were $\bar D$ of type 21, its reduced Gr\"obner basis would have the form $\pid{y + \ldots, x^2 + \ldots}$,
+  but such a basis cannot contain a polynomial with leading monomial $x$.
 \end{example}
 
 Applying this reasoning to each divisor type of degree 3 or less,
@@ -322,7 +319,12 @@ we can fill the table
 
 We will make use of this table to argue that all reduced divisors are of type 0, 11, 21, 22, or 31.
 First, we must show that all reduced divisors are of degree 3 or less.
-The next several lemmas build up to that claim.
+It is a well-known fact that reduced divisors on an algebraic curve are of degree $g$ or less,
+where $g$ is the genus of the curve, 3 in the $C_{3,4}$ curve case.
+This fact is a consequence of the Riemann-Roch Theorem,
+however in this thesis, I have defined reduced divisors in a non-standard way,
+and I wish not to bring Riemann-Roch theory into this thesis.
+The next several lemmas build up to that proving the claiming using more elementary methods and the theory of Gr\"obner bases.
 
 \begin{lemma}
   Let $D$ be a divisor with ideal $I_D$.
@@ -376,6 +378,7 @@ This polynomial $f$ is not necessarily unique.
 \end{proof}
 
 \begin{theorem}
+  \label{thm_min_poly_degree}
   Let $D$ be a divisor with ideal $I_D$.
   Let $f$ be minimal in $I_D$. Then
   \[ -\nu_{P_\infty}(f) - \deg D \leq 3. \]
@@ -422,10 +425,7 @@ This polynomial $f$ is not necessarily unique.
   Every reduced divisor on $C$ has degree at most 3.
 \end{theorem}
 \begin{proof}
-  By the previous theorem, for any divisor $D$, $\bar D$ has degree at most 3, since
-  \[ \deg \bar D = -\nu_{P_\infty}(f) - \deg D \leq 3. \]
-  If $D$ is reduced, then $D$ is the flip of $\bar D$.
-  Therefore $D$ has degree at most 3.
+  By Theorem \ref{thm_min_poly_degree} and Equation \ref{eq_flip_degree}.
 \end{proof}
 
 \begin{theorem}
@@ -467,9 +467,9 @@ Authors have recognized some types of divisors as being more commonly encountere
 When the curve $C$ is defined over a sufficiently large base field,
 the probability of encountering an atypical divisor is vanishingly small.
 
-In \cite{kmakdisi18}, the author defines semi-typical and typical divisors
-and in Proposition 2.12 of the same article gives a characterization of degree 3 semi-typical and typical divisors.
-We adopt the same definition here.
+In \cite{kmakdisi18}, Khuri-Makdisi defines semi-typical and typical divisors of arbitrary curves
+and in Proposition 2.12 of the same article gives a characterization of degree 3 semi-typical and typical divisors on $C_{3,4}$ curves.
+We adopt the same definition here, as it applies to the $C_{3,4}$ case.
 \begin{definition}
   \label{def_semitypical_divisor}
   A divisor $D$ is called \defn{semi-typical} if $I_D = \pid{f, g, h}$ where
