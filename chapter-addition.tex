@@ -7,38 +7,64 @@
 \section{Addition}
 \label{chap_addition}
 
-In this section, we see how to add two divisors $D$ and $D'$ on a curve $C$.
+The addition algorithm presented in this chapter is based on the algorithm presented in \cite{salem07},
+but extended to operate on divisors not considered \cite{salem07}.
+In particular, the authors in \cite{salem07} only considered adding disjoint typical degree 3 divisors,
+and their algorithm would only return a meaningful value when the sum of the divisors was also typical ---
+otherwise it would return an error code.
+They also assumed the $C$ is defined over a large finite field by an equation of the short form \ref{eq_c34_short}.
+The modification to the algorithm in this chapter will operate on typical or atypical divisors of degree 3 or less
+and non-disjoint divisors,
+and it will return a correct result (up to equivalence in the divisor class group)
+even when the sum of the divisors is atypical.
+It also works for the more general curve equation \ref{eq_c34}.
+
+In \cite{arita05-2}, Arita's algorithm also works in this more general setting.
+As we are adopting Arita's classification of divisors into types,
+this chapter is in a sense a marriage of Khuri-Makdisi/Abu Salem's and Arita's algorithms.
+Khuri-Makdisi and Abu Salem's algorithm was a significant speed-up over Arita's in the typical setting that they considered.
+The generalization in this chapter maintains that speed improvement.
+A later chapter \note{(which?)} will show a speed-up over Khuri-Makdisi/Abu Salem as well.
+
+We wish to add two divisors $D$ and $D'$ and receive a divisor $D'' \equiv D + D'$.
 We make the following assumptions on $D$ and $D'$:
 \begin{enumerate}[label=(\roman*)]
   \item $D$ and $D'$ are reduced;
   \item $D \neq D'$;
   \item $\deg D \geq \deg D'$.
 \end{enumerate}
-When $D = D'$, we should be using our doubling algorithm instead, \note{described in a later section}.
-The third assumption simplifies the discussion below, but is also faster than the alternative.
-The algorithms boil down to computing the reduced row echelon form of a matrix, the number of rows of which is equal to the degree of $D'$.
-Taking $D'$ to be the divisor of lesser degree reduces the number of rows of the matrix and greatly reduces the amount of work in row-reducing it.
+When $D$ or $D'$ is unreduced, they can be reduced using algorithms presented in Chapter \ref{chap_reduction}.
+When $D = D'$, their sum is $2D$, which may be computed using algorithms in Chapter \ref{chap_doubling}.
+As for the third assumption,
+the addition algorithm described in this chapter boils down to constructing and row-reducing a matrix.
+The dimensions of this matrix depends on the degree of $D'$.
+By assuming $D'$ is of lesser degree, we may work with a smaller matrix, resulting in faster computations.
+Should $D'$ be of greater degree than $D$, we may swap them before adding.
 
 The algorithm for addition is based on a few key observations.
-The most important is that $D + D' = \lcm(D, D') + \gcd(D, D')$.
-Typically, $D$ and $D'$ are disjoint, so that $D + D' = \lcm(D, D')$ and $\gcd(D, D') = 0$.
-As we shall see below, computing the LCM and GCD of $D$ and $D'$ can be achieved by computing the kernel and image of a particular matrix.
-Most of the work involved in computing these is in computing the reduced row echelon form of that matrix.
-By computing the LCM, we have already done most of the work required to compute the GCD.
-Should $D$ and $D'$ be non-disjoint and their GCD non-trivial, it will not be difficult to go the extra step and extract the GCD.
+The first is that, after recognizing that adding divisors amounts to multiplying ring ideals,
+this ring-theoretic problem can be reduced to a linear algebra problem by representing our ideals by vector spaces.
+The authors in \cite{salem07} and \cite{arita05-2} give two different ways of translating the problem into linear algebra.
+The method of \cite{salem07} is described below, with some generalizations.
 
-Now we must describe how to convert our ring-theoretic problem into one of linear algebra.
-Let $L = \lcm(D, D')$ and $G = \gcd(D, D')$.
-Our goal is to compute reduced Gr\"obner bases for the ideals $I_L$ and $I_G$.
-Observe first that for any divisor $A$, the ideal $I_A$ has structure as a $K$-vector space.
-This space is infinite-dimensional.
-However, we are not interested in its infinitely many basis vectors.
-A vector space basis of $I_A$ also generates $I_A$ as an ideal,
-and a finite subset of some basis forms a reduced Gr\"obner basis.
-The generators in the reduced Gr\"obner basis are bounded by some monomial $m$
-in the sense that $\LM(g_i) \leq m$ for every generator $g_i$.
-The strategy is to view $I_D$ and $I_{D'}$ as vector spaces,
-then restrict our attention to finite subspaces of these.
+The next observation is that for any divisors $D$ and $D'$,
+  \[D + D' = \lcm(D, D') + \gcd(D, D'),\]
+just as for ideals $I$ and $J$ in a Dedekind domain, $IJ = (I \cap J)(I + J)$.
+Typically, $D$ and $D'$ are disjoint, in which case $\gcd(D, D') = 0$ and $D + D' = \lcm(D, D')$.
+This is analogous to the case for ideals in a commutative ring with identity,
+where when $I$ and $J$ are coprime, $IJ = I \cap J$.
+
+In \cite{salem07}, the authors compute the $\lcm$ of two divisors by computing the kernel of a matrix.
+The third observation is that the $\gcd$ may be computed from the image of the same matrix.
+By computing the $\lcm$, we have already done most of the work required to compute the $\gcd$.
+This observation is what allows us to extend the algorithm in \cite{salem07} to the non-disjoint case.
+
+\subsection{Translating to Linear Algebra}
+
+For any divisor $A$, the ideal $I_A$ has structure as an infinite-dimensional $K$-vector space.
+Any $K$-basis for $I_A$ as a $K$-vector space also generates $I_A$ as an ideal.
+However, the infinitely many basis vectors for $I_A$ is more information than we need.
+We may restrict to a finite subspace without losing any information.
 
 Define the spaces
 \begin{align*}
@@ -49,18 +75,13 @@ and
 \begin{align*}
   W_D^m &= \{ f \in I_D ~:~ \LM(f) \leq m \}.
 \end{align*}
-These spaces are simply Riemann-Roch spaces under a different notation.
-\begin{proposition}
-  The space $W_D^m$ is the Riemann-Roch space $\cal L (A)$ where
-  \[A = - \sum_{P \in \supp(D)} \ord_P(D)P - v_{P_\infty}(m).\]
-  Also, $W^m = W_0^m$.
-\end{proposition}
-\begin{proof}
-  \note{TODO}
-\end{proof}
+These spaces are simply Riemann-Roch spaces under a different notation.\footnote
+{Namely, $W_D^{x^iy^j} = \cal L(-D + (3i+4j)P_\infty)$.}
+It is a well-known fact in algebraic geometry that Riemann-Roch spaces are finite-dimensional.
+We give the dimensions explicitly:
 
-\begin{proposition}
-  \label{prop_dim_W}
+\begin{theorem}
+  \label{thm_dim_W}
   For a divisor $D$ and monomial $m$, $W^m$ and $W_D^m$ are finite-dimensional.
   In particular,
   \begin{align*}
@@ -70,13 +91,51 @@ These spaces are simply Riemann-Roch spaces under a different notation.
                   3 & m = y \\
                   3i + 4j - 2 & m = x^iy^j > y
                 \end{cases}. \\
-    \dim W_D^m &= \dim W^m - \# \{ \mu \in \cal M ~:~ \mu \leq m, ~\mu \not\in \LT(I_D) \}.
+    \dim W_D^m &= \# \{ \mu \in \cal M ~:~ \mu \leq m, ~\mu \in \LT(I_D) \}.
   \end{align*}
   For sufficiently large $m$,
   \[ \dim W_D^m = \dim W^m - \deg D.\]
-\end{proposition}
+\end{theorem}
 \begin{proof}
-  \note{TODO}
+  The dimension of $W^m$ is the number of monomials less than or equal to $m$,
+  though modulo the curve equation $C$, $y^3$ can be replaced by $x^4$ plus smaller monomials.
+  For readability, define by $f(i,j) = \dim W^{x^iy^j}$.
+  Recalling the monomial order (eliminating powers of $y$ greater than 2),
+    \[ 1 < x < y < x^2 < xy < y^2 < x^3 < x^2y < xy^2 < x^4 < x^3y < x^2y^2 < \dots, \]
+  it is clear that
+  \begin{align*}
+    f(0,0) &= 1 && f(2,0) &= 4 \\
+    f(1,0) &= 2 && f(1,1) &= 5 \\
+    f(0,1) &= 3 && f(0,2) &= 6,
+  \end{align*}
+  that for $i \geq 0$, $f(2 + i,0) = 3i + f(2, 0)$, and that for $0 \leq j \leq 2$, $f(i,j) = j + f(i+j,0)$.
+  By the curve equation, for $k \geq 0$, $f(i, 3k + j) = f(4k + i, j)$.
+  Putting these all together.
+  \begin{align*}
+    f(i,j)
+      &= f(i, 3k + \ell) & j = 3k + \ell, 0 \leq \ell \leq 2 \\
+      &= f(4k + i, \ell) \\
+      &= \ell + f(4k + i + \ell, 0) \\
+      &= \ell + f(2 + 4k + i + \ell - 2, 0) \\
+      &= \ell + 3(4k + i + \ell - 2) + f(2, 0) \\
+      &= 12k + 3i + 4\ell - 2 \\
+      &= 3i + 4j - 2.
+  \end{align*}
+  
+  For the second claim, we show that there is a basis for $W_D^m$ with one vector per monomial in $\LT(I_D)$.
+  Certainly if $\mu$ is a monomial in $\LT(I_D)$ if and only if there is a polynomial $f \in I_D$ with $\LM(f) = \mu$.
+  If $f, g \in W_D^m$ are distinct but have the same leading monomial,
+  we can subtract a multiple of one from the other to get a polynomial $h$ with a smaller leading monomial.
+  An inductive argument then shows that $f$ is a linear combination of $g$ and some smaller polynomials.
+  
+  For the final claim, the set $\{ \mu \in \cal M ~:~ \mu \not\in \LT(I_D) \}$ has a maximum $m'$.
+  Hence for $m \geq m'$,
+  \begin{align*}
+    \dim W_D^m
+      &= \# \{ \mu \in \cal M ~:~ \mu \leq m, ~\mu \in \LT(I_D) \} \\
+      &= \# \{ \mu \in \cal M ~:~ \mu \leq m \} - \# \{ \mu \in \cal M ~:~ \mu \leq m, ~\mu \not\in \LT(I_D) \} \\
+      &= \dim W^m - \deg D.
+  \end{align*}
 \end{proof}
 
 \begin{proposition}

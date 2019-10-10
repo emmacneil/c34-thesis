@@ -7,10 +7,21 @@
 \section{Representation}
 \label{chap_representation}
 
-In this chapter, we discuss representation of divisors.
-A divisor is represented by an ideal, in turn represented by a Gr\"obner basis,
-in turn represented by lists or arrays of coefficients.
-These bases come in many forms.
+In Chapter \ref{chap_divisors}, we defined the divisor class group of a curve,
+and in Chapter \ref{chap_ideals}, we showed that this group is isomorphic to an ideal class group.
+This forms the foundation of our representation of divisors.
+We will be representing an effective divisor by its associated integral ideal,
+or more specifically, by the unique reduced Gr\"obner basis of that ideal.
+These bases come in many forms, but if we place a bound on the degree of the divisors under consideration,
+there forms are only finite in number.
+
+In this chapter, we will tabulate all the different types of divisors of degree 6 or less.
+When adding divisors in Chapter \ref{chap_addition},
+we will always assume our summands are of degree 3 or less,
+thus it is unnecessary to sufficient to tabulate divisors of degree 7 and higher.
+We will see which of these types are reduced (not equivalent to a divisor of lesser degree)
+and which are typical (the statistically most likely to be encountered).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -21,13 +32,14 @@ These bases come in many forms.
 
 \subsection{Divisor Types}
 
-In \cite{arita05-2}, Arita classifies divisors into 19 types
+It will be shown later in this cha
+In \cite{arita05-2}, Arita classifies divisors of degree 6 and less into 19 types
 based on the forms of the reduced Gr\"obner bases of their ideals.
 This classification is reproduced in the table below,
 along with a 20th type representing the divisor 0.
 Divisors are listed by degree (D), then by type (T).
 
-\begin{table}[hb]
+\begin{table}[hb!]
 \label{tab_divisor_types}
 \begin{center}
 \begin{tabular}{l|l|l||l|l|l}
@@ -149,29 +161,24 @@ divisor equivalent to $-D$.
 Once we have defined what a reduced divisor is, we can show that, if $f$ is chosen to be minimal in $I_D$,
 then $\bar D$ is reduced.
 
-\note{Add geometric interpretation of flipping, with pictures.}
+Geometrically, to flip a divisor $D$ is to find the polynomial $f$ of least degree interpolating the points of $D$,
+then taking the zeroes of $f$ along $C$ that are not in $D$, properly accounting for multiplicity.
+\begin{example}
+  See Figure \ref{fig_divisor_flip}.
+  The three black points form a degree 3, type 31 divisor. 
+  The minimal interpolating polynomial $f$ interpolating these points is a parabola,
+  $f = x^2 + f_2y + f_1x + f_0$.
+  This parabola intersects $C$ at six points -- the points of $D$ plus three other points.
+  The flip $\bar D$ consists of the three white points not in $D$.
+\end{example}
 
-We will make frequent use of the following proposition in this chapter.
-\note{This proposition depends on 7.3 below, so some reorganization is needed.
-Prop 7.3 does not depend on this.}
-
-\begin{proposition}
-  \label{prop_aI_B_is_bI_A}
-  Let $I_A$ and $I_B$ be ideals with $I_A \equiv I_B$.
-  Let $a$ and $b$ be minimal in $I_A$ and $I_B$, respectively.
-  Then $aI_B = bI_A$.
-\end{proposition}
-\begin{proof}
-  \begin{align*}
-    I_A &\equiv I_B \\
-    A &\equiv B \\
-    \bar A &= \bar B \\
-    a : I_A &= b : I_B \\
-    (a : I_A)I_AI_B &= (b : I_B)I_BI_A \\
-    aI_B &= bI_A.
-  \end{align*}
-\end{proof}
-
+\begin{figure}[ht!]
+  \caption{A degree 3 divisor and its flip. \note{(Still fighting with {\tt gnuplot} to make this pretty.)}}
+  \label{fig_divisor_flip}
+  \begin{center}
+    \includegraphics{gnuplot/flip.pdf}
+  \end{center}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%                      %%%%%
@@ -232,9 +239,11 @@ Prop 7.3 does not depend on this.}
   \end{enumerate}
 \end{proof}
 
-This proposition shows that if we flip a divisor $D$, we get a \emph{reduced} divisor equivalent to $-D$.
-By flipping $D$ twice, we obtain a \emph{reduced} divisor equivalent to $D$ itself.
-To reduce a divisor, we may flip it twice.
+This proposition is central to the divisor class arithmetic described in this thesis
+and the unique representation of divisor classes.
+Given any divisor class $[D]$, we can find a reduced member of that class by
+flipping $D$ twice, computing $\bar{\bar D}$. As the next theorem shows,
+this reduced representative is \emph{unique}.
 
 \begin{theorem}
   Every divisor class $[D]$ has a unique reduced representative.
@@ -248,6 +257,25 @@ To reduce a divisor, we may flip it twice.
   we have $\bar A = \bar B$ and $\bar{\bar A} = \bar{\bar B}$.
   By Definition \ref{def_reduced_divisor},
     \[ A = \bar{\bar A} = \bar{\bar B} = B. \]
+\end{proof}
+
+Another consequence of Proposition \ref{prop_flip_properties} is the following,
+which we will make use of many times later in this chapter.
+\begin{proposition}
+  \label{prop_aI_B_is_bI_A}
+  Let $I_A$ and $I_B$ be ideals with $I_A \equiv I_B$.
+  Let $a$ and $b$ be minimal in $I_A$ and $I_B$, respectively.
+  Then $aI_B = bI_A$.
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    I_A &\equiv I_B \\
+    A &\equiv B \\
+    \bar A &= \bar B \\
+    a : I_A &= b : I_B \\
+    (a : I_A)I_AI_B &= (b : I_B)I_BI_A \\
+    aI_B &= bI_A.
+  \end{align*}
 \end{proof}
 
 If $D$ is a divisor, then the degree and type of $\bar D$ is determined by the type of $D$.
@@ -270,7 +298,7 @@ which is determined in turn by the type of $D$.
 
 By applying Equation \ref{eq_flip_degree},
 we can compute the degree of $\bar D$ for $D$ of any divisor type.
-\begin{table}[hb]
+\begin{table}[hb!]
 \label{tab_flip_degree}
 \begin{center}
   \begin{tabular}{r|cccccccccc}
@@ -324,7 +352,9 @@ where $g$ is the genus of the curve, 3 in the $C_{3,4}$ curve case.
 This fact is a consequence of the Riemann-Roch Theorem,
 however in this thesis, I have defined reduced divisors in a non-standard way,
 and I wish not to bring Riemann-Roch theory into this thesis.
-The next several lemmas build up to that proving the claiming using more elementary methods and the theory of Gr\"obner bases.
+The next several lemmas build up to that proving the claiming using more elementary methods
+and the theory of Gr\"obner bases.
+\note{If the lemmas distract from the flow of the thesis, move this to an appendix?}
 
 \begin{lemma}
   Let $D$ be a divisor with ideal $I_D$.
@@ -358,10 +388,14 @@ This polynomial $f$ is not necessarily unique.
 \begin{lemma}
   Let $D$ be a divisor with ideal $I_D$.
   Let $I_D = \pid{f, g, h}$ as in the previous lemma.
-  Then $\pid{f, g, h}$ is a (not necessarily reduced) Gr\"obner basis for $I_D$.
+  Then $\pid{f, g, h}$ is a Gr\"obner basis for $I_D$.
 \end{lemma}
 \begin{proof}
-  \note{TODO???}
+  We must show that for any $r \in I_D$, $\LT(r) \in \LT(I_D)$.
+  
+  Let $r \in I_D$. Then $\LT(r) = x^my^n$ for some $0 \leq n \leq 2$.
+  However, by the minimality criterion by which $f$, $g$, and $h$ were chosen,
+  one of $\LT(f)$, $\LT(g)$, or $\LT(h)$ divides $\LT(r)$, hence $\LT(r) \in \LT(I_D)$.
 \end{proof}
 
 \begin{lemma}
@@ -370,11 +404,16 @@ This polynomial $f$ is not necessarily unique.
   Then $a + b + c = \deg D$.
 \end{lemma}
 \begin{proof}
-  We have that
-  \[ \deg D = \dim \frac {K[C]}{I_D} = \dim \frac {K[C]}{\pid{f,g,h}}
-%            = \dim \frac {K[C]}{\pid{x^c + \ldots, x^by + \ldots, x^ay^2 + \ldots}}
-            = \dim \frac {K[C]}{\pid{x^c, x^by, x^ay^2}}. \]
-  \note{And this is equal to $a + b + c$.}
+  \begin{align*}
+  \deg D &= \dim \frac {K[C]}{I_D} = \dim \frac {K[C]}{\pid{f,g,h}}
+          = \dim \frac {K[C]}{\pid{x^c, x^by, x^ay^2}} \\
+         &= a + b + c.
+  \end{align*}
+  \note{This equality comes from the fact that the number of solutions to $f = g = h = C$,
+        and therefore the number of points in $D$,
+        is determined by the form of the Gr\"obner basis, i.e. its leading monomials.
+        Buchberger's books might be a source for this, and this fact should go in
+        the chapter on Gr\"obner bases.}
 \end{proof}
 
 \begin{theorem}
@@ -462,14 +501,18 @@ This polynomial $f$ is not necessarily unique.
 
 \subsection{Typical Divisors}
 
-Recent publications on $C_{3,4}$ curve divisor arithmetic focused only on so-called ``typical'' divisors.
-Authors have recognized some types of divisors as being more commonly encountered than others.
-When the curve $C$ is defined over a sufficiently large base field,
-the probability of encountering an atypical divisor is vanishingly small.
+While some publications on $C_{3,4}$ curve divisor arithmetic have described algorithms for adding general divisors
+\cite{arita05-2, harasawa00},
+the most efficient algorithms have been from those publications that have focused only on ``typical'' divisors
+\cite{salem07, kmakdisi18, flon08}.
+These divisors are typical in the sense that, as $q \to \infty$,
+over a finite field of order $q$,
+the ratio of typical to atypical divisors is approximately $\frac {q - 1} q$.
 
 In \cite{kmakdisi18}, Khuri-Makdisi defines semi-typical and typical divisors of arbitrary curves
-and in Proposition 2.12 of the same article gives a characterization of degree 3 semi-typical and typical divisors on $C_{3,4}$ curves.
-We adopt the same definition here, as it applies to the $C_{3,4}$ case.
+and in Proposition 2.12 of the same article gives a characterization of degree 3
+semi-typical and typical divisors on $C_{3,4}$ curves.
+We adopt the same definitions here, as they apply to the $C_{3,4}$ case.
 \begin{definition}
   \label{def_semitypical_divisor}
   A divisor $D$ is called \defn{semi-typical} if $I_D = \pid{f, g, h}$ where
@@ -489,7 +532,26 @@ There exist also semi-typical divisors of degrees 7 and greater.
 That is, while $\{f, g\}$ alone are not a Gr\"obner basis for $I_D$,
 they are still enough to generate $I_D$ if $D$ is typical.
 
-\begin{theorem}
+This definition of typicality differs from other authors' definitions.
+Of note is this definition due to Flon et al.
+\begin{definition}[Flon et al \cite{flon08}]
+  \label{def_typical_divisor_flon}
+  A degree 3 divisor is \defn{typical} if it is the sum of three non-colinear points
+  with pairwise distinct $x$-coordinates.
+\end{definition}
+This definition more restrictive than Definition \ref{def_typical_divisor}.
+This definition does not apply to divisors of degrees other than 3.
+In the degree 3 case, Definition \ref{def_typical_divisor} allows for points to appear with multiplicity
+greater than one, as long as the interpolation polynomial through the three points is not a line.
+Double and triple points are barred by Definition \ref{def_typical_divisor_flon}'s requirement that
+points have pairwise distinct $x$-coordinates.
+Going forward, we adopt Definition \ref{def_typical_divisor}.
+
+A reduced divisor may be of type 0, 11, 21, 22, or 31,
+but a reduced \emph{typical} divisor may only be of type 31.
+However, not all type 31 divisors are typical (though they are all semi-typical).
+Here we give a characterization of typical type 31 divisors.
+\begin{theorem}[Khuri-Makdisi \cite{kmakdisi18}]
   \label{thm_typical_type_31_divisors}
   Let $D$ be a type 31 divisor.
   The minimal polynomial in $I_D$ is $f = x^2 + f_2y + f_1x + f_0$.
@@ -505,14 +567,14 @@ they are still enough to generate $I_D$ if $D$ is typical.
     h &= y^2 + h_2y + h_1x + h_0.
   \end{align*}
   The polynomial $f$ factors into $(x - x_0)(x - x_1)$ for some $x_0, x_1 \in \bar K$.
-  The divisor $D$ is the sum of three points, and by the pigeonhole principle,
+  The divisor $D = P + Q + R$ is the sum of three points, and by the pigeonhole principle,
   at least two of these points fall on the same vertical line, $x - x_0$ or $x - x_1$.
-  Without loss of generality, suppose two points fall on $x - x_0$.
+  Without loss of generality, suppose $P$ and $Q$ fall on $x - x_0$.
   
-  Geometrically, $g$ is a hyperbola through these three points.
-  Given that two points are on the same vertical line,
-  \note{(This argument needs to be adjusted for when this is a double point)}
-  this hyperbola is degenerate and factors into a product of two lines, $g = (x - x_0)(y - y_0)$.
+  Geometrically, $g$ is a hyperbola through $P$, $Q$ and $R$.
+  Either $g$ passes through two distinct points on the same vertical line,
+  or if $P = Q$, $g$ is tangent to $C$ at $P$ and the tangent line to $C$ at $P$ is $x - x_0$.
+  In either case, $g$ is a degenerate hyperbola and factors into a product of two lines, $g = (x - x_0)(y - y_0)$.
   
   Now suppose there are polynomials $r, s$ such that $h = rf + sg$.
   \begin{align*}
@@ -540,16 +602,11 @@ they are still enough to generate $I_D$ if $D$ is typical.
   \[ k = y^2 + k_2y + k_1x + k_0 \]
   for some coefficients $k_0, k_1, k_2$.
   Since $\{f,g,h\}$ is a reduced Gr\"obner basis, $h$ is the unique polynomial of this form, so $k = h$.
+  As $k$ was generated by $f$ and $h$, so too must be $h$.
   Hence $I_D = \pid{f,g,h} = \pid{f,g}$.
 \end{proof}
 
-\begin{itemize}
-  \item Oyono's definition
-  \item Kamal's definition
-  \item Comparison to Arita
-  \item Type *1 can typically be represented by first two polys.
-\end{itemize}
-
+In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preserved by the flip operation.
 \begin{theorem}
   A divisor $D$ is semi-typical if and only if its flip $\bar D$ is semi-typical.
 \end{theorem}
@@ -595,7 +652,7 @@ they are still enough to generate $I_D$ if $D$ is typical.
   \begin{align*}
     uI_D &= fI_{\bar{\bar D}} \\
     \pid{fu, gu, hu} &= \pid{fu, fv, fw} \\
-    fw &= hu & \text{\note{may need to justify this}} \\
+    fw &= hu \\
        &= (rf + sg)u \\
        &= rfu + sfv \\
      w &= ru + sv,
@@ -608,7 +665,7 @@ they are still enough to generate $I_D$ if $D$ is typical.
   Since $\bar{\bar D}$ is typical, $w \in \pid{u, v}$,
   so there are polynomials $r$ and $s$ such that $w = ru + sv$. Then, as above,
   \begin{align*}
-    hu &= fw & \text{\note{may need to justify this}} \\
+    hu &= fw \\
        &= f(ru + sv) \\
        &= rfu + sgu \\
      h &= rf + sg.
@@ -649,16 +706,35 @@ they are still enough to generate $I_D$ if $D$ is typical.
 \subsection{Geometric Interpretations}
 
 Here, we ascribe some geometric meaning to each divisor type of degree 3 or less.
-\note{Keep this section short.}
 
-\subsubsection{Type 0}
-  There is only one type 0 divisor, the zero divisor, i.e. the empty sum.
+%\subsubsection{Type 0}
+%  There is only one type 0 divisor, the zero divisor, i.e. the empty sum.
 
 \subsubsection{Type 11}
   If $D$ is of type 11, then $I_D = \pid{x - x_0, y - y_0}$, and $D = P$ where $P$ is the point $(x_0, y_0)$.
   Since $x - x_0$ and $y - y_0$ have $K$-rational coefficients, $P$ is a $K$-rational point.
-  By the Hasse-Weil Bound \note{Source?}, there are approximately $q$ type 11 divisors if $C$ is defined over $\bb F_q$.
+  If $C$ is defined over a finite field $\bb F_q$,
+  by the Hasse-Weil Bound, there are approximately $q$ type 11 divisors on $C$.
 
+\subsubsection{Type 21}
+  Either $D = P + Q$ for distinct points $P \neq Q$, or $D = 2P$.
+  
+  The former case $D = P + Q$ occurs if and only if $f = x^2 + f_1x + f_0$ has two distinct roots, $x_0$ and $x_1$.
+  Then $P = (x_0, y_0)$ and $Q = (x_1, y_1)$, where $y_i = -g_1x_i - g_0$ are obtained by solving $g(x_i, y_i) = 0$.
+  
+  The latter case $D = 2P$ occurs if and only if $f$ has a double root.
+  In this case, $g$ is the tangent line to $C$ at $P$, necessarily non-vertical.
+
+\subsubsection{Type 22}
+  Either $D = P + Q$ for distinct points $P \neq Q$, or $D = 2P$.
+
+  The former case $D = P + Q$ occurs if and only if $g = y^2 + g_2y + g_0$ has two distinct roots, $y_0$ and $y_1$.
+  Then $P = (-f_0, y_0)$ and $Q = (-f_0, y_1)$.
+
+  The latter case $D = 2P$ occurs if and only if $g$ has a double root.
+  In this case, $f$ is the vertical tangent line to $C$ at $P$.
+
+\begin{comment}
 \subsubsection{Type 21}
   If $D$ is of type 21, then $I_D = \pid{f, g}$, where $f$ is the non-vertical line $y + f_1x + f_0$
   and $g$ is the univariate polynomial $x^2 + g_1x + g_0$.
@@ -670,17 +746,21 @@ Here, we ascribe some geometric meaning to each divisor type of degree 3 or less
   
   So either $D$ is the sum of two distinct points with different $x$-coordinates,
   or $D$ is a double point $D = 2P$ and the tangent line at $P$ is non-vertical.
-
+\end{comment}
+\begin{comment}
 \subsubsection{Type 22}
   If $D$ is of type 21, then $I_D = \pid{f, g}$, where $f$ is the vertical line $x + f_0$
   and $g$ is the univariate polynomial $y^2 + g_2y + g_0$.
   
   Either $D = P + Q$ is the sum of two distinct points with the same $x$-coordinate but different $y$-coordinates,
   or $D = 2P$ is a double point and the tangent line at $P$ is vertical.
+\end{comment}
 
 \subsubsection{Type 31}
-  If $D$ is of type 31, then $I_D = \pid{f, g, h}$, where $f$ is the parabola $x^2 + f_2y + f_1x + f_0$,
-  $g$ is the hyperbola $xy + g_2y + g_1x + g_0$, and $h$ is the parabola $y^2 + h_2y + h_1x + h_0$.
+  If $D$ is of type 31, then $I_D = \pid{f, g, h}$,
+  where $f$ is the vertically-opening parabola $x^2 + f_2y + f_1x + f_0$,
+  $g$ is the hyperbola $xy + g_2y + g_1x + g_0$,
+  and $h$ is the horizontally-opening parabola $y^2 + h_2y + h_1x + h_0$.
   
   Either $D$ is the sum of three, two, or one distinct points.
   
@@ -708,15 +788,3 @@ Here, we ascribe some geometric meaning to each divisor type of degree 3 or less
 
 
 
-\subsection{Type 31 Divisors}
-
-\note{
-In the course of deriving explicit formulae,
-we occasionally make use of identities or dependencies between the coefficients of a type 31 divisor,
-or other properties of type 31 divisors.
-This section will record these identities.
-}
-
-\subsection{Type 61 Divisors}
-
-\note{Ditto}
