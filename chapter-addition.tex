@@ -146,12 +146,20 @@ We give the dimensions explicitly:
     \[ W_G^m = W_D^m + W_{D'}^m. \]
 \end{proposition}
 \begin{proof}
-  \note{TODO}
+  \begin{align*}
+    W_L^m &= W^m \cap (I_L)                 & W_G^m &= W^m \cap I_G \\
+          &= W^m \cap (I_D \cap I_{D'})            &&= W^m \cap (I_D + I_{D'}) \\
+          &= W^m \cap (W_D^m \cap W_{D'}^m)        &&= W^m \cap (W_D^m + W_{D'}^m) \\
+          &= W_D^m \cap W_{D'}^m                   &&= W_D^m + W_{D'}^m.
+  \end{align*}
 \end{proof}
 
-The intersection and sum of $W_D^m$ and $W_{D'}^m$ arise as the kernel and image of the matrix which we will now describe.
-We wish to take the quotient of $W_D^m$ by $W_{D'}^m$, but we must first inject $W_D^m$ into a space containing both it and $W_{D'}^m$.
-Let $M$ be the composite map
+To compute $L$ \note{(Still need to choose a sufficiently large $m$)}, we take the intersection of the spaces $W_D^m$ and $W_{D'}^m$.
+That is, we wish to find all polynomials in both $W_D^m$ and $W_{D'}^m$.
+Roughly speaking, this is the same as computing the kernel of the quotient map $W_D^m \to W_D^m/W_{D'}^m$.
+An element in $W_D^m$ vanishes under this map if and only if it is also in $W_{D'}^m$.
+More accurately speaking, we must first inject $W_D^m$ and $W_{D'}^m$ into a common space for this quotient to be properly defined.
+Let $M$ be the matrix of the composite linear transformation
 \begin{center}
 \begin{tikzcd}
   W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} & W^m \arrow[two heads]{r}{\pi} & \frac {W^m} {W_{D'}^m}
