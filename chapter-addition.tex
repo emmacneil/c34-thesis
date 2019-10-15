@@ -107,12 +107,13 @@ We give the dimensions explicitly:
   For sufficiently large $m$,
   \[ \dim W_D^m = \dim W^m - \deg D.\]
 \end{theorem}
+\begin{remark}
 In theory, ``sufficiently large'' means $m \geq m'$,
 where $m'$ is the maximum of the set $\{ \mu \in \cal M ~:~ \mu \not\in \LT(I_D) \}$,
-as shown in the proof to follow.
-In practice, if $\deg(D + D') = d$, we will choose $m$ to be
-the largest monomial found among all generators of ideals of divisors of degree $d$.
-\note{Can this be worded better?}
+as in the proof to follow.
+In practice, when computing $D + D$', if $\deg(D + D') = d$,
+we will choose $m$ to be the largest monomial found among all reduced Gr\"obner bases of divisors of degree $d$.
+\end{remark}
 \begin{proof}
   The dimension of $W^m$ is the number of monomials less than or equal to $m$,
   though modulo the curve equation $C$, $y^3$ can be replaced by $x^4$ plus smaller monomials.
@@ -165,18 +166,25 @@ the largest monomial found among all generators of ideals of divisors of degree 
 \begin{proof}
   Considering $I_{(-)}$ as an infinite-dimensional vector space,
   \begin{align*}
-    W_L^m &= W^m \cap (I_L)                 & W_G^m &= W^m \cap I_G \\
+    W_L^m &= W^m \cap  I_L                  & W_G^m &= W^m \cap I_G \\
           &= W^m \cap (I_D \cap I_{D'})            &&= W^m \cap (I_D + I_{D'}) \\
           &= W^m \cap (W_D^m \cap W_{D'}^m)        &&= W^m \cap (W_D^m + W_{D'}^m) \\
           &= W_D^m \cap W_{D'}^m                   &&= W_D^m + W_{D'}^m.
   \end{align*}
 \end{proof}
 
-To compute $L$ \note{(Still need to choose a sufficiently large $m$)}, we take the intersection of the spaces $W_D^m$ and $W_{D'}^m$.
+To compute $L$, we first choose a sufficiently large monomial $m$ to bound our vector spaces.
+We choose $m$ to be large enough to represent any generator of $I_L$, whatever the form of $I_L$ may turn out to be.
+If $d = \deg(D + D')$, $L$ will have degree at most $d$.
+We look at all forms of ideals for divisors of degree $d$ in Table \ref{tab_divisor_types},
+and pick $m$ to be the largest monomial found among these.
+For example, if $d = 2$, then $m = y^2$. If $d = 6$, then $m = x^4$.
+
+After choosing $m$, we next compute $L$ by taking the intersection of the spaces $W_D^m$ and $W_{D'}^m$.
 That is, we wish to find all polynomials in both $W_D^m$ and $W_{D'}^m$.
 Roughly speaking, this is the same as computing the kernel of the quotient map $W_D^m \to W_D^m/W_{D'}^m$.
 An element in $W_D^m$ vanishes under this map if and only if it is also in $W_{D'}^m$.
-More accurately speaking, we must first inject $W_D^m$ and $W_{D'}^m$ into a common space for this quotient to be properly defined.
+More accurately, we must first inject $W_D^m$ and $W_{D'}^m$ into a common space for this quotient to be properly defined.
 Let $M$ be the matrix of the composite linear transformation
 \begin{center}
 \begin{tikzcd}
@@ -192,7 +200,6 @@ where $\iota$ is the canonical inclusion map and $\pi$ is the canonical quotient
 That is, while the kernel of $M$ is exactly $W_L^m$,
 the image of $M$ is not exactly $W_G^m$.
 We will see that we do have enough information to recover $W_G^m$.
-\note{Write an example of this later.}
 \begin{proof}
   It is enough to show that $\im M$ is isomorphic to and contained in $W_G^m / W_{D'}^m$.
   By the first and second isomorphism theorems for vector spaces
@@ -283,9 +290,8 @@ In the following subsections, we work out some extended examples of computing $L
 %%%%%                      %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{An example -- disjoint case}
+\subsection{Example -- Computing $\ker M$}
 
-\note{Consider scrapping this section and leaving only the other example.}
 Let $C : y^3 + x^4 + 1$ be a $C_{3,4}$ curve over $\bb F_{11}$.
 Let $D$ and $D'$ be type 31 divisors with
 \begin{align*}
@@ -301,22 +307,26 @@ These divisors are disjoint, with
 \end{align*}
 where $\alpha \in \bb F_{11^2}$ is a root of $x^2 + 7x + 2$.
 
-Now $L = \lcm(D, D') = D + D'$ is a degree 6 divisor, and by \note{(insert table number)},
-we see that no generator of any reduced Gr\"obner basis of a degree 6 polynomial
-has a monomial larger than $x^4$.
+The sum $D + D'$ is a degree 6 divisor. Referring to Table \ref{tab_divisor_types},
+we see that no generator of any reduced Gr\"obner basis of a degree 6 divisor has a monomial larger than $x^4$.
+Therefore $W^{x^4}$ will be a sufficiently large space in which to perform our computations.
 We proceed by computing the matrix $M$ in
 \begin{center}
   \begin{tikzcd}
     W_L^{x^4} \arrow[hook]{r}{\ker M} & 
     W_D^{x^4} \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} & 
     W^{x^4} \arrow[two heads]{r}{\pi} & 
-    \frac {W^{x^4}} {W_{D'}^{x^4}} \\ &
+    \frac {W^{x^4}} {W_{D'}^{x^4}} \arrow[two heads]{r}{\im M} &
+    \frac {W_G^{x^4}} {W_{D'}^{x^4}} \\ &
     K^7 \arrow[hook]{r} \arrow[no head]{u}{\rotatebox{90}{$\simeq$}} &
     K^{10} \arrow[two heads]{r} \arrow[no head]{u}{\rotatebox{90}{$\simeq$}} &
-    K^3 \arrow[no head]{u}{\rotatebox{90}{$\simeq$}}.
-  \end{tikzcd}
+    K^3 \arrow[no head]{u}{\rotatebox{90}{$\simeq$}}
+  \end{tikzcd},
 \end{center}
-The spaces $W_D^{x^4}$ and $W_{D'}^{x^4}$ are 7-dimensional, spanned by the vectors
+where the bottom row serves to show the dimensions of these spaces.
+The dimensions of $\ker M$ and $\im M$ are not yet known until we do some more calculations.
+
+The spaces $W_D^{x^4}$ and $W_{D'}^{x^4}$ are 7-dimensional, spanned by the polynomials
 \begin{align*}
   W_D^{x^4} &= \Span\{ f, g, h, xf, xg, xh, x^2f \} \\
   W_{D'}^{x^4} &= \Span\{ f', g', h', xf', xg', xh', x^2f' \}.
@@ -330,13 +340,12 @@ We reduce the basis of $W_D^{x^4}$ modulo $W_{D'}^{x^4}$ to get the matrix
 where, e.g., the reduction of $f$ is $\bar f = 8y + 4x + 7$,
 the reduction of $g$ is $\bar g = 8y + 8x$, etc.
 This matrix $M$ has the reduced row echelon form
+and kernel
 \[ M_{\text{rref}} = \begin{pmatrix}
   1 & 0 & 6 & 0 & 6 & 9 & 2 \\
   0 & 1 & 7 & 0 & 9 & 8 & 10 \\
   0 & 0 & 0 & 1 & 6 & 4 & 5
-\end{pmatrix} \]
-and kernel
-\[ \ker M =
+\end{pmatrix} ~~~ \ker M =
 \begin{pmatrix}
   -6 & -6 & -9 & -2 \\
   -7 & -9 & -8 & -10 \\
@@ -345,59 +354,36 @@ and kernel
    0 &  1 &  0 &  0 \\
    0 &  0 &  1 &  0 \\
    0 &  0 &  0 &  1
-\end{pmatrix} =
-\begin{pmatrix}
-  5 & 5 & 2 & 9 \\
-  4 & 2 & 3 & 1 \\
-  1 & 0 & 0 & 0 \\
-  0 & 5 & 7 & 6 \\
-  0 & 1 & 0 & 0 \\
-  0 & 0 & 1 & 0 \\
-  0 & 0 & 0 & 1
-\end{pmatrix} \]
+\end{pmatrix}. \]
 The kernel is 4-dimensional, spanned by the vectors
 \begin{align*}
   \ker M
     &= \Span \left\{ \begin{array}{l}
-      h + 4g + 5f, \\
-      xg + 5xf + 2g + 5f, \\
-      xh + 7xf + 3g + 2f, \\
-      x^2f + 6xf + g + 9f \end{array} \right\} \\
+               h -  7g - 6f, \\
+        xg - 6xf -  9g - 6f, \\
+        xh - 4xf -  8g - 9f, \\
+      x^2f - 5xf - 10g - 2f \end{array} \right\} \\
     &= \Span \left\{ \begin{array}{l}
       y^2 + 4xy + 5x^2 + 5y + x - 2, \\
       x^2y + 5x^3 - 3xy - 2x^2 - 3y - 4x - 1, \\
       xy^2 - 4x^3 - 5xy - 2x^2 + y + 3x + 4, \\
       x^4 + 3x^2y + 2x^3 - 3xy + x^2 - 4y - 4x - 1
-    \end{array} \right\}
+    \end{array} \right\}.
 \end{align*}
-Label these four polynomials, from top to bottom, by $u$, $v$, $w$, and $z$
-Then $u,v,w,z$ form a basis for $W_L^{x^4}$, but not a reduced Gr\"obner basis for $I_L$.
-We can see that $\LM(u)$ divides $\LM(w)$, hence $w$ is unneeded.
-Likewise 
-\begin{align*}
-  z &\equiv z - C \\
-    &= z - (y^3 + x^4 + 1) \\
-    &= -y^3 + 3x^2y + 2x^3 - 3xy + x^2 - 4y - 4x - 2
-\end{align*}
-and $\LM(u)$ divides $\LM(z - C)$, hence $z$ is also unneeded.
-\note{Double check this reasoning.}
+These four polynomials form a basis for $W_L^{x^4}$ and a Gr\"obner basis for $I_L$,
+but not a \emph{reduced} Gr\"obner basis.
+By Proposition \ref{prop_deg_L_G}, $\deg L = 6$ and $\deg G = 0$.
+We have just determined that $I_L$ contains polynomials with leading monomials $y^2$ and $x^2y$,
+so by Arita's classification of divisors, $L$ must be of type 63 and the first two polynomials
+alone form a reduced Gr\"obner basis,
+  \[ I_L = \pid{ y^2 + 4xy + 5x^2 + 5y + x - 2, ~x^2y + 5x^3 - 3xy - 2x^2 - 3y - 4x - 1}.\]
 
-Therefore $L$ is the type 63 divisor whose ideal $I_L$ is generated by the reduced Gr\"obner basis
-  \[ I_L = \pid{ y^2 + 4xy + 5x^2 + 5y + x - 2, x^2y + 5x^3 - 3xy - 2x^2 - 3y - 4x - 1}.\]
-
-In the example above, we computed the reduced row echelon form and kernel of a $3 \times 7$ matrix,
-however two columns -- those producing the polynomials $w$ and $z$ -- were unneeded.
-In finding explicit formulas describing the divisor addition operation, we should be careful not to compute unneeded values.
-
-The image of $M$ also gives us important information.
-\begin{center}
-\begin{tikzcd}
-  W_L^m \arrow[hook]{r}{\ker M} & W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} & W^m \arrow[two heads]{r}{\pi} & \frac {W^m} {W_{D'}^m} \arrow[two heads]{r}{\im M} & W_G^{m'}
-\end{tikzcd}
-\end{center}
-The image gives us the space of polynomials in $I_G$ upper bounded by a monomial $m'$.
-This $m'$ is determined by $D'$.
-  \[ m' = \max \{ \mu \in \cal M ~:~ \mu \not\in \LT(I_{D'}) \}. \]
+\begin{remark}
+In this example, we computed the kernel of $M$ to get four polynomials, though two were unneeded.
+Consequently, two columns of the matrix $M$ were unneeded.
+An efficient implementation of divisor arithmetic will avoid computing unnecessary columns of $M$
+by computing them only as they become necessary.
+\end{remark}
 
 
 
@@ -407,6 +393,7 @@ This $m'$ is determined by $D'$.
 %%%%%                          %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{comment}
 \subsection{An example -- non-disjoint case}
 
 Consider again the curve $C : y^3 + x^4 + 1$ over $\bb F_{11}$.
@@ -494,7 +481,7 @@ Now we have $L$ and $G$ of degrees 5 and 1, respectively, such that $D + D' = L 
 To finish, we must compute the reduction $\bar{\bar L}$ of $L$ and compute $D + D' = \bar{\bar L} + G$.
 The reduction $\bar{\bar L}$ will be of type 31, thus the problem of adding $D$ and $D'$
 is reduced to adding a degree 3 divisor $\bar{\bar L}$ with a degree 1 divisor $G$.
-
+\end{comment}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -503,34 +490,21 @@ is reduced to adding a degree 3 divisor $\bar{\bar L}$ with a degree 1 divisor $
 %%%%%                                  %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Another Non-disjoint Example}
+\subsection{Example -- Computing $\im M$}
 
 Consider again the curve $C : y^3 + x^4 + 1$ over $\bb F_{11}$.
 Let $D$ and $D'$ be type 31 divisors with
 \begin{align*}
   D  &= \pid{f, g, h}      & D' &= \pid{f', g', h'}  \\
-  f  &= x^2 +  y + 5x + 10 & f' &= x^2 - 3y - 5x - 3 \\
+  f  &= x^2 +  y + 5x + 1  & f' &= x^2 - 3y - 5x - 3 \\
   g  &=  xy + 2y - 3x + 2  & g' &=  xy - 4y + 4x - 4 \\
-  h  &= y^2 + 3y + 3x + 2  & h' &= y^2 -  y + 4x - 2.\\
+  h  &= y^2 + 3y + 3x + 2  & h' &= y^2 -  y + 4x - 2.
 \end{align*}
 These divisors are non-disjoint, with
 \begin{align*}
   D  &= (0 : 10 : 1) + (3 : 8 : 1) + (1 : 4 : 1) \\
   D' &= (0 : 10 : 1) + (3 : 8 : 1) + (6 : 1 : 1).
 \end{align*}
-
-\begin{center}
-  \begin{tikzcd}
-    W_L^{x^4} \arrow[hook]{r}{\ker M} & 
-    W_D^{x^4} \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} & 
-    W^{x^4} \arrow[two heads]{r}{\pi} & 
-    \frac {W^{x^4}} {W_{D'}^{x^4}} \arrow[two heads]{r}{\im M} &
-    W_G^y \\ &
-    K^7 \arrow[hook]{r} \arrow[no head]{u}{\rotatebox{90}{$\simeq$}} &
-    K^{10} \arrow[two heads]{r} \arrow[no head]{u}{\rotatebox{90}{$\simeq$}} &
-    K^3 \arrow[no head]{u}{\rotatebox{90}{$\simeq$}}.
-  \end{tikzcd}
-\end{center}
 
 As in the previous example, we reduce the basis of $W_{D}^{x^4}$ modulo the basis for $W_{D'}^{x^4}$ to get the matrix
 \[ M = \begin{pmatrix}
@@ -545,11 +519,11 @@ This matrix has the reduced row echelon form
   0 & 0 & 0 & 0 & 0 & 0 & 0
 \end{pmatrix}. \]
 We can see the $M$ does not have full rank.
-In this case, $\rank M = 1$, and by Proposition \ref{prop_dim_L_G},
+In this case, $\rank M = 1$.
+By Proposition \ref{prop_deg_L_G},
 $\deg L = 4$, and $G$ is non-zero with $\deg G = 2$.
-
-Hence $L$ will not be of degree 6 and $G$ will be non-zero.
-The kernel of $M$ is 6-dimensional, spanned by
+We have a non-trivial image to compute.
+\begin{comment}
 \begin{align*}
   \ker M
     &= \Span \left\{ \begin{array}{l}
@@ -578,18 +552,19 @@ we have a reduced Gr\"obner basis for $I_L$,
       y^2 -  x^2 + 2y - 2x + 1, \\
       x^3 - 5x^2 -  y - 2x - 1
   \end{array}\right\rangle. \]
-
-The pivot columns of $M$ determine its image.
-In this case, there is only one pivot column --- the first ---
+\end{comment}
+The image of $M$ is determined by its pivot columns.
+In this case, there is only one pivot column --- the first.
 The image of $M$ is therefore given by the column basis
-\[ \im M = \begin{pmatrix}
-  4  \\
-  10 \\
-  4  
-\end{pmatrix}. \]
-That is, $\im M = \frac {W_G^m}{W_{D'}^m}$ is spanned by the polynomial $4y + 10x + 4$,
-or by its monic scalar multiple $y + 8x + 1$.
-\note{Complete this example}
+\[ \im M = \Span \begin{pmatrix} 4 \\ 10 \\ 4 \end{pmatrix}
+         = \Span \begin{pmatrix} 1 \\ -3 \\ 1 \end{pmatrix}. \]
+That is, $\im M = \frac {W_G^m}{W_{D'}^m}$ is spanned by the polynomial $u = y - 3x + 1$.
+Since $G$ has degree 2 and contains a polynomial with leading monomial $y$,
+$G$ must be of type 21 and we must find its other generator $v$ with leading monomial $x^2$.
+Since $I_D \subseteq I_G$, $f$ must be an element of $I_G$, and we may reduce $f$ modulo $u$ to obtain $v$.
+This gives
+  \[ I_G = \pid{u,v} = \pid{y - 3x + 1, ~x^2 - 3x}. \]
+Note that $u$ and $v$ intersect at the points $(0 : 10 : 1)$ and $(3 : 8 : 1)$, as expected.
 
 
 
@@ -628,7 +603,7 @@ We should only compute $\bar{\bar L} + G$ when we are certain that $L$ and $G$ a
     \item[(iii) $\implies$ (iv):]
       If $D' \leq D$, then $I_D \subseteq I_{D'}$ and $W_D^m \subseteq W_{D'}^m$.
       Every element in $W_D^m$ vanishes under $M$,
-      $\null M = \dim W_D^m$ and $\rank M = 0$.
+      $\nullity M = \dim W_D^m$ and $\rank M = 0$.
     \item[(iv) $\implies$ (i):]
       Suppose $\rank M = 0$.
       By proposition \ref{prop_deg_L_G}, $\deg L = \deg D$.
@@ -831,12 +806,18 @@ argue these reductions are zero, and conclude
 
 \subsection{The Addition Algorithm}
 
-\begin{algorithm}[ht!]
+We conclude this chapter by summing up its contents in Algorithm \ref{alg_addition}, below.
+
+\begin{algorithm}[hb!]
   \label{alg_addition}
   \caption{Divisor Addition}
-  {\bf Input:} Two divisors $D$ and $D'$, represented by their ideals $I_D$ and $I_{D'}$ \\
-  {\bf Output:} A divisor $D''$ equivalent to $D + D'$.
+  {\bf Input:} Two reduced divisors $D$ and $D'$ represented by their ideals $I_D$ and $I_{D'}$
+  satisfying $D \neq D'$ and $\deg D \geq \deg D'$ \\
+  {\bf Output:} A divisor $D''$ equivalent to $D + D'$, represented by its ideal $I_{D''}$
   \begin{algorithmic}[1]
+    \If {$D' = 0$}
+      \State \Return $D$ \label{alg_addition:return_0}
+    \EndIf
     \State Compute $M : W_D^m \to W_{D'}^m$
     \State Compute $M_{\text{rref}}$ and $\rank M$
     \If {$\rank M = \deg D'$}
@@ -866,19 +847,22 @@ in lines \ref{alg_addition:return_2}, \ref{alg_addition:return_3}, and \ref{alg_
 to double divisors in lines \ref{alg_addition:return_3} and \ref{alg_addition:return_4},
 or possibly to triple degree 1 divisors in line \ref{alg_addition:return_4}.
 Assume for now that we have terminating algorithms for these operations.
-We wish to show that the addition algorithm terminates.
+We wish to show that the addition Algorithm \ref{alg_addition}.
 
-This algorithm has four return statements.
-If the algorithm returns at line \ref{alg_addition:return_1},
+This algorithm has five return statements.
+If the algorithm reaches \ref{alg_addition:return_0} or \ref{alg_addition:return_1},
 then the algorithm terminates.
 If the algorithm returns at line \ref{alg_addition:return_4},
 then $(n + 1)D'$ and $A$ will be disjoint,
-and the algorithm will return at line \ref{alg_addition:return_1} in its next iteration.
+and the algorithm will reach at line \ref{alg_addition:return_1} in its next iteration
+(or line \ref{alg_addition:return_0} if $A = 0$).
 At lines \ref{alg_addition:return_2} and \ref{alg_addition:return_3},
 $G$ and $A$ are of lesser degree than $D'$.
-Eventually, a recursive call will involve $D'$ of degree 1,
-in which case the rank of $M$ is either 1 or 0
-and we will reach line \ref{alg_addition:return_1} or \ref{alg_addition:return_4} and terminate.
+Eventually, a recursive call will involve $D'$ of degree 0 --
+in which case the next interation reaches line \ref{alg_addition:return_0} --
+or 1 --
+in which case $\rank M$ is either 1 or 0
+and the next iteration reaches line \ref{alg_addition:return_1} or \ref{alg_addition:return_4} and terminates.
 
 Whether or not this algorithm terminates therefore depends on whether we have terminating algorithms
 for reducing divisors, doubling divisors, and tripling points.
