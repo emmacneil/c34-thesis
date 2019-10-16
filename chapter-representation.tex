@@ -10,15 +10,15 @@
 In Chapter \ref{chap_divisors}, we defined the divisor class group of a curve,
 and in Chapter \ref{chap_ideals}, we showed that this group is isomorphic to an ideal class group.
 This forms the foundation of our representation of divisors.
-We will be representing an effective divisor by its associated integral ideal,
+We will represent an effective divisor by its associated integral ideal,
 or more specifically, by the unique reduced Gr\"obner basis of that ideal.
 These bases come in many forms, but if we place a bound on the degree of the divisors under consideration,
-there forms are only finite in number.
+these forms are only finite in number.
 
 In this chapter, we will tabulate all the different types of divisors of degree 6 or less.
 When adding divisors in Chapter \ref{chap_addition},
 we will always assume our summands are of degree 3 or less,
-thus it is unnecessary to sufficient to tabulate divisors of degree 7 and higher.
+thus it is unnecessary to tabulate divisors of degree 7 and higher.
 We will see which of these types are reduced (not equivalent to a divisor of lesser degree)
 and which are typical (the statistically most likely to be encountered).
 
@@ -32,10 +32,9 @@ and which are typical (the statistically most likely to be encountered).
 
 \subsection{Divisor Types}
 
-It will be shown later in this cha
 In \cite{arita05-2}, Arita classifies divisors of degree 6 and less into 19 types
 based on the forms of the reduced Gr\"obner bases of their ideals.
-This classification is reproduced in the table below,
+This classification is reproduced in Table \ref{tab_divisor_typies},
 along with a 20th type representing the divisor 0.
 Divisors are listed by degree (D), then by type (T).
 
@@ -200,7 +199,7 @@ then taking the zeroes of $f$ along $C$ that are not in $D$, properly accounting
   \begin{enumerate}[label=(\roman*)]
     \item $\bar A \equiv -A$;
     \item $\bar{\bar A} \equiv A$;
-    \item $A \equiv B \iff \bar A = \bar D$;
+    \item $A \equiv B \iff \bar A = \bar B$;
     \item $\bar{\bar{\bar A}} = \bar A$;
     \item $\bar A$ is reduced.
   \end{enumerate}
@@ -215,8 +214,8 @@ then taking the zeroes of $f$ along $C$ that are not in $D$, properly accounting
       Then in the ideal class group, $I_A \equiv I_B$,
       so that there are polynomials $f, g \in K[C]$ such that $gI_A = fI_B$.
       Without loss of generality, we may assume $f$ and $g$ are monic.
-      Let $a$ and $b$ be the minimal polynomials in $I_A$ and $I_B$, respectively.
-      Then the minimum polynomials in $gI_A$ and $fI_B$ are $ga$ and $fb$, respectively.
+      Let $a$ and $b$ be the minimal polynomials \note{with respect to which definition} in $I_A$ and $I_B$, respectively.
+      Then the minimum polynomials \note{with respect to which definition} in $gI_A$ and $fI_B$ are $ga$ and $fb$, respectively.
       Since $gI_A = fI_B$, we have $ga = fb$.
       
       Suppose $h \in a : I_A$. Then
