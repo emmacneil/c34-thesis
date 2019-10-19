@@ -7,6 +7,101 @@
 
 \section{Background and Motivation}
 
+$L$-series are central to many conjectures in number theory.
+A complete discussion of $L$-series is outside the scope of this thesis;
+we present only enough to motivate the topic of this thesis.
+
+Let $E$ be an elliptic curve defined over the rational numbers $\bb Q$.
+The $L$-series of $E$ is
+\[ L(E/\bb Q, s)  = \prod_{p \text{ is prime}} \frac 1 {L_p \left( \frac 1 {p^s} \right)},\]
+where, for each prime $p$, $L_p$ is a non-zero polynomial of degree at most 2.
+\note{See Silverman, or Milne for more, including a definition of $L_p$.}
+
+By Hasse's Theorem, the number of points on an elliptic curve defined over a finite field
+lies in some interval that is small compare to the size of the finite field.
+\begin{theorem}[Hasse]
+  Let $E$ be an elliptic curve over a finite field $\bb F_q$.
+  The number of points on $E$ differs from $q + 1$ by at most $2 \sqrt q$.
+  That is,
+  \[ | \#E(\bb F_q) - (q + 1) | \leq 2 \sqrt q. \]
+\end{theorem}
+
+Rewritten slightly, this theorem says that
+  \[ \frac {\#E(\bb F_q) - (q + 1)} {\sqrt q} \in [-2, 2]. \]
+The difference between $q + 1$ and the number of rational points on the curve
+lies in the interval $[-2 \sqrt q, 2 \sqrt q]$.
+The scaled difference is in the interval $[-2, 2]$.
+Now given a randomly chosen prime $p$,
+one can ask what the probability that this scaled difference lies in some sub-interval of $[-2, 2]$.
+The Sato-Tate Conjecture says that this probability follows a $\sin^2$ distribution.
+\begin{conjecture}[Sato-Tate]
+  Let $E$ be an elliptic curve without complex multiplication.
+  \note{Complete this conjecture}
+  \[ \lim_{N \to \infty}
+    \frac {\#\{ p \leq N : \alpha \leq \theta_p \leq \beta \}} {\pi(N)} =
+    \frac 2 \pi \int_{\alpha}^{\beta} \sin^2 \theta\,d\theta. \]
+\end{conjecture}
+
+If $E/\bb Q$ has good reduction at a prime $p$
+\note{(see some source on what this means)},
+then $L_p(1) = \#E(\bb F_p)$,
+so that the Sato-Tate Conjecture can be seen as a statement about the number of points on a curve
+or about the value of a term in an $L$-series.
+
+One of the Clay Mathematics Institutes seven famous Millenium Prize Problems
+is the Birch and Swinnerton-Dyer Conjecture.
+
+\begin{conjecture}[Birch and Swinnerton-Dyer]
+  Let $E$ be an elliptic curve over $\bb Q$.
+  Then $L(E/\bb Q, s)$ has a zero at $s = 1$ of order equal to the rank of $E(\bb Q)$.
+\end{conjecture}
+
+In order to test this conjecture against a given curve $E/\bb Q$,
+one may wish to compute $L(E, 1)$, which is to compute $L_p$ at many primes $p$
+\note{(Verify).}
+This amounts to counting points on many elliptic curves.
+
+Hasse's Theorem has a generalization to higher genus curves that is easy to state.
+\begin{theorem}[Hasse-Weil]
+  Let $C$ be an algebraic curve of genus $g$ over a finite field $\bb F_q$.
+  The number of points on $E$ differs from $q + 1$ by at most $2g \sqrt q$.
+  That is,
+  \[ | \#E(\bb F_q) - (q + 1) | \leq 2g \sqrt q. \]
+\end{theorem}
+
+The Sato-Tate Conjecture and the Birch and Swinnerton-Dyer conjectures
+also have generalizations to higher genus curves.
+One can reformulate these as conjectures on the $L$-series of more complex curves,
+in which case $L_p(1)$ is no longer the number of points on the curve,
+but rather the order of the Jacobian, or divisor class group, of the curve,
+which is known to be a finite Abelian group.
+In the case of elliptic curves, the order of the divisor class group is
+equal to the number of points on the curve.
+
+To compute the order of a finite Abelian group, one may compute the order of an element,
+using an algorithm such as Baby-step/Giant-step or Pollard-Rho.
+Leveraging Lagrange's Theorem, the order of the element must divide the order of the group.
+If one has a good estimate in advance for the order of the group, this may be enough
+to compute this order.
+The Baby-step/Giant-step and Pollard-Rho algorithms are general algorithms that
+require that one have another algorithm to perform the group operations in the group
+whose order one is compuring.
+Thus, in order to compute the order of the divisor class group of a curve,
+and ultimately to compute terms in the $L$-series of the curve,
+we need an algorithm to efficiently carry out addition in the divisor class group.
+That is the subject of this thesis.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%               %%%%%
+%%%%%   Old Stuff   %%%%%
+%%%%%               %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Old Stuff}
+
 \note{Generalizing Sato-Tate to higher genus curves requires Sato-Tate groups.
 The theory is outside the scope of this thesis.}
 
