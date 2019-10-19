@@ -34,7 +34,7 @@ and which are typical (the statistically most likely to be encountered).
 
 In \cite{arita05-2}, Arita classifies divisors of degree 6 and less into 19 types
 based on the forms of the reduced Gr\"obner bases of their ideals.
-This classification is reproduced in Table \ref{tab_divisor_typies},
+This classification is reproduced in Table \ref{tab_divisor_types},
 along with a 20th type representing the divisor 0.
 Divisors are listed by degree (D), then by type (T).
 
@@ -287,12 +287,15 @@ where $f$ is the minimal polynomial in $I_D$. The degree of $\div f$ is determin
 which is determined in turn by the type of $D$.
 \begin{example}
   Suppose $D$ is a type 51 divisor.
-  Then the minimal polynomial of $I_D$ is of the form
-  \[ y^2 + f_4xy + f_3x^2 + f_2y + f_1x + f_0, \]
-  and
-  \[ \bar D \simeq f : I_D \simeq \div f - D. \]
-  So
-  \[ \deg \bar D = \deg \div f - \deg D = 8 - 5 = 3. \]
+  The minimal polynomial $f$ of $I_D$ is
+  \[ f = y^2 + f_4xy + f_3x^2 + f_2y + f_1x + f_0. \]
+  Then
+  \begin{align*}
+    \deg \bar D &= \deg \div f - \deg D \\
+                &= -\nu_{P_\infty}(f) - \deg D \\
+                &= -\nu_{P_\infty}(y^2) - \deg D \\
+                &= 8 - 5 = 3.
+  \end{align*}
 \end{example}
 
 By applying Equation \ref{eq_flip_degree},
@@ -351,7 +354,7 @@ where $g$ is the genus of the curve, 3 in the $C_{3,4}$ curve case.
 This fact is a consequence of the Riemann-Roch Theorem,
 however in this thesis, I have defined reduced divisors in a non-standard way,
 and I wish not to bring Riemann-Roch theory into this thesis.
-The next several lemmas build up to that proving the claiming using more elementary methods
+The next several lemmas build up to proving the claim using more elementary methods
 and the theory of Gr\"obner bases.
 \note{If the lemmas distract from the flow of the thesis, move this to an appendix?}
 
@@ -378,7 +381,7 @@ This polynomial $f$ is not necessarily unique.
 \end{lemma}
 \begin{proof}
   Everything but the relation $a \leq b \leq c$ is immediate from the previous lemma.
-  To prove this relation holds, suppose $b < a$.
+  To prove this relation, suppose $b < a$.
   Then $y^2$ divides $\LT(gy)$ and $\LT(gy)$ divides $\LT(h)$, but $\LT(h)$ does not divide $\LT(gy)$,
   so $h$ was not minimal. Hence $a \leq b$.
   The same argument can be used to show $b \leq c$.
@@ -463,10 +466,11 @@ This polynomial $f$ is not necessarily unique.
   Every reduced divisor on $C$ has degree at most 3.
 \end{theorem}
 \begin{proof}
-  By Theorem \ref{thm_min_poly_degree} and Equation \ref{eq_flip_degree}.
+  Theorem \ref{thm_min_poly_degree} and Equation \ref{eq_flip_degree}.
 \end{proof}
 
 \begin{theorem}
+  \label{thm_reduced_divisor_types}
   A divisor is reduced if and only if it is of type 0, 11, 21, 22, or 31.
 \end{theorem}
 \begin{proof}
@@ -501,12 +505,13 @@ This polynomial $f$ is not necessarily unique.
 \subsection{Typical Divisors}
 
 While some publications on $C_{3,4}$ curve divisor arithmetic have described algorithms for adding general divisors
-\cite{arita05-2, harasawa00},
+(see \cite{arita05-2} and \cite{harasawa00}),
 the most efficient algorithms have been from those publications that have focused only on ``typical'' divisors
 \cite{salem07, kmakdisi18, flon08}.
 These divisors are typical in the sense that, as $q \to \infty$,
 over a finite field of order $q$,
-the ratio of typical to atypical divisors is approximately $\frac {q - 1} q$.
+the probability that a divisor chosen uniformly at random is typical is approximately $\frac {q - 1} q$;
+the chance of encountering an atypical divisor becomes vanishingly small over large finite fields.
 
 In \cite{kmakdisi18}, Khuri-Makdisi defines semi-typical and typical divisors of arbitrary curves
 and in Proposition 2.12 of the same article gives a characterization of degree 3
@@ -516,7 +521,7 @@ We adopt the same definitions here, as they apply to the $C_{3,4}$ case.
   \label{def_semitypical_divisor}
   A divisor $D$ is called \defn{semi-typical} if $I_D = \pid{f, g, h}$ where
   \begin{enumerate}[label=(\roman*)]
-    \item $\{f, g, h\}$ are a reduced Gr\"obner basis for $I_D$;
+    \item $\{f, g, h\}$ is a reduced Gr\"obner basis for $I_D$;
     \item $-\nu_{P_\infty}(f) = \deg D + 3$;
     \item $-\nu_{P_\infty}(g) = \deg D + 4$; and
     \item $-\nu_{P_\infty}(h) = \deg D + 5$.
@@ -539,7 +544,7 @@ Of note is this definition due to Flon et al.
   with pairwise distinct $x$-coordinates.
 \end{definition}
 This definition more restrictive than Definition \ref{def_typical_divisor}.
-This definition does not apply to divisors of degrees other than 3.
+This definition does not apply to divisors of degree other than 3.
 In the degree 3 case, Definition \ref{def_typical_divisor} allows for points to appear with multiplicity
 greater than one, as long as the interpolation polynomial through the three points is not a line.
 Double and triple points are barred by Definition \ref{def_typical_divisor_flon}'s requirement that
@@ -552,8 +557,8 @@ However, not all type 31 divisors are typical (though they are all semi-typical)
 Here we give a characterization of typical type 31 divisors.
 \begin{theorem}[Khuri-Makdisi \cite{kmakdisi18}]
   \label{thm_typical_type_31_divisors}
-  Let $D$ be a type 31 divisor.
-  The minimal polynomial in $I_D$ is $f = x^2 + f_2y + f_1x + f_0$.
+  Let $D$ be a type 31 divisor
+  (therefore having minimal polynomial $x^2 + f_2y + f_1x + f_0 \in I_D$).
   Then $D$ is typical if and only if $f_2 \neq 0$.
 \end{theorem}
 \begin{proof}
@@ -566,7 +571,7 @@ Here we give a characterization of typical type 31 divisors.
     h &= y^2 + h_2y + h_1x + h_0.
   \end{align*}
   The polynomial $f$ factors into $(x - x_0)(x - x_1)$ for some $x_0, x_1 \in \bar K$.
-  The divisor $D = P + Q + R$ is the sum of three points, and by the pigeonhole principle,
+  The divisor $D$ is the sum of three points, say $D = P + Q + R$, and by the pigeonhole principle,
   at least two of these points fall on the same vertical line, $x - x_0$ or $x - x_1$.
   Without loss of generality, suppose $P$ and $Q$ fall on $x - x_0$.
   
@@ -599,7 +604,7 @@ Here we give a characterization of typical type 31 divisors.
   One can verify that $k$ is monic, has leading monomial $y^2$,
   and has no $xy$ or $x^2$ terms. Thus
   \[ k = y^2 + k_2y + k_1x + k_0 \]
-  for some coefficients $k_0, k_1, k_2$.
+  for some coefficients $k_0, k_1, k_2 \in K$.
   Since $\{f,g,h\}$ is a reduced Gr\"obner basis, $h$ is the unique polynomial of this form, so $k = h$.
   As $k$ was generated by $f$ and $h$, so too must be $h$.
   Hence $I_D = \pid{f,g,h} = \pid{f,g}$.
@@ -640,6 +645,7 @@ In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preser
 \end{proof}
 
 \begin{theorem}
+  \label{thm_typical_divisors_and_reduction}
   A divisor $D$ is typical if and only if its reduction $\bar{\bar D}$ is typical.
 \end{theorem}
 \begin{proof}
@@ -647,7 +653,7 @@ In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preser
   Let $I_D = \pid{f, g, h}$.
   Let $I_{\bar{\bar D}} = \pid{u, v, w}$.
   Since $D$ is typical, $h \in \pid{f, g}$,
-  so there are polynomials $r$ and $s$ such that $h = rf + sg$. Then
+  so there are polynomials $r, s \in K[C]$ such that $h = rf + sg$. Then
   \begin{align*}
     uI_D &= fI_{\bar{\bar D}} \\
     \pid{fu, gu, hu} &= \pid{fu, fv, fw} \\
@@ -675,23 +681,35 @@ In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preser
   A divisor $D$ is typical if and only if its flip $\bar D$ is typical.
 \end{theorem}
 \begin{proof}
+  We make use of many of the above theorems.
+  
   ($\implies$)
   Suppose $D$ is typical.
-  Then $\bar{\bar D}$ is typical, reduced, and therefore of type 31.
-  The minimal polynomial of $I_{\bar{\bar D}}$ is $f$ with $f_2 \neq 0$.
-  The flip $\bar{\bar{\bar D}}$ of $\bar{\bar D}$ is also of type 31
-  and shares the same minimal polynomial $f$ with $f_2 \neq 0$.
-  Hence $\bar{\bar{\bar D}}$ is typical.
-  Since $\bar{\bar{\bar D}} = \bar D$, the result follows.
+  By Theorem \ref{thm_typical_divisors_and_reduction}, $\bar{\bar D}$ is typical.
+  By Proposition \ref{prop_flip_properties}, $\bar{\bar D}$ is reduced.
+  By Theorem \ref{thm_reduced_divisor_types} and Definition \ref{def_typical_divisor},
+  $\bar{\bar D}$ is of type 31.
+  Referring to Table \ref{tab_divisor_types},
+  the minimal polynomial of $I_{\bar{\bar D}}$ is $f = x^2 + f_2y + f_1x + f_0$,
+  and by Theorem \ref{thm_typical_type_31_divisors}, $f_2 \neq 0$.
+  The flip $\bar{\bar{\bar D}}$ of $\bar{\bar D}$ is also of type 31 (Table \ref{tab_small_flip_type}),
+  and since $f \in f : I_{\bar{\bar D}} = I_{\bar{\bar{\bar D}}}$,
+  $I_{\bar{\bar{\bar D}}}$ shares the same minimal polynomial $f$ with $f_2 \neq 0$.
+  Hence by Theorem \ref{thm_typical_type_31_divisors}, $\bar{\bar{\bar D}}$ is also typical.
+  Since $\bar D$ is reduced (Proposition \ref{prop_flip_properties}),
+  $\bar{\bar{\bar D}} = \bar D$ and the result follows.
 
   ($\impliedby$)
   Suppose $D$ is atypical.
   Then $\bar{\bar D}$ is atypical.
   
-  If $\bar{\bar D}$ is of type 31, then the minimal polynomial $f$ of $I_{\bar{\bar D}}$ has $f_2 = 0$.
-  Then $\bar D$ is also of type 31 with the same minimal polynomial, hence $\bar D$ is atypical.
+  If $\bar{\bar D}$ is of type 31, then by Theorem \ref{thm_typical_type_31_divisors},
+  the minimal polynomial of $I_{\bar{\bar D}}$ is $f = x^2 + f_1x + f_0$.
+  As in the previous part of this proof, $\bar D$ is also of type 31 with the same minimal polynomial $f$,
+  hence $\bar D$ is atypical by Theorem \ref{thm_typical_type_31_divisors}.
   
-  If $\bar{\bar D}$ is not of type 31, then $\bar D$ is of degree less than 3 and cannot be typical.
+  If $\bar{\bar D}$ is not of type 31, then $\bar D$ is of degree less than 3 (see Table \ref{tab_flip_degree})
+  and cannot be typical.
 \end{proof}
 
 
