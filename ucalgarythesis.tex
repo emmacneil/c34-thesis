@@ -56,14 +56,22 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{hyperref}
 \usepackage{pgfplots}
 \usepackage{tikz-cd}
-
 \usepackage[style=numeric, backend=biber]{biblatex}
 \bibliography{biblio}
 %\bibliographystyle{plain}
 
 %\usepackage{biblatex}
+
+\hypersetup{
+    colorlinks,
+    citecolor=blue,
+    filecolor=blue,
+    linkcolor=blue,
+    urlcolor=blue
+}
 
 %%  Include other user-defined commands here
 
@@ -111,17 +119,21 @@
 \newcommand{\tensor}[1]{\underset{#1}{\otimes}}
 \renewcommand{\cal}[1]{\mathcal{#1}}
 
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
 \theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{conjecture}[theorem]{Conjecture}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem{corollary}[equation]{Corollary}
+\newtheorem{conjecture}[equation]{Conjecture}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{proposition}[equation]{Proposition}
 
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[equation]{Definition}
+\newtheorem{example}[equation]{Example}
+\newtheorem{remark}[equation]{Remark}
 
 \renewcommand*{\arraystretch}{0.8} % Adjust spacing between lines in matrices
 
@@ -332,9 +344,9 @@ to find fast explicit formulas describing $C_{3,4}$ curve arithmetic that are co
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \setcounter{page}{12}
-\include{background}  
-\include{chapter1}  
-\include{chapter2}
+\include{chapter-background}  
+\include{chapter-groebner-bases}  
+\include{chapter-differentials}
 %\include{chapter3}
 \include{chapter-c34-curves}
 \include{chapter-divisors}
