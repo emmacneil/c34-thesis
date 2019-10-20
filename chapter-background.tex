@@ -5,7 +5,7 @@
 %%%%%                %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Background and Motivation}
+\section{Motivation and Prior Work}
 
 $L$-series are central to many conjectures in number theory.
 A complete discussion of $L$-series is outside the scope of this thesis;
@@ -15,7 +15,7 @@ Let $E$ be an elliptic curve defined over the rational numbers $\bb Q$.
 The $L$-series of $E$ is
 \[ L(E/\bb Q, s)  = \prod_{p \text{ is prime}} \frac 1 {L_p \left( \frac 1 {p^s} \right)},\]
 where, for each prime $p$, $L_p$ is a non-zero polynomial of degree at most 2.
-\note{See Silverman, or Milne for more, including a definition of $L_p$.}
+\note{See Silverman or Milne for more, including a definition of $L_p$.}
 
 By Hasse's Theorem, the number of points on an elliptic curve defined over a finite field
 lies in some interval that is small compare to the size of the finite field.
@@ -48,7 +48,7 @@ then $L_p(1) = \#E(\bb F_p)$,
 so that the Sato-Tate Conjecture can be seen as a statement about the number of points on a curve
 or about the value of a term in an $L$-series.
 
-One of the Clay Mathematics Institutes seven famous Millenium Prize Problems
+One of the Clay Mathematics Institute's seven famous Millenium Prize Problems
 is the Birch and Swinnerton-Dyer Conjecture.
 
 \begin{conjecture}[Birch and Swinnerton-Dyer]
@@ -91,6 +91,49 @@ and ultimately to compute terms in the $L$-series of the curve,
 we need an algorithm to efficiently carry out addition in the divisor class group.
 That is the subject of this thesis.
 
+Much research has gone into studying these conjectures in the case of genus 1 curves (elliptic curves).
+In recent years, these conjectures have been generalized to higher-genus curves (and arbitrary Abelian varieties)
+and they have been studied in the case of genus 2 curves.
+Attention is now turning towards testing these conjectures against genus 3 curves.
+
+Genus 3 curves may be categorized into hyperelliptic and non-hyperelliptic curves.
+The latter category is also called $C_{3,4}$ curves, a special case of the broader family of $C_{a,b}$ curves.
+
+Several authors have found explicit formulae describing the arithmetic of genus 3 hyperelliptic curves.
+\note{Cite Sutherland, Rezai Rad.}
+[SOURCE] has used this to compute Sato-Tate distributions for genus 3 HEC curves.
+It is worth noting that general algorithms exist for computing in the Jacobian of an arbitrary curve
+but these will be slower than explicit formulae.
+\note{Cite Sutherlands results}
+
+Turning now towards the state of $C_{3,4}$ curves...
+
+Previous work in describing arithmetic in the divisor class group of a $C_{3,4}$ curve has been done with cryptographic applications in mind ---
+algorithms such as elliptic curve Diffie-Hellman key schange and elliptic curve digital signature (see \note{SOURCES})
+may be modified to use hyperelliptic or $C_{3,4}$ curves, for example.
+In the cryptographic setting, researcher have been interested primarily in $C_{3,4}$ curves defined over very large finite fields,
+and usually only on defining the arithmetic on a proper subset of the divisors in the class group,
+with the understanding that, over a large finite field, the likelihood of encountering a divisor outside this subset is very small.
+
+In 1999, Seigo Arita published an algorithm based on Gr\"obner basis computations for performing arithmetic
+in the divisor class group of a $C_{a,b}$ curve.
+Exploiting the fact that the divisor class group of the curve is isomorphic to the ideal class group of its coordinate ring,
+Arita represented divisors by ideals of polynomials, then applied Buchberger's algorithm \note{SOURCE}.
+As $C_{a,b}$ curves form a family of curves with varying genuses \note{genii?},
+the efficiency of this algorithm is given asymptotically as $O(g^3)$.
+
+In 2000, Ryuichi Harasawa and Joe Suzuki, rather than viewing divisors as ideals given by Gr\"obner bases,
+viewed divisors as $K[x]$-modules represented by bases given as matrices in Hermite normal form.
+This gave an algorithm for computing in the divisor class group of a $C_{a,b}$ curve with asymptotic runtime $O(g^2)$.
+
+Arita 99, Cab curves, algorithm based on Groebner basis computations.
+Arita 05, C34 curves, specializes above to C34 case. Derives explicit formulaes. These algorithms are quite slow, requiring ~5I+200M/5I+280M.
+
+Flon et Al, recognizing that for crypto applications, only "typical" divisors necessary
+~2I+150M?
+
+Salem/Makdisi, 2I+117M
+Improvement, 2I+98M
 
 
 
@@ -100,6 +143,7 @@ That is the subject of this thesis.
 %%%%%               %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{comment}
 \section{Old Stuff}
 
 \note{Generalizing Sato-Tate to higher genus curves requires Sato-Tate groups.
@@ -150,3 +194,4 @@ L-series is raised in
   * Koblitz-Zywina conjecture
   * Lang-Trotter conjecture
   * Sato-Tate conjecture
+\end{comment}
