@@ -8,11 +8,11 @@
 \section{Motivation and Prior Work}
 
 This introduction will be light on definitions.
-Full details of the topics mentioned may be found later in this paper or in other cited works.
-For this section, it should be enough to know that an \defn{algebraic plane curve} is the set of points $(x,y)$
+Full details of the topics mentioned may be found later in this thesis or in other cited works.
+For now, it should be enough to know that an \defn{algebraic plane curve} is the set of points $(x,y)$
 at which $f(x, y) = 0$, for some field $K$ and polynomial $f \in K[x,y]$.
 Examples of algebraic plane curves include elliptic curves, hyperelliptic curves,
-and subject of this thesis, $C_{3,4}$ curves.
+and the subject of this thesis, $C_{3,4}$ curves.
 An \defn{elliptic curve} is the set of zeroes of a polynomial
 \begin{equation}
   \label{eq_elliptic}
@@ -29,7 +29,8 @@ A \defn{$C_{3,4}$ curve} is the set of zeroes of a polynomial
   \label{eq_c34_intro}
   y^3 + x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0.
 \end{equation}
-For each of these classes of curves, one might also demand that they be non-singular,
+For each of these classes of curves, one might also demand that they be non-singular
+\note{(put a definition of singular in chapter 4 and refer to it here)},
 as we will do in Chapter \ref{chap_curves}.
 
 If $C$ is an algebraic plane curve, a \defn{divisor} of a curve is a formal sum of points on $C$.
@@ -48,26 +49,30 @@ Together with an addition operation, this forms the \defn{divisor class group} o
 
 \subsection{Motivation}
 
-By Hasse's Theorem (below), the number of points on an elliptic curve defined over a finite field
-lies in some interval that is small compared to the size of the finite field.
+Let $\bb F_q$ be the finite field of order $q$ and suppose $E$ is an elliptic curve defined over $\bb F_q$,
+meaning that $E$ is the set of zeroes of a polynomial in $\bb F_q[x,y]$ of the form in Equation \ref{eq_elliptic}.
+The following theorem, due to Helmut Hasse (1898 -- 1979), says that
+the number of rational points (i.e. points in $\bb F_q \times \bb F_q$) on $E$
+lies in some interval that is small compared to the order of $\bb F_q$.
 \begin{theorem}[Hasse]
   Let $E$ be an elliptic curve over a finite field $\bb F_q$.
   The number of rational points on $E$ differs from $q + 1$ by at most $2 \sqrt q$. That is,
   \[ | \#E(\bb F_q) - (q + 1) | \leq 2 \sqrt q. \]
 \end{theorem}
-In other words, when $q$ is large,
-$q + 1$ is a good estimate for the number of rational points on an elliptic curve $E/\bb F_q$.
+In other words,
+$q + 1$ is a good estimate for the number of rational points on $E$,
+especially when $q$ is large.
 
 \begin{example}
-  Let $p$ be the prime number $2^{31} - 1 = 2,147,483,647$.
-  The elliptic curve defined by $y^2 - x^3 - 1 \in \bb F_p[x,y]$ has 2,147,391,324 rational points.
+  Let $p = 2^{31} - 1 = 2,147,483,647$, which is prime.
+  The elliptic curve defined by $y^2 + x^3 - 1 \in \bb F_p[x,y]$ has 2,147,391,324 rational points.
 \end{example}
 
 Let $a_q = \frac {\#E(\bb F_q) - (q + 1)} {2\sqrt q}$.
 Then Hasse's Theorem says that $a_p \in [-1, 1]$.
 Letting $\theta_q = \arccos a_q$, then $\theta_q \in [0, \pi]$.
-Given a subinterval $[\alpha, \beta] \subseteq [0, \pi]$ and a prime $q$,
-one can ask what the probabilty is that $\theta_q \in [\alpha, \beta]$.
+Given a subinterval $[\alpha, \beta] \subseteq [0, \pi]$ and a prime $p$,
+one can ask what the probabilty is that $\theta_p \in [\alpha, \beta]$.
 The Sato-Tate Conjecture suggests that, for most elliptic curves, this probability follows a $\sin^2$ distribution.
 
 \begin{conjecture}[Sato-Tate, \cite{silverman92}]
@@ -96,10 +101,11 @@ see \cite{husemoller87}, \cite{milne06}, or \cite{silverman09}.
 
 If $E/\bb Q$ has ``good reduction'' at a prime $p$
 (see again \cite{husemoller87}, \cite{milne06}, or \cite{silverman09}),
-then $L_p(1) = \#E(\bb F_p)$, which is the value under scrutiny by the Sato-Tate Conjecture.
+then $L_p(1) = \#E(\bb F_p)$, which is the value of interest in the Sato-Tate Conjecture.
 
-There are many other important number-theoretic conjectures related to the $L$-series of a curve.
-One of the Clay Mathematics Institute's seven famous Millenium Prize Problems
+There are many other important number-theoretic conjectures related to the $L$-series of an elliptic curve.
+One of the Clay Mathematics Institute's seven famous Millenium Prize Problems,
+with a \$1,000,000 bounty on its head,
 is the Birch and Swinnerton-Dyer Conjecture.
 
 \begin{conjecture}[Birch and Swinnerton-Dyer, \cite{koblitz93}]
@@ -111,7 +117,8 @@ In order to test this conjecture against a given curve $E/\bb Q$,
 one may wish to compute $L(E, 1)$, which requires computing $L_p(\frac 1 p)$ at many primes $p$,
 in turn requiring one to count points on many elliptic curves.
 
-Hasse's Theorem has a generalization to higher genus curves that is easy to state.
+Hasse's Theorem has a generalization to higher genus curves
+(elliptic curves have genus 1) that is easy to state.
 \begin{theorem}[Hasse-Weil]
   Let $C$ be an algebraic curve of genus $g$ over a finite field $\bb F_q$.
   The number of points on $C$ differs from $q + 1$ by at most $2g \sqrt q$.
@@ -140,6 +147,12 @@ whose order one is compuring.
 Thus, in order to compute the order of the divisor class group of a curve,
 and ultimately to compute terms in the $L$-series of the curve,
 we need an algorithm to efficiently carry out addition in the divisor class group.
+
+The above-mentioned conjectures have been studied on genus 1 and genus 2 curves.
+Attention has turned recently towards studying them on genus 3 curves.
+Genus 3 algebraic plane curves fall into two categories: hyperelliptic and non-hyperelliptic.
+Non-hyperelliptic genus 3 curves are also called $C_{3,4}$ curves, a special case of the broader family of $C_{a,b}$ curves.
+Therefore, fast algorithms are needed to compute in the divisor class group of a $C_{3,4}$ curve.
 That is the subject of this thesis.
 
 
@@ -151,14 +164,6 @@ That is the subject of this thesis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Prior Work}
-
-Much research has gone into studying these conjectures in the case of genus 1 curves (elliptic curves).
-In recent years, these conjectures have been generalized to higher-genus curves (and arbitrary Abelian varieties)
-and they have been studied in the case of genus 2 curves.
-Attention is now turning towards testing these conjectures against genus 3 curves.
-
-Genus 3 curves may be categorized into hyperelliptic and non-hyperelliptic curves.
-The latter category is also called $C_{3,4}$ curves, a special case of the broader family of $C_{a,b}$ curves.
 
 Several authors have found explicit formulae describing the arithmetic of genus 3 hyperelliptic curves.
 \note{Cite Sutherland, Rezai Rad.}
