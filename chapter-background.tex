@@ -5,7 +5,7 @@
 %%%%%                %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Motivation and Prior Work}
+\section{Introduction}
 
 This introduction will be light on definitions.
 Full details of the topics mentioned may be found later in this thesis or in other cited works.
@@ -65,7 +65,7 @@ especially when $q$ is large.
 
 \begin{example}
   Let $p = 2^{31} - 1 = 2,147,483,647$, which is prime.
-  The elliptic curve defined by $y^2 + x^3 - 1 \in \bb F_p[x,y]$ has 2,147,391,324 rational points.
+  The elliptic curve $y^2 + x^3 - 1 = 0$ over $\bb F_p[x,y]$ has 2,147,391,324 rational points.
 \end{example}
 
 Let $a_q = \frac {\#E(\bb F_q) - (q + 1)} {2\sqrt q}$.
@@ -129,9 +129,9 @@ Hasse's Theorem has a generalization to higher genus curves
 The Sato-Tate Conjecture and the Birch and Swinnerton-Dyer conjectures
 (and other $L$-series-related conjectures not mentioned above,
 including the Koblitz-Zywina conjecture and Lang-Trotter conjecture)
-also have generalizations to higher genus curves \cite{sutherland16-2} \cite{sutherland-18}.
+also have generalizations to higher genus curves \cite{sutherland16} \cite{sutherland18}.
 However, on higher-genus curves, $L_p(1)$ is no longer the number of points on the curve,
-but rather the order of the divisor class group of the curve \cite{sutherland08},
+but rather the order of the divisor class group of the curve \cite{kedlaya08},
 which is known to be a finite Abelian group.
 (In the case of elliptic curves, the order of the divisor class group is
 equal to the number of points on the curve.)
@@ -153,7 +153,14 @@ Attention has turned recently towards studying them on genus 3 curves.
 Genus 3 algebraic plane curves fall into two categories: hyperelliptic and non-hyperelliptic.
 Non-hyperelliptic genus 3 curves are also called $C_{3,4}$ curves, a special case of the broader family of $C_{a,b}$ curves.
 Therefore, fast algorithms are needed to compute in the divisor class group of a $C_{3,4}$ curve.
-That is the subject of this thesis.
+
+The goal of this thesis is find such algorithms.
+More accurately, the goal of this thesis is to find \defn{explicit formulae} describing arithmetic in a $C_{3,4}$ curve's divisor class group.
+In brief, a divisor class $[D]$ will be typically be represented by a triple of polynomials $\pid{f,g,h}$.
+To find explicit formulae for the sum $[D''] = [D] + [D']$ is to find formulae expressing the coefficients of the
+polynomials representing $[D'']$ in terms of the coefficients representing $[D]$ and $[D']$.
+To compare the efficiency of our formulae in comparison to earlier works,
+we will count the number of finite field inversions, multiplications, and additions needed to evaluate these formulae.
 
 
 
@@ -165,24 +172,33 @@ That is the subject of this thesis.
 
 \subsection{Prior Work}
 
-Several authors have found explicit formulae describing the arithmetic of genus 3 hyperelliptic curves.
-\note{Cite Sutherland, Rezai Rad.}
-[SOURCE] has used this to compute Sato-Tate distributions for genus 3 HEC curves.
-It is worth noting that general algorithms exist for computing in the Jacobian of an arbitrary curve
-but these will be slower than explicit formulae.
-\note{Cite Sutherlands results}
+We briefly highlight prior work on genus 3 hyperelliptic curves.
+For ramified genus 3 hyperelliptic curves, the most efficient published explicit formulae
+are due to Nyukai \cite{nyukai06-1} \cite{nyukai06-2},
+who adds divisors in 1I+67M (1 finite field inversion and 67 multiplications) and doubles divisors in 1I+68M.
+For split genus 3 hyperelliptic curves, Sutherland \cite{sutherland18} recently published explicit formulae
+requiring 1I+79M/1I+82M to add/double.
+Rezai Rad \cite{rezairad16} \cite{rezairad19} found comparably fast explicit formulae to add/double
+in the infrastructure of a hyperelliptic curve in 1I+75M/1I+86M.
+The relationship between the divisor class group and the infrastructure is explored in \cite{rezairad16} and \cite{rezairad19}.
+Faster hyperelliptic curve arithmetic remains a subject of ongoing research at the Unviersity of Calgary.
 
-Turning now towards the state of $C_{3,4}$ curves...
+In \cite{kedlaya08} and \cite{harvey16}, Kedlaya, Harvey, Massierer, and Sutherland use this arithmetic to compute $L$-series of hyperelliptic curves of genus $g \leq 3$.
+Sutherland notes in \cite{sutherland18} that in earlier attempts at computing $L$-series using generic divisor arithmetic algorithms (i.e. not using explicit formulae),
+the majority of the computation time was spent adding and doubling divisors.
+After moving to optimized, explicit formulae specific to genus 3 hyperelliptic curves, the time spend adding and doubling divisors became ``negligible''.
+The benefit of finding explicit formulae describing divisor arithmetic is clear.
 
-Previous work in describing arithmetic in the divisor class group of a $C_{3,4}$ curve has been done with cryptographic applications in mind.
-For instance, elliptic curve Diffie-Hellman key exchange and the elliptic curve digital signature algorithm (see \note{SOURCES})
-may be modified to use $C_{3,4}$ curves rather than elliptic curves.
-In the cryptographic setting, researchers have been interested primarily in $C_{3,4}$ curves defined over very large finite fields.
-When working over such fields, they may assume that divisors satisfy certain generacity assumptions described in Chapter \ref{chap_representation}.
-Under this assumption, they have designed algorithms to efficiently add divisors,
-and when this assumption is violated, they may fall back on slower algorithms that work on any algebraic curve.
+Turning now towards the state of $C_{3,4}$ curves, previous work in $C_{3,4}$ curve divisor class group arithmetic
+has been done with cryptographic applications in mind, as this group may be used in cryptographic primitives based on the Discrete Log Problem.
+In the cryptographic setting, researchers are interested primarily in $C_{3,4}$ curves defined over very large finite fields
+of characteristic greater than 3.
+A $C_{3,4}$ curve over such a field is isomorphic to one given by a short-form equation (see Equation \ref{eq_c34_short}), yielding faster arithmetic.
+Moreover, with very high probability, one will only encounter ``typical'' divisors (see Chapter \ref{chap_representation})
+and many degenerate cases need not be considered.
+When these assumptions are violated, one may fall back on slower divisor addition algorithms that work on any algebraic curve.
 
-In \cite{makdisi04}, Khuri-Makdisi describes an algorithm for computing in the divisor class group of an arbitrary algebraic plane curve,
+In \cite{kmakdisi04}, Khuri-Makdisi describes an algorithm for computing in the divisor class group of an arbitrary algebraic plane curve,
 in which divisors are represented by projective embeddings of line bundles.
 The runtime of this algorithm is polynomial in the genus $g$ of the curve, running in time $O(g^4)$.
 In \cite{arita99}, Arita gives a $O(g^3)$ algorithm to compute in the divisor class group of an arbitrary $C_{a,b}$ curve,
@@ -193,41 +209,38 @@ In \cite{hess99}, Hess gives a $O(g^2)$ algorithm for determining the structure 
 \note{(say more on this)}.
 
 This is only to highlight the choice of algorithms one might fall back on when the algorithms below fail.
-The asymptotic runtime of these algorithms are of little interest when we are working with curves of small genus --
+The asymptotic runtime of these algorithms are of little interest when we are working with curves of small genus ---
 $C_{3,4}$ curves all have genus 3.
 
-In \ref{arita05-2}, Arita specializes the algorithm from \ref{arita99} to the $C_{3,4}$ case.
+In \cite{arita05-2}, Arita specializes the algorithm from \cite{arita99} to the $C_{3,4}$ case.
 He classifies divisors of $C_{3,4}$ curves into 19 types based on the forms of the Gr\"obner bases by which they are represented.
 The algorithm presented allows one to add divisors of any type.
-This is much more general than the algorithms to follow, however it is much slower and leaves some cases handled.
-In terms of speed, it requires 5I 204M to add two divisors and 5I 284M to double a divisor.
-It assumes that, when adding divisors $D + D'$, that $D$ and $D'$ are disjoint,
-and that, when doubling a divisor $D + D$, that $D$ has no multiple points.
-Should these assumptions be violated, the proposed solution is to select a random divisor $R$ and pre-add
-\[  (D + R) + (D' + (-R)) \text { or } (D + R) + (D + (-R)), \]
-depending on whether one is adding or doubling.
-The idea is that, when working over a large finite field, $D + R$ and $D' + R$ are likely now disjoint,
-and if not, then one may repeat the process until they are.
-However, on some curves over small finite fields, this recursion is not guaranteed to terminate.
+This is much more general than the algorithms to follow, requiring 5I+204M/5I+284M.
+\note{Shorten this paragraph.}
+Unlike the algorithms that follow, it allows one to add non-disjoint divisors (e.g. $(P + Q) + (Q + R)$)
+or double divisors with multiples of a point (e.g. doubling $P + 2Q$),
+although it handles this in a recursive manner that does not terminate over very small finite fields;
+Arita was interested in the cryptographic setting over a large finite field.
 
 Other publications are less general but much faster.
-In \cite{flon08}, Flon et al assume that the curve is defined by a short-form polynomial equation
-(see Equations \ref{eq_c34} and \ref{eq_c34_short_form}).
-On top of assuming that divisors are disjoint and have no multiple points, 
-they assume that a divisor is in ``general position'', and mimic techniques from hyperelliptic curve arithmetic ---
+In \cite{flon08}, Flon \emph{et al.} assume a $C_{3,4}$ curve defined by a short-form polynomial equation
+(see Equations \ref{eq_c34} and \ref{eq_c34_short}).
+In addition to assuming that divisors are disjoint and have no multiple points, 
+they assume that divisors being added or doubled are typical and mimic techniques from hyperelliptic curve arithmetic ---
 they represent divisors in a manner similar to the Mumford representation used for divisors of hyperelliptic curves,
-and follow an algorithm similar to Cantor's algorithm.
-The result is an algorithm requiring 2I 148M 15SQ for addition and 2I 165M 20SQ for doubling.
+and follow an algorithm similar to Cantor's algorithm (see \S 10.3 in \cite{galbraith12}).
+The result is an algorithm requiring 2I+148M+15SQ/2I+165M+20SQ, where SQ denotes squaring in a finite field.
 
 In \cite{salem07}, Abu Salem and Khuri-Makdisi make the same assumptions as in \cite{flon08}.
 They represent divisors by a pair of polynomials of minimal degree and compute sums of divisors
-by computing kernels of maps between Riemann-Roch spaces and quotients of Riemann-Roch spaces.
-This gives an algorithm requiring 2I 117M to add and 2I 129M to double.
-In an appendix in \cite{makdisi18}, Khuri-Makdisi gives an improvement bringing the operation count down to 2I 98M and 2I 110M.
+by computing kernels of maps between vector spaces in 2I+117M/2I+129M.
+In an appendix in \cite{kmakdisi18},
+Khuri-Makdisi gives an improvement bringing the operation count down to 2I+98M/2I+110M.
 
-The goal of this thesis is to marry the methods of Abu Salem and Khuri-Makdisi --- who have the fastest results to date ---
-with the methods of Arita --- who has the most general results ---
-in order to produce fast explicit formulae describing all cases of $C_{3,4}$ curve arithmetic.
+The goal of this thesis is to marry the methods of Abu Salem and Khuri-Makdisi ---
+who have the fastest explicit formulae to date ---
+with the methods of Arita --- whose formulae are the most general ---
+in order to produce fast and fully general explicit formulae describing all cases of $C_{3,4}$ curve arithmetic.
 More specifically,
 \begin{itemize}
   \item the curve equation may be over a finite field of any size, small or large;
@@ -240,61 +253,39 @@ More specifically,
 \end{itemize}
 This marriage of methods is facilitated by the fact that Salem/Khuri-Makdisi's representation of typical divisors resembles type 31 divisors from Arita's classification.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%               %%%%%
-%%%%%   Old Stuff   %%%%%
-%%%%%               %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{comment}
-\section{Old Stuff}
 
-\note{Generalizing Sato-Tate to higher genus curves requires Sato-Tate groups.
-The theory is outside the scope of this thesis.}
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%             %%%%%
+%%%%%   Outline   %%%%%
+%%%%%             %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
 
-A projective line over $\bb F_q$ has $q + 1$ rational points.
-An elliptic curve over $\bb F_q$ has approximately as many rational points as does a line.
-The actual number of rational points on an elliptic curve differs from that of the line by an error term
-that is small compared to the size of the field $\bb F_q$.
-The following theorem due to Hasse places bounds on this error term.
-\begin{theorem}[Hasse's Theorem]
-  Let $E$ be an elliptic curve over a finite field $\bb F_q$.
-  The number of points on $E$ differs from $q + 1$ by at most $2 \sqrt q$.
-  \[ | \#E(\bb F_q) - (q + 1) | \leq 2 \sqrt q \]
-\end{theorem}
+\subsection{Thesis Outline}
 
-This theorem generalizes in the following way.
-\begin{theorem}[Hasse-Weil Bound]
-  Let $C$ be a curve of genus $g$ over a finite field $\bb F_q$.
-  The number of points on $C$ differs from $q + 1$ by at most $2 g \sqrt q$.
-  \[ | \#C(\bb F_q) - (q + 1) | \leq 2 g \sqrt q \]
-\end{theorem}
+We begin by reviewing some background material necessary for understanding this thesis.
+Familiarity with common algebraic structures ---
+including monoids, groups, rings, fields, modules, and vector spaces --- is assumed.
+In chapter 2, we review Gr\"obner bases,
+which are central to Arita's representation of divisors,
+which we have adopted here.
+In chapter 3, we review differentials, which arise when doubling divisors.
 
-Expressed differently, the Hasse-Weil Bound says that the quantity
-\begin{equation}
-  \frac {\#C(\bb F_q) - (q + 1)}{2 g \sqrt q}
-\end{equation}
-is between -1 and 1, so that for some angle $\theta_p$,
-\begin{equation}
-  \label{eq_sato_tate_ratio}
- \cos \theta_p = \frac {\#C(\bb F_q) - (q + 1)}{2 g \sqrt q}.
-\end{equation}
+Next, we delve into theory more specific to $C_{3,4}$ curves.
+In chapter 4, we introduce algebraic curves and define $C_{3,4}$ curves,
+as well as some related objects such as the coordinate ring and function field.
+In chapter 5, we introduce divisors on curves and give some basic properties of the divisor class group.
+In chapter 6, we introduce the ideal class group and exhibit an isomorphism between the divisor class group and the ideal class group.
+We use this isomorphism in chapter 7 to represent divisors by ideals, in turn represented by Gr\"obner bases.
+We then define what it means for a divisor to be reduced or typical
+and prove several properties of these divisors.
 
-Now given a fixed curve $C$, one can ask, what the probability is as $p$ varies that the error term should lie in some interval.
-Given real numbers $-1 \leq a < b \leq 1$ (or angles $0 \leq \alpha < \beta \leq \pi$),
-what is the probability that the ratio $\cos \theta_p \in [a, b]$ (or $\theta_p \in [\alpha, \beta]$)?
-The Sato-Tate Conjecture (proven for genus 1), says that this probability follows a $\sin^2$ distribution.
+Beginning with chapter 8, we present algorithms to operate in the divisor class group of a $C_{3,4}$ curve.
+Chapters 8, 9, and 10 describe algorithms for adding, doubling, and reducing divisor classes, respectively.
+In chapter 11, we combine addition and reduction into a single add-reduce operation
+as well as doubling and reduction into single double-reduce operation.
+Combining these operations saves an inversion and several multiplications and additions,
+giving an improvement over the current state-of-the-art in $C_{3,4}$ curve arithmetic.
 
-\begin{conjecture}[Sato-Tate]
-  Let $E$ be an elliptic curve without complex multiplication.
-  \note{Complete this thought...}
-  \[ \lim_{N \to \infty} \frac {\#\{ p \leq N : \alpha \leq \theta_p \leq \beta \}} {\pi(N)} = \frac 2 \pi \int_{\alpha}^{\beta} \sin^2 \theta\,d\theta. \]
-\end{conjecture}
+The results and contributions of this thesis are summarized in the concluding chapter 12.
 
-Divisor class group computations are used to compute the L-series of a genus 3 curve.
-L-series is raised in
-  * Birch and Swinnerton-Dyer conjecture
-  * Koblitz-Zywina conjecture
-  * Lang-Trotter conjecture
-  * Sato-Tate conjecture
-\end{comment}
