@@ -8,58 +8,26 @@
 \section{Gr\"obner Bases}
 \label{chap_groebner}
 
-Divisors of $C_{3,4}$ curves will be represented by polynomial ideals.
-Specifically, a divisor
-\[ D = \sum n_iP_i - \left( \sum n_i \right) P^\infty \]
-will be represented by the ideal of polynomials passing through each $P_i$ with multiplicity $n_i$.
-We would like this representation to be unique.
-Gr\"obner bases give such a representation.
+Let $R = K[x_1, \ldots, x_n]$ be a polynomial ring over a field $K$
+and let $I$ be an $R$-ideal.
+A Gr\"obner basis for $I$ is a set $\{g_1, \ldots, g_m\}$ of generators of $I$
+satisfying some additional properties (see Definition \ref{def_groebner_basis}).
+Every $R$-ideal has a Gr\"obner basis and likely has many Gr\"obner bases.
+However, once we define the notion of a \emph{reduced} Gr\"obner basis,
+every ideal will have a unique reduced Gr\"obner basis
+and two ideals will be equal if and only if their reduced Gr\"obner bases are equal.
 
-A Gr\"obner basis for an ideal of polynomials $I$ is a generating set for $I$
-satisfying some other properties described in Section \ref{sec:groebner_bases}.
-Strictly speaking, a Gr\"obner basis is not a basis for $I$ (linear independence is not required),
-though it does induce a basis for $R/I$.
-An ideal has at least one Gr\"obner basis and possibly many, but it has a unique \emph{reduced} Gr\"obner basis.
-Two ideals are equal if and only if they have the same reduced Gr\"obner basis.
-Thus we will represent a divisor by a reduced Gr\"obner basis.
+Gr\"obner bases aid us in several ways.
+For one, reduced Gr\"obner bases give us a unique representation for ideals of polynomial rings
+and a way to test equality of ideals.
+Gr\"obner bases are always defined in terms of an ordering on monomials of $R$.
+One of the elements of the basis will be minimal with respect to that order,
+and this minimal polynomial will play an important role in the divisor arithmetic
+described beginning in chapter \ref{chap_addition}.
+Gr\"obner bases also facilitate computations in $R/I$ and they induce a basis for $R/I$ as a $K$-vector space.
 
-Gr\"obner bases are best understood in the context of another problem that they solve, the \defn{membership problem}.
-Let $R$ be a multivariate polynomial ring over a field $K$,
-  \[ R = K[x_1, \ldots, x_n], \]
-and let $I$ be an ideal of $R$.
-Given a polynomial $f \in R$, we wish to determine whether $f$ is a member of $I$.
-We can examine the quotient ring $R/I$ and the image $\bar f$ of $f$ under the quotient map.
-Certainly $f \in I$ if and only if, in the quotient ring, $\bar f \equiv 0$.
-
-In the case of $R = \bb Z$ and $I = \pid m$, the image of an integer $n$ modulo $\pid m$ is the remainder of $n$ after long division by $m$.
-We may conclude that $n \in \pid m$ if this remainder is 0.
-In the case of $R = \bb C[x]$ and $I = \pid{g(x)}$, the image of a polynomial $f(x)$ moduloe $\pid{g(x)}$
-is the remainder after polynomial long division by $g(x)$.
-We may conclude that $f(x) \in \pid{g(x)}$ if this remainder is 0.
-Essentially, the membership problem in these settings is solved by long division.
-We would like to solve the membership problem for ideals of multivariate polynomial rings by a similar method.
-In other words, we would like to generalize polynomial long division to a setting with multivariate polynomials.
-This requires more than just considering dividing by a multivariate polynomial.
-In the examples above, $\bb Z$ and $\bb C[x]$ are PIDs.
-However, $\bb C[x,y]$ is not.
-An ideal $I \subseteq \bb C[x,y]$ may have more than one generator, e.g. $I = \pid{x,y}$.
-We must now also consider ''dividing'' by multiple polynomials.
-
-We first make an observation regarding the Euclidean Algorithm in $K[x]$, for some field $K$.
-The Euclidean Algorithm says that, given polynomials $f$ and $g$ in $K[x]$ ($g \neq 0$),
-there exist unique polynomials $q$ and $r$ such that
-  \[ f = qg + r \]
-and such that either $r = 0$ or $\deg r < \deg g$.
-This condition on $r$ can be equivalently (and more verbosely) expressed as
-$r = 0$ or the largest monomial of $r$ does not divide the largest monomial of $g$.
-This will be the basis of our generalization of polynomial long division,
-but this requires making precise what we mean by ``largest monomial'' in a multivariate polynomial.
-
-In the following subsections, we will discuss monomial orders and ideals of leading terms.
-We will use this to describe a generalization of polynomial long division to multivariate polynomials.
-We will immediately see that this generalization will not actually solve the membership problem, but it can be salvaged!
-We will introduce Gr\"obner bases.
-Then we will see how generalized polynomial long division solves our problem when the polynomials by which we are dividing form a Gr\"obner basis.
+Since Gr\"obner bases are always defined in terms of an ordering on monomials,
+we begin by describing this order.
 
 
 
@@ -71,7 +39,9 @@ Then we will see how generalized polynomial long division solves our problem whe
 
 \subsection{Monomial Orderings}
 
-% References : Eisenbud \cite{eisenbud95} and Cox \cite{cox07}
+As before, we will assume $R = K[x_1, \ldots, x_n]$,
+but the concepts in this subsection generalize to polynomial rings $R = S[x_1, \ldots, x_n]$ for a ring $S$,
+or even to free $S$-modules with a basis. (See chapter 15.2 in \cite{eisenbud95}).
 
 When we write down a polynomial in one variable, we typically write the terms in increasing or decreasing order according to the terms' degrees.
 One might write $3x^2 + x + 2$ or $2 + x + 3x^2$, for example, but typically not $x + 3x^2 + 3$.
@@ -89,16 +59,17 @@ We could get a different graded lexicographic order by prioritizing $y$ over $x$
 
 In some contexts, it makes sense to collect powers of $y$ and write instead
   \[ cy^2 + bxy + ey + ax^2 + dx + f. \]
-This occurs in the context of, say, hyperelliptic curves, which are typically written in the form
-  \[ y^2 + h(x)y = f(x). \]
+This occurs in the context of, say, hyperelliptic curves, which are typically defined as the set of solutions to an equation
+  \[ y^2 + h(x)y = f(x) ~~\text{or}~~ y^2 + h(x)y - f(x) = 0. \]
 Here, we first write the terms with the highest degree in $y$.
 Within the terms having the same degree in $y$, we write first the terms having the highest degree in $x$.
 This is a \defn{lexicographical order}.
 Prioritizing $x$ over $y$ would yield a different lexicographical order,
   \[ ax^2 + bxy + dx + cy^2 + ey + f. \]
 
-The two orders describe above are examples of monomial orders.
-\begin{definition}
+The two orders described above are examples of monomial orders.
+\begin{definition}[Chapter 15.2 \cite{eisenbud95}]
+  \label{def_monomial_order}
   Let $R = K[x_1, \ldots, x_n]$ be a polynomial ring.
   The \defn{set of (monic) monomials} of $R$ is the set
   \begin{equation*}
@@ -112,9 +83,9 @@ The two orders describe above are examples of monomial orders.
   \end{enumerate}
 \end{definition}
 Property (i) says that the order has a least element, specifically 1, and property (ii) asserts compatibility with multiplication.
-\note{Eisenbud p.327 gives some motivation for this definition.}
-Some authors define a monomial order to be a well-order,
+Some authors define a monomial order to be a well-order (e.g. Chapter 2.2 in \cite{cox07}),
 but well-orderedness is a consequence of properties (i) and (ii).
+\begin{comment}
 \begin{proposition}
   Let $\leq$ be a monomial order. Then
   \label{prop_monomial_order}
@@ -162,23 +133,36 @@ but well-orderedness is a consequence of properties (i) and (ii).
 \end{proof}
 Once we describe a generalized polynomial long division algorithm,
 part (iii) of this proposition will be vital in proving the algorithm terminates.
-
-It was said above that in $\bb Z[x]$, it is ``natural'' to order monomials by their degree in $x$.
-The following proposition says that this is the \emph{only} monomial order on $\bb Z[x]$.
+\end{comment}
 \begin{proposition}
-  In a univariate polynomial ring $R[x]$,
-  there is only one monomial order:
+  \label{prop_monomial_order_well_ordered}
+  Let $(\cal M_R, \leq)$ be a monomial order.
+  Then $(\cal M_R, \leq)$ is a well-order.
+\end{proposition}
+\begin{proof}
+  Lemma 15.2 in \cite{eisenbud95}.
+\end{proof}
+
+It was said above that in a univariate polynomial $K[x]$,
+it is ``natural'' to order monomials by their degree in $x$.
+That is because it is the \emph{only} monomial order on $\bb K[x]$.
+\begin{proposition}
+  There is only one monomial order on $K[x]$:
   \[ 1 < x < x^2 < \dots. \]
 \end{proposition}
 \begin{proof}
+\begin{comment}
   Let $(\cal M, \leq)$ be a monomial order on powers of $x$.
   We show by induction that $x^n < x^{n+1}$ for all natural numbers $n$.
 
   By property (i), $1 < x$, establishing the base case, $x^0 < x^1$.
   Now suppose $x^k < x^{k+1}$ for some natural number $k \geq 0$.
   By property (ii), $x^kx < x^{k+1}x$, hence $x^{k+1} < x^{k+2}$.
+\end{comment}
+  Necessarily, $1 < x$, by property (i) of Definition \ref{def_monomial_order}.
+  By property (ii), $1 < x$ implies $x < x^2$. The rest follows by induction.
 \end{proof}
-Thus it is fair to call this order the \emph{natural} order on monomials of $R[x]$.
+Thus it is fair to call this order the natural order on monomials of $K[x]$.
 
 In addition to the lexicographic and degree lexicographic orders mentioned already,
 there is also a monomial order called a \defn{weight order}.
