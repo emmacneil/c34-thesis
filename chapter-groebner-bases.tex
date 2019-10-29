@@ -194,13 +194,14 @@ The graded lexicographic ordering with with $x_n < \dots < x_1$ is given by the 
 In \cite{arita99}, \cite{arita03-1}, and \cite{harasawa00}, the authors perform arithmetic in the divisor class group of $C_{a,b}$ curves
 by associating divisors with polynomial ideals and computing their reduced Gr\"obner bases.
 Their chosen monomial order on $K[x,y]$ is one they define as the \defn{$C_{a,b}$ order},
-which is effectively given by the rows of the matrix
 \[ \begin{pmatrix} a & b \\ 0 & 1 \end{pmatrix}. \]
-Under this order, monomials are ordered first according to their pole order at infinity.
-Ties are broken according to which monomial has the larger power of $y$.
-In \cite{arita03-2}, in the special case of $C_{3,4}$ curves, the author defines the \defn{$C_{3,4}$ order},
-given of course by the rows of
+Under the $C_{a,b}$ order, monomials are ordered according to their pole order at infinity.
+\note{(To be defined in Chapter 4)}
+For example, in \cite{arita05-2}, Arita uses the \defn{$C_{3,4}$ order},
+given by the rows of
 \[ \begin{pmatrix} 3 & 4 \\ 0 & 1 \end{pmatrix}. \]
+In equations \ref{eq_elliptic} and \ref{eq_genus_3_hyperelliptic},
+the monomials are ordered by the $C_{2,3}$ and $C_{2,7}$ orders, respectively.
 
 
 
@@ -212,22 +213,25 @@ given of course by the rows of
 
 \subsection{Ideal of Leading Terms}
 
-Let $R$ be the ring $R = K[x_1, \ldots, x_n]$ with a fixed monomial order $\leq$.
-Consider the polynomial
-\[ f = k_1x_1 + k_2x_1^2x_2 + k_3x_1^3x_3. \]
-The monomials of $f$ are $x_1$, $x_1^2x_2$, and $x_1^3x_3$.
-The terms of $f$ are $k_1x_1$, $k_2x_1^2x_2$, and $k_3x_1^3x_3$.
-In the case where a polynomial has repeated monomials, e.g. $g = k_1x_1 + k_2x_1$,
-then collect like terms, so that $g$ has one monomial, $x_1$, and one term $(k_1 + k_2)x_1$.
+Let $R = K[x_1, \ldots, x_n]$ and let $\leq$ be a monomial order on $R$.
+If $f \in R$ is a polynomial and $m \in \cal M_R$ is a monomial,
+then denote the coefficient of $m$ in $f$ by $\coeff(f, m)$.
+Define also
+\begin{align*}
+  \LM_\leq(f) &= \max\{ m \in (\cal M_R, \leq) ~|~ \coeff(f, m) \neq 0\} \\
+  \LT_\leq(f) &= \coeff(f, \LM_\leq(f)) \cdot \LM_\leq(f).
+\end{align*}
+These are, respectively, the \defn{leading monomial} of $f$ and the \defn{leading term} of $f$
+(or \defn{largest monomial} and \defn{largest term})
+with respect to the order $\leq$.
+If $f = 0$, then define $\LM_\leq(f) = 0$.
+It should always be clear what monomial order is being used in any given context, 
+hence we will omit the subscript and simply write $\LM(f)$ and $\LT(f)$.
 
-For an arbitrary polynomial $f \in R$,
-the \defn{leading monomial} or \defn{largest monomial} of $f$ is the largest monomial with respect to the chosen monomial order.
-This is denoted by $\LM_\leq(f)$ or simply $\LM(f)$ when the order is understood.
-The \defn{leading term} or \defn{largest term} of $f$ is the term that contains the largest monomial of $f$.
-This is denoted by $\LT_\leq(f)$ or $\LT(f)$.
-If $f = 0$, then defined $\LT(f) = \LM(f) = 0$.
-We can extend a monomial order to include 0 by defining $0 < 1$.
-
+\begin{example}
+  Let $R = \bb Q[x,y]$ and $f = 2x + 3y + 5x + 8 \in R$.
+  Then $\coeff(f, 1) = 8$, $\coeff(f, x) = 7$, $\coeff(f, y) = 3$, and $\coeff(f, x^2) = 0$.
+\end{example}
 \begin{example}
   Let $R = \bb Q[x,y]$ with the lexicographic order $x < y$.
   Let $f = 3x^3 + 2y^2 + 1 \in R$.
@@ -239,86 +243,10 @@ We can extend a monomial order to include 0 by defining $0 < 1$.
   Then $\LM(f) = x^3$ and $\LT(f) = 3x^3$.
 \end{example}
 
-The functions $\LM$ and $\LT$ satisfy these basic properties:
-\begin{proposition}
-  \label{prop_lm}
-  Let $f, g \in R = K[x_1, \ldots, x_n]$. Then
-  \begin{enumerate}[label=(\roman*)]
-    \item $\LM(fg) = \LM(f)\LM(g)$ and $\LT(fg) = \LT(f)\LT(g)$;
-    \item If $g \,|\, f$, then $\LM\left(\frac f g \right) = \frac{\LM(f)}{\LM(g)}$ and $\LT\left(\frac f g \right) = \frac{\LT(f)}{\LT(g)}$;
-    \item if $\LM(g) \,|\, \LM(f)$, then $\frac{\LM(f)}{\LM(g)} \leq \LM(f)$;
-    \item if $\LM(f) \neq 0$ and $\LM(g) > 1$, then the inequality above is strict;
-    \item $\LM(f) = \LM(\LT(f)) = \LT(\LM(f))$;
-    \item if $\LT(f) = \LT(g) \neq 0$, then $\LM(f - g) < \LM(f)$;
-    \item if $\LM(g) \,|\, \LM(f)$, then \[ \LM\left( g \frac{\LT(f)}{\LT(g)} \right) = \LM(f); \]
-    \item if $\LM(g) \,|\, \LM(f)$ and $f \neq 0$, then \[ \LM\left( f - g \frac{\LT(f)}{\LT(g)} \right) < \LM(f). \]
-  \end{enumerate}
-\end{proposition}
-\begin{proof}
-  \begin{enumerate}[label=(\roman*)]
-    \item
-      Let the monomials of $f$ be $m_1 \leq \dots \leq m_s$ and let the monomials of $g$ be $n_1 \leq \dots \leq n_t$,
-      so that $m_s$ and $n_t$ are the largest monomials in $f$ and $g$, respectively.
-      The set of monomials in $fg$ is the set
-      \[ \{ m_in_j ~|~ 1 \leq i \leq s, 1 \leq j \leq t \}. \]
-      The claim is that $\LM(fg) = \LM(f)\LM(g) = m_sn_t$.
-      To prove this, consider any monomial $\mu$ in $fg$.
-      Then $\mu = m_in_j$ for some $1 \leq i \leq s, 1 \leq j$.
-      Then $m_i \leq m_s$ and $n_j \leq n_t$.
-      Hence $m_in_j \leq m_sn_t$, by Proposition \ref{prop_monomial_order}.
-      Therefore $\LT(fg) = m_sn_t$.
-      
-      \note{The proof for $\LT$ is almost identical.}
-    \item
-      There exists some polynomial $h$ such that $f = gh$. So
-      \[   \LT\left(\frac f g \right)
-         = \LT(h)
-         = \frac{\LT(g)\LT(h)}{\LT(g)}
-         = \frac{\LT(gh)}{\LT(g)}
-         = \frac{\LT(f)}{\LT(g)}. \]
-      These equalities still hold when replacing $\LT$ with $\LM$.
-    \item
-      Suppose $\LM(f)/\LM(g) > \LM(f)$.
-      Then $\LM(f) > \LM(f)\LM(g)$, contradicting Proposition \ref{prop_monomial_order}.
-    \item
-      Suppose $\LM(f)\LM(g) = \LM(f)$.
-      Then $\LM(f)(1 - \LM(g)) = 0$.
-      Since $R$ is an integral domain, this implies $\LM(f) = 0$ or $\LM(g) = 1$, a contradiction.
-    \item
-      Let $\LM(f) = m$ and $\LT(f) = km$.
-      Then $\LT(\LM(f)) = \LT(m) = m = \LM(f)$ and $\LM(\LT(f)) = \LM(km) = m = \LM(f)$.
-    \item
-      Let
-      \[ 1 = m_1 < m_2 < \ldots < m_n = \LM(f) = \LM(g) \]
-      be the set of monomials less than or equal to $\LM(f)$.
-      Write
-      \[ f = \sum_{i=1}^n f_im_i \text{ and } g = \sum_{i=1}^n g_im_i, \]
-      where some $f_i$'s and $g_i$'s are zero, as necessary.
-      Then $f_nm_n = g_nm_n$ and
-      \begin{align*}
-        f - g
-          &= \sum_{i=1}^n (f_i - g_i)m_i \\
-          &= \sum_{i=1}^{n-1} (f_i - g_i)m_i & (f_n - g_n)m_n = 0.
-      \end{align*}
-      So either $\LM(f - g) = 0$ or $\LM(f - g) = m_i$ for some $i \leq n - 1$.
-      In either case $\LM(f - g) < \LM(f)$.
-    \item
-      \begin{align*}
-       \LM\left( g \frac{\LT(f)}{\LT(g)} \right)
-         &= \LM(g) LM\left( \frac{\LT(f)}{\LT(g)} \right)
-         = \LM(g) \frac{\LM(\LT(f))}{\LM(\LT(g))} \\
-         &= \LM(g) \frac{\LM(f)}{\LM(g)}
-         = \LM(f).
-      \end{align*}
-    \item By parts (vi) and (vii).
-  \end{enumerate}
-\end{proof}
-
-\begin{definition}
-  A \defn{monomial ideal} of $R$ is an ideal generated by a subset of the monomials of $R$.
-\end{definition}
+A \defn{monomial ideal} of $R$ is an ideal of $R$ generated by a subset of the monomials of $R$.
 \begin{example}
-  For any polynomial ring $R$, $R$ itself is a monomial ideal, since $R = \pid 1$.
+  For any polynomial ring $R$, $R$ and $0$ are monomial ideals,
+  since $R = \pid 1$ and $0$ is generated by the empty set.
 \end{example}
 \begin{example}
   Let $R = K[x,y]$.
@@ -328,7 +256,7 @@ The functions $\LM$ and $\LT$ satisfy these basic properties:
 
 \begin{definition}
   Let $I$ be an ideal of $R$.
-  The \defn{ideal of leading terms}, denoted $\LT(I)$, is
+  The \defn{ideal of leading terms} of $I$, denoted $\LT(I)$, is
   \begin{equation*}
     \LT(I) := \pid{ \LT(f) ~|~ f \in I },
   \end{equation*}
@@ -336,232 +264,6 @@ The functions $\LM$ and $\LT$ satisfy these basic properties:
 \end{definition}
 For any ideal $I$, the ideal of leading terms is always a monomial ideal, since
 \[ \pid{ \LT(f) ~|~ f \in I } = \pid{ \LM(f) ~|~ f \in I }. \]
-
-The membership problem discussed earlier is easy when $I$ is a monomial ideal.
-To determine whether a polynomial $f \in R$ is also a member of $I$,
-it suffices to check whether each term in $f$ is divisible by a monomial generator of $I$.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%                                      %%%%%
-%%%%%   General Polynomial Long Division   %%%%%
-%%%%%                                      %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Generalized Polynomial Long Division}
-
-In a univariate polynomial ring $R = K[x]$, we can do polynomial long division.
-That is, given polynomials $f, g \in R$, we can find a quotient and remainder $q, r \in R$ such that
-\begin{equation*}
-  f = qg + r, ~~ r = 0 \text{ or } \deg r < \deg g.
-\end{equation*}
-The condition $\deg r < \deg g$ is equivalent to saying that the leading term (or indeed any term) of $r$ is not divisible by the leading term of $g$.
-Even more concisely, 
-\[ \deg r < \deg g \iff r \not\in \LT(\pid g). \]
-
-As alluded to earlier, we will generalize this in two ways:
-by moving up to multivariate polynomials.
-and by increasing the number of polynomials by which we divide $f$.
-
-So let $R = K[x_1, \ldots, x_n]$ be a multivariate polynomial ring over a field $K$ with a monomial order $\leq$.
-Let $f, g_1, \ldots, g_m \in R$.
-We want to ``divide'' $f$ by each of the $g_i$'s.
-That is, we wish to find ``quotients'' and a ``remainder'' $q_1, \ldots, q_m, r \in R$ such that
-\begin{equation*}
-  f = q_1g_1 + \ldots + q_m g_m + r
-\end{equation*}
-and such that either $r = 0$ or no term of $r$ is divisible by the leading term of any of the $g_i$'s,
-or equivalently such that
-\[ r = 0 \text{ or } r \not\in \LT(\pid{g_1, \ldots, g_m}). \]
-
-An algorithm to do this is as follows.
-\begin{center}
-  \begin{algorithm}
-    \caption{Generalized Polynomial Long Divsion (GPLD)}
-    {\bf Input:} A polynomial ring $R = K[x_1, \ldots, x_n]$. Polynomials $f, g_1, \ldots, g_m \in R$. \\
-    {\bf Output:} Polynomials $q_1, \ldots, q_m, r \in R$ such that $f = \sum_{i=1}^m q_i g_i + r$ and either $r = 0$ or $r \not\in \LT(\pid{g_1, \ldots, g_m})$.
-    \begin{algorithmic}[1]
-      \State $q_1, \ldots, q_m, r \gets 0$
-      \State $F \gets f$
-      \While {$F \neq 0$}
-        \ForAll {$1 \leq i \leq m$}
-          \If {$\LT(g_i) \,|\, LT(F)$}
-            \State $q \gets \frac {\LT(F)} {\LT(g_i)}$
-            \State $q_i \gets q_i + q$
-            \State $F \gets F - qg_i$
-            \State \GoTo 3
-          \EndIf
-        \EndFor
-        \State $r \gets r + \LT(F)$
-        \State $F \gets F - \LT(F)$
-      \EndWhile
-    \end{algorithmic}
-  \end{algorithm}
-\end{center}
-
-Essentially, the algorithm does this.
-Find the first $g_i$ whose leading term divides the leading term of $f$.
-If no such $g_i$ exists, remove $f$'s leading term, add it to $r$, and start over.
-Otherwise, write
-  \[ \LT(f) = q\LT(g_i), \]
-thereby finding a monomial multiple $qg_i$ of $g_i$ that kills off $f$'s leading term,
-then add $q$ to $q_i$ and remove $qg_i$ from $f$ and start over.
-We repeat this until $f = 0$.
-
-Before giving some examples, we ought to prove that the output is as advertised.
-\begin{proof}
-  We must prove a few things.
-  We must show that the algorithm terminates,
-  which is conditional on $F$ eventually being 0 so that the {\tt while} loop terminates.
-  We must show that every time the value of $F$ is overwritten, the equation
-  \begin{equation}
-    \label{eq_loop_condition}
-    f = \sum_{i=1}^m q_ig_i + r + F
-  \end{equation}
-  holds. When the algorithm terminates, $F = 0$, so that the first property of the output,
-  namely that $f = \sum q_ig_i + r$, is guaranteed.
-  We must also show the second property is guaranteed:
-  for every $i$, $\LT(g_i)$ does not divide any term in $r$.
-  \begin{description}
-    \item [The {\tt while} loop terminates:]
-      We must show that $F = 0$ after a finite number of steps.
-      In each iteration of the while loop, either line 8 or line 13 will be executed.
-      By Proposition \ref{prop_lm},
-      \[ \LM(F - qg_i) = \LM\left( F - \frac{\LT(F)}{\LT(g_i)}g_i\right) < \LM(F) \]
-      and
-      \[ \LM(F - \LT(F)) < \LM(F), \]
-      so the leading monomial of $F$ is strictly decreasing with every iteration.
-      By Proposition \ref{prop_monomial_order}, this sequence of strictly decreasing monomials must terminate.
-
-    \item [Whenever $F$ is overwritten, $f = \sum q_ig_i + r + F$:]
-      After initialization, before entering the {\tt while} loop,
-      equation (\ref{eq_loop_condition}) holds, since
-      \[ \sum q_ig_i + r + F = \sum (0)g_i + (0) + (f) = f. \]
-
-      Suppose there is an $i$ with $1 \leq i \leq m$ such that $\LT(g_i)$ divides $\LT(F)$
-      and that the algorithm has entered the {\tt if} statement.
-      Then $q = \LT(F)/\LT(g_i)$ is defined.
-      Suppose also that (\ref{eq_loop_condition}) holds before executing line 6. Then
-      \begin{align*}
-        f &= \sum_{j=1}^m q_j g_j + r + F \\
-          &= \sum_{1 \leq j \leq m} q_j g_j + r + F - qg_i + q g_i \\
-          &= \sum_{\substack{1 \leq j \leq m \\ j \neq i}} q_j g_j + (q_i + q) g_i + r + (F - qg_i),
-      \end{align*}
-      so that if we replace $q_i$ with $q_i + q$ and $F$ with $F - qg_i$, equation (\ref{eq_loop_condition}) still holds.
-
-      Suppose that (\ref{eq_loop_condition}) holds before executing line 12. Then
-      \begin{align*}
-        f &= \sum_{j=1}^m q_j g_j + r + F \\
-          &= \sum_{j=1}^m q_j g_j + (r + \LT(F)) + (F - \LT(F)),
-      \end{align*}
-      so that if we replace $r$ with $r + \LT(F)$ and $F$ with $F - \LT(F)$, equation (\ref{eq_loop_condition}) still holds.
-      
-    \item [No $\LT(g_i)$ divides any term in $r$:]
-      Suppose during some iteration of the {\tt while} loop, that $\LT(F)$ is added to $r$.
-      Then during that iteration, the condition in the {\tt if} statement in line 5 is never true,
-      implying that $\LT(g_i)$ does not divide $\LT(F)$ for any $i$.
-  \end{description}
-\end{proof}
-
-Some examples will illustrate how the algorithms works.
-They will also highlight a fatal flaw.
-
-\begin{example}
-  Let $R = \bb C[x,y]$ with the graded lexicographic order with $x < y$.
-  Let $f = y^2 + xy + x^2$, $g_1 = x^2$, $g_2 = y + 1$, and $I = \pid{g_1, g_2}$.
-  
-  Before entering the while loop, we initialize
-  \begin{center}
-    \begin{tabular}{r|rrrr}
-      Iter. & $q_1$ & $q_2$ & $r$ & $F$ \\
-      \hline
-      0 & 0 & 0 & 0 & $y^2 + xy + x^2$
-    \end{tabular}.
-  \end{center}
-  Tracing the first iteration of the {\tt while} loop, we have $\LT(g_1) = x^2$ does not divide $\LT(F) = y^2$, but $\LT(g_2) = y$ does.
-  So we set $q = \LT(F)/\LT(g_2) = y$, then add $q$ to $q_2$ and subtract $qg_2$ from $F$ to get
-  \begin{center}
-    \begin{tabular}{r|rrrr}
-      Iter. & $q_1$ & $q_2$ & $r$ & $F$ \\
-      \hline
-      0 & 0 &   0 & 0 & $y^2 + xy + x^2$ \\
-      1 & 0 & $y$ & 0 &   $xy - y + x^2$
-    \end{tabular}.
-  \end{center}
-  Tracing the second interation, once again we have $\LT(g_1) = x^2$ does not divide $\LT(F) = xy$, but $\LT(g_2) = y$ does.
-  We set $q = \LT(F)/\LT(g_2) = x$, then update $q_2$ and $F$ accordingly:
-  \begin{center}
-    \begin{tabular}{r|rrrr}
-      Iter. & $q_1$ & $q_2$ & $r$ & $F$ \\
-      \hline
-      0 & 0 &       0 & 0 & $y^2 + xy + x^2$ \\
-      1 & 0 &     $y$ & 0 &   $xy - y + x^2$ \\
-      2 & 0 & $y + x$ & 0 &   $-y + x^2 - x$
-    \end{tabular}.
-  \end{center}
-  Tracing the algorithm in full,
-  \begin{center}
-    \begin{tabular}{r|rrrr}
-      Iter. & $q_1$ & $q_2$ & $r$ & $F$ \\
-      \hline
-      0 & 0 &           0 &        0 & $y^2 + xy + x^2$ \\
-      1 & 0 &         $y$ &        0 &   $xy - y + x^2$ \\
-      2 & 0 &     $y + x$ &        0 &   $-y + x^2 - x$ \\
-      3 & 0 & $y + x - 1$ &        0 &    $x^2 - x + 1$ \\
-      4 & 1 & $y + x - 1$ &        0 &         $-x + 1$ \\
-      5 & 1 & $y + x - 1$ &     $-x$ &              $1$ \\
-      6 & 1 & $y + x - 1$ & $-x + 1$ &              $0$
-    \end{tabular}.
-  \end{center}
-  One can verify that
-  \[ f = y^2 + xy + x^2 = (1)(x^2) + (y + x - 1)(y + 1) + (-x + 1) = \sum q_i g_i + r. \]
-\end{example}
-
-\begin{example}
-  \label{ex_gpld_table}
-  Here are several inputs to the GPLD algorithm and their corresponding outputs.
-  In each case, we divide a polynomial $f$ by an ideal $I = \pid{g_1, g_2}$.
-  The first two inputs differ only in the chosen monomial orders.
-  The last two inputs differ only by swapping $g_1$ and $g_2$.
-  \begin{center}
-    \begin{tabular}{r|rrr|rrr}
-      Order & $f$ & $g_1$ & $g_2$ & $q_1$ & $q_2$ & $r$ \\
-      \hline
-      glex, $x > y$ & $x - y$ & $x^2 - y$ &  $y^2 - x$ & $0$ &  $0$ &   $x - y$ \\
-       lex, $x > y$ & $x - y$ & $x^2 - y$ & $-x + y^2$ & $0$ & $-1$ & $y^2 - y$ \\
-      \hline
-       lex, $x > y$ & $x^2y^2 - xy$ & $x^2 - y$ & $-x + y^2$ & $y^2$ & $y$ & $0$ \\
-       lex, $x > y$ & $x^2y^2 - xy$ & $-x + y^2$ & $x^2 - y$ & $-xy^2 - y^4 + y$ & $0$ & $y^6 - y^3$
-    \end{tabular}
-  \end{center}
-\end{example}
-
-We wished to use this algorithm to test whether a polynomial of $f \in R$ is a member of an ideal $I$.
-The hope was that if we divide $f$ by the generators of the ideal, the remainder would be the image of $f$ in $R/I$.
-We would conclude $f \in I$ if and only if its image was 0.
-However, the remainder is not unique!
-The first two rows in the table of Example \ref{ex_gpld_table} show that the remainder $r$ depends on the monomial order we have chosen.
-The second two rows show that the remainder also depends on the order in which we test divisibility by the generator's leading terms.
-Moreover, in the fourth row, $x^2y^2 - xy$ is in fact a member of the ideal $\pid{g_1, g_2}$, but the remainder was not 0.
-Our algorithm is not sufficient to determine membership.
-
-We should not have expected this to work.
-For example, if we consider $R = \bb Q[x]$ (with the only monomial order on $R$) and the ideal $I = \pid{x, x-1}$.
-Let $f$ be a constant, say $f = 7$.
-Tracing the algorithm gives $7 = (0)(x) + (0)(x-1) + 7$.
-However, it should be clear that $I$ contains a unit, since $1 = (x) - (x-1) \in I$.
-Hence $I = R = \pid 1$, so $f \in I$.
-If we had begun with the minimal representation of $I$ by$\pid 1$ rather than by $\pid{x, x-1}$, we would not have had this issue.
-In fact, $\bb Q[x]$ is a principal ideal domain, so any time we have $\bb Q[x]$ generated by two elements,
-we can find a smaller representation by a single polynomial, possibly with a smaller leading term. 
-In the multivariate scenario, we can salvage our algorithm by first finding another representation for $I$ by a ``smaller'' set of generators.
-Smaller in the sense of both the number of generators, and their minimality with respect to the chosen monomial order.
-
-In the following subsections, we define Gr\"obner bases, the smaller set of generators we are after.
-We will see that, had we a Gr\"obner basis, our remainder $r$ would be unique.
-Our division algorithm could then be used to solve the membership problem.
-We will also show that every ideal has a Gr\"obner basis and how we can compute one.
 
 
 
@@ -574,23 +276,6 @@ We will also show that every ideal has a Gr\"obner basis and how we can compute 
 \subsection{Gr\"obner Bases} \label{sec:groebner_bases}
 
 As before, let $R = K[x_1, \ldots, x_n]$ be a multivariate polynomial ring over a field $K$.
-Then $R$ has structure as a $K$-vector space, and a $K$-basis consisting of all monomials, $\cal M$.
-Given an ideal $I$, $R/I$ is also a $K$-vector space with a monomial basis, $B$.
-We would like for the output $r$ of the GPLD algorithm to be given as a $K$-linear combination over $B$.
-As is, we are getting $r$ as a linear combination on $\cal M$.
-
-For example, in Example \ref{ex_gpld_table}, $R/I$ has dimension 3 over $K$, one choice of monomial basis being $\{1, x, y\}$.
-However, the output $r = y^6 - y^3$ was not given in terms of this monomial basis.
-Worse, $y^6$ and $y^3$ are linearly dependent in $R/I$, so $r$ was not given in terms of \emph{any} monomial basis for $R/I$.
-
-If we can modify our algorithm so that $r$ is always given in terms of a monomial basis for $R/I$,
-then we will always have $r \equiv 0$ in $R/I$ if and only if $r = 0$ is the output of GPLD
-(no non-trivial linear combination over $B$ sums to 0 in $R/I$),
-which is sufficient to solve the membership problem.
-Remember that $r$ has the property that none of its terms is divisible by a leading term of any of the $g_i$'s.
-We would get a unique representation for $r$ if our generators had the property that
-the set of monomials not divisible by any $\LT(g_i)$ is linearly independent.
-A Gr\"obner basis is precisely a set of polynomials with this property.
 
 \begin{definition}
   Let $I$ be an ideal of $R$ with monomial order $\leq$.
@@ -601,6 +286,71 @@ A Gr\"obner basis is precisely a set of polynomials with this property.
 \end{definition}
 That is, a Gr\"obner basis for $I$ is a finite set of generators for $I$ whose leading terms generate $\LT(I)$.
 
+In the examples below, let $R = K[x,y]$ with the degree lexicographic order with $x < y$.
+\begin{example}
+  \label{ex_groebner_1}
+  A somewhat trivial example. Let $I = \pid{x^2, xy}$.
+  Then $\{x^2, xy\}$ is a Gr\"obner basis for $I$.
+  In general, if $I = \pid{g_1, \ldots, g_m}$ and each $g_i$ is a monomial,
+  then $\{g_1, \ldots, g_m\}$ is a Gr\"obner basis.
+\end{example}
+\begin{example}
+  \label{ex_groebner_1}
+  Let $I = \pid{x^2 + x, xy}$.
+  Then $\{x^2 + x, xy\}$ is a Gr\"obner basis for $I$.
+  In light of the example to follow, this example is not as trivial as it appears.
+\end{example}
+\begin{example}
+  \label{ex_groebner_1}
+  Let $I = \pid{x^2 + y, xy}$.
+  Then $\{x^2 + y, xy\}$ is \emph{not} a Gr\"obner basis for $I$.
+  The polynomial $y^2$ is in $I$, since $y^2 = (x^2 + y)y - (xy)x$, hence $y^2 \in \LT(I)$.
+  However, $y^2 \not\in \pid{ \LT(x^2 + y), \LT(xy) } = \pid{x^2, xy}$,
+  hence $\LT(I) \neq \pid{ \LT(x^2 + y), \LT(xy) }$.
+\end{example}
+
+It may not be clear why $\{x^2 + x, xy\}$ is a Gr\"obner basis for an ideal, but $\{x^2 + y, xy\}$ is not.
+We give next another characterization of Gr\"obner bases so as to better recognize them.
+
+\begin{definition}
+  Let $f, g \in K[x_1, \ldots, x_n]$. The \defn{$S$-polynomial} of $f$ and $g$ is
+  \[ S(f,g) = f \frac m {\LT(f)} - g \frac m {\LT(g)}, \]
+  where $m = \lcm(\LM(f), \LM(g))$.
+\end{definition}
+
+The $S$ stands for subtraction or syzygy in various sources \note{(which?)}.
+The $S$-polynomial is constructed such that the leading terms of $f m / \LT(f)$ and $g m / \LT(g)$ cancel.
+\begin{theorem}
+  \note{Characterization of Gr\"obner bases by S-polynomials}.
+\end{theorem}
+
+\begin{example}
+  The $S$-polynomial of $x^2 + x$ and $xy$ is
+  \[ S(x^2 + y, xy) = (x^2 + x) \frac{x^2y}{x^2} - (xy)\frac{x^2y}{xy} = xy. \]
+  Note that $xy$ is divisible by an element of $\{x^2, xy\} = \{\LT(x^2 + x), \LT(xy)\}$.
+\end{example}
+\begin{example}
+  The $S$-polynomial of $x^2 + y$ and $xy$ is
+  \[ S(x^2 + y, xy) = (x^2 + y) \frac{x^2y}{x^2} - (xy)\frac{x^2y}{xy} = y^2. \]
+  Note that $xy$ is \emph{not} divisible by an element of $\{x^2, xy\} = \{\LT(x^2 + x), \LT(xy)\}$.
+\end{example}
+
+\begin{definition}
+  \note{Reduced modulo $G$}
+\end{definition}
+\begin{theorem}
+  \note{Characterization of Gr\"obner basis by $S$-polynomials.}
+\end{theorem}
+\begin{definition}
+  Let $G = \{g_1, \ldots, g_m\}$ be a Gr\"obner basis.
+  Then $G$ is called \defn{reduced} if for all $g \in G$, $g$ is reduced modulo $G-\{g\}$.
+\end{definition}
+
+\begin{theorem}
+  \note{RGB is unique.}
+  \note{$I = J \iff RGB(I) = RGB(J)$.}
+\end{theorem}
+
 \begin{theorem}
   Let $I$ be an ideal of $R$ with Gr\"obner basis $\{ g_1, \ldots, g_m \}$.
   Let $B$ be the set of monomials in $R$ not divisible by the leading term of any $g_i$,
@@ -608,7 +358,10 @@ That is, a Gr\"obner basis for $I$ is a finite set of generators for $I$ whose l
   Then $B$ is a $K$-vector space basis for $R/I$.
 \end{theorem}
 \begin{proof}
-  (See Theorem 15.2 in \cite{eisenbud95}.)
+  Theorem 15.2 in \cite{eisenbud95}.
+\end{proof}
+\begin{comment}
+\begin{proof}
   \begin{description}
     \item [$B$ is linearly independent in $R/I$:]
       Suppose that $B$ is \emph{not} linearly independent.
@@ -656,7 +409,33 @@ That is, a Gr\"obner basis for $I$ is a finite set of generators for $I$ whose l
       again yielding a smaller polynomial in $R - X$.
   \end{description}
 \end{proof}
+\end{comment}
 
+\begin{corollary}
+  \label{cor_dim_R_mod_I}
+  $$\dim_K R/I = \#\{ m \in \cal M_R ~|~ m \not\in \LT(I)\}.$$
+\end{corollary}
+\begin{theorem}
+  Let $G = \{g_1, \ldots, g_m\}$ be a Gr\"obner basis and consider the system of polynomial equations
+  \[g_1 = \ldots = g_m = 0.\]
+  This system has finitely many solutions if and only if for every indeterminate $x_i \in K[x_1, \ldots, x_n]$,
+  there is a power $x_i^k$ and element $g \in G$ such that $\LM(g) = x_i^k$.
+\end{theorem}
+\begin{theorem}
+  Let $G = \{g_1, \ldots, g_m\}$ be a Gr\"obner basis and suppose the system of polynomial equations
+  \[g_1 = \ldots = g_m = 0\]
+  has finitely many solutions.
+  Let $N$ be the number of solutions.
+  \begin{enumerate}[label=(\roman*)]
+    \item $N = \#\{ m \in \cal M_R ~|~ m \not\in \pid{\LT(g_1), \ldots, \LT(g_m)} \}$.
+    \item If $I$ is the $R$-ideal generated by $G$, then $N = \dim_K R/I$.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  For part (i), see \note{Buchberger}.
+  Part (ii) follows from Corollary \ref{cor_dim_R_mod_I}.
+\end{proof}
+\begin{comment}
 \begin{theorem}
   \label{thm_groebner_basis_product}
   Let $I$ and $J$ be ideals of $R = K[x_1, \ldots, x_n]$, generated by Gr\"obner bases, say
@@ -681,6 +460,7 @@ That is, a Gr\"obner basis for $I$ is a finite set of generators for $I$ whose l
       &= \pid{ \LT(f_i g_j) ~|~ 1 \leq i \leq m, 1 \leq j \leq n }
   \end{align*}
 \end{proof}
+\end{comment}
 
 \begin{theorem}
   \label{thm_groebner_basis_remainder}
