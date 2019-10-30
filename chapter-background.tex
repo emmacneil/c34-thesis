@@ -14,6 +14,9 @@ at which $f(x, y) = 0$, for some field $K$ and polynomial $f \in K[x,y]$.
 Examples of algebraic plane curves include elliptic curves, hyperelliptic curves,
 and the subject of this thesis, $C_{3,4}$ curves.
 An \defn{elliptic curve} is the set of zeroes of a polynomial
+\footnote{The order in which the terms appear in Equations
+\ref{eq_elliptic}, \ref{eq_genus_3_hyperelliptic}, and \ref{eq_c34_intro}
+is consistent with the $C_{a,b}$ order (Definition \ref{def_cab_order}) used throughout this thesis.}
 \begin{equation}
   \label{eq_elliptic}
   y^2 + x^3 + c_4xy + c_3x^2 + c_2y + c_1x + c_0.
@@ -29,7 +32,7 @@ A \defn{$C_{3,4}$ curve} is the set of zeroes of a polynomial
   \label{eq_c34_intro}
   y^3 + x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0.
 \end{equation}
-For each of these classes of curves, one might also demand that they be non-singular
+For each of these classes of curves, one typically also demands that they be non-singular
 \note{(put a definition of singular in chapter 4 and refer to it here)},
 as we will do in Chapter \ref{chap_curves}.
 
@@ -176,6 +179,7 @@ We briefly highlight prior work on genus 3 hyperelliptic curves.
 For ramified genus 3 hyperelliptic curves, the most efficient published explicit formulae
 are due to Nyukai \cite{nyukai06-1} \cite{nyukai06-2},
 who adds divisors in 1I+67M (1 finite field inversion and 67 multiplications) and doubles divisors in 1I+68M.
+\note{(This is out of date!)}
 For split genus 3 hyperelliptic curves, Sutherland \cite{sutherland18} recently published explicit formulae
 requiring 1I+79M/1I+82M to add/double.
 Rezai Rad \cite{rezairad16} \cite{rezairad19} found comparably fast explicit formulae to add/double
@@ -205,8 +209,8 @@ In \cite{arita99}, Arita gives a $O(g^3)$ algorithm to compute in the divisor cl
 where divisors are identified with polynomial ideals and represented by the Gr\"obner bases of these ideals.
 In \cite{harasawa00}, Harasawa and Suzuki identify divisors with $K[x]$-modules rather than ideals and represent divisors by matrices in Hermite normal form,
 achieving a $O(g^2)$ algorithm.
-In \cite{hess99}, Hess gives a $O(g^2)$ algorithm for determining the structure of the class group of a function field 
-\note{(say more on this)}.
+%In \cite{hess99}, Hess gives a $O(g^2)$ algorithm for determining the structure of the class group of a function field 
+%\note{(say more on this)}.
 
 This is only to highlight the choice of algorithms one might fall back on when the algorithms below fail.
 The asymptotic runtime of these algorithms are of little interest when we are working with curves of small genus ---
@@ -216,10 +220,9 @@ In \cite{arita05-2}, Arita specializes the algorithm from \cite{arita99} to the 
 He classifies divisors of $C_{3,4}$ curves into 19 types based on the forms of the Gr\"obner bases by which they are represented.
 The algorithm presented allows one to add divisors of any type.
 This is much more general than the algorithms to follow, requiring 5I+204M/5I+284M.
-\note{Shorten this paragraph.}
 Unlike the algorithms that follow, it allows one to add non-disjoint divisors (e.g. $(P + Q) + (Q + R)$)
 or double divisors with multiples of a point (e.g. doubling $P + 2Q$),
-although it handles this in a recursive manner that does not terminate over very small finite fields;
+although it handles this in a recursive manner that does not terminate over some curves over very small finite fields;
 Arita was interested in the cryptographic setting over a large finite field.
 
 Other publications are less general but much faster.
