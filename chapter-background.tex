@@ -152,6 +152,7 @@ and ultimately to compute terms in the $L$-series of the curve,
 we need an algorithm to efficiently carry out addition in the divisor class group.
 
 The above-mentioned conjectures have been studied on genus 1 and genus 2 curves.
+\note{Cite some papers.}
 Attention has turned recently towards studying them on genus 3 curves.
 Genus 3 algebraic plane curves fall into two categories: hyperelliptic and non-hyperelliptic.
 Non-hyperelliptic genus 3 curves are also called $C_{3,4}$ curves, a special case of the broader family of $C_{a,b}$ curves.
@@ -182,10 +183,10 @@ who adds divisors in 1I+67M (1 finite field inversion and 67 multiplications) an
 \note{(This is out of date!)}
 For split genus 3 hyperelliptic curves, Sutherland \cite{sutherland18} recently published explicit formulae
 requiring 1I+79M/1I+82M to add/double.
-Rezai Rad \cite{rezairad16} \cite{rezairad19} found comparably fast explicit formulae to add/double
-in the infrastructure of a hyperelliptic curve in 1I+75M/1I+86M.
+Rezai Rad \emph{et al.} \cite{rezairad16} \cite{rezairad19} found comparably fast explicit formulae to add/double
+in the infrastructure of a hyperelliptic curve in 1I+74M+1SQ/1I+81M.
 The relationship between the divisor class group and the infrastructure is explored in \cite{rezairad16} and \cite{rezairad19}.
-Faster hyperelliptic curve arithmetic remains a subject of ongoing research at the Unviersity of Calgary.
+Faster hyperelliptic curve arithmetic remains a subject of ongoing research at the University of Calgary.
 
 In \cite{kedlaya08} and \cite{harvey16}, Kedlaya, Harvey, Massierer, and Sutherland use this arithmetic to compute $L$-series of hyperelliptic curves of genus $g \leq 3$.
 Sutherland notes in \cite{sutherland18} that in earlier attempts at computing $L$-series using generic divisor arithmetic algorithms (i.e. not using explicit formulae),
@@ -240,12 +241,22 @@ by computing kernels of maps between vector spaces in 2I+117M/2I+129M.
 In an appendix in \cite{kmakdisi18},
 Khuri-Makdisi gives an improvement bringing the operation count down to 2I+98M/2I+110M.
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                          %%%%%
+%%%%%   Thesis Contributions   %%%%%
+%%%%%                          %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Contributions of the Thesis}
+
 The goal of this thesis is to marry the methods of Abu Salem and Khuri-Makdisi ---
 who have the fastest explicit formulae to date ---
 with the methods of Arita --- whose formulae are the most general ---
 in order to produce fast and fully general explicit formulae describing all cases of $C_{3,4}$ curve arithmetic.
 More specifically,
-\begin{itemize}
+\begin{itemize}[itemsep=0pt]
   \item the curve equation may be over a finite field of any size, small or large;
   \item the curve equation may be over a finite field of any characteristic, including 2 and 3;
   \item the curve equation may be in long or short form;
@@ -256,15 +267,46 @@ More specifically,
 \end{itemize}
 This marriage of methods is facilitated by the fact that Salem/Khuri-Makdisi's representation of typical divisors resembles type 31 divisors from Arita's classification.
 
+All of these goals are attained in this thesis.
+When restricting the resulting formulae to the typical case
+(specifically, adding/doubling disjoint typical divisors on a curve in short form over a field of characteristic greater than 3)
+and comparing to prior work, we also obtain an improvement in efficiency over the previous state-of-the-art.
+This is summarized in Table \ref{tab_op_count_intro}.
+\note{Copy table from AMMCS slides}
+Besides the typical case,
+this thesis produces explicit formulae for all possible cases arising from adding and doubling divisors.
+These formulae are found in Appendix \ref{appendix_formulae}.
+No other publication has explicit formulae covering all cases,
+making this contribution all the more significant.
+
+\begin{table}
+  \label{tab_op_count_intro}
+\end{table}
+
+By improving upon the typical case and completing the picture for the atypical cases,
+this thesis will have a significant impact on number theoretic computations
+heavy on group arithmetic in the divisor class group of a $C_{3,4}$ curve.
+As is the case in \cite{sutherland16}, 
+one may wish to take a curve over $\bb Q$, reduce it modulo all primes up to some bound,
+and compute the order of the divisor class group of that reduced curve.
+The improvement in the typical case remains significant over all of the computations,
+while the completion of the atypical cases becomes more significant over the smaller primes,
+where one frequently bumps into these atypical cases.
+
+A full implementation in Sage of the arithmetic presented in this thesis is available at {\tt https://github.com/emmacneil/c34-curves}.
+This implementation has been tested by unit tests as well as by adding and doubling a large number of randomly chosen divisors
+and comparing the results to Sage's own provided ideal arithmetic.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%             %%%%%
-%%%%%   Outline   %%%%%
-%%%%%             %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                    %%%%%
+%%%%%   Thesis Outline   %%%%%
+%%%%%                    %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Thesis Outline}
+
 
 We begin by reviewing some background material necessary for understanding this thesis.
 Familiarity with common algebraic structures ---

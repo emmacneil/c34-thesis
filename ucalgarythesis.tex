@@ -47,7 +47,7 @@
 %% Include extra packages here
 
 \usepackage[utf8]{inputenc}
-\usepackage{amssymb,amsthm,amsmath}
+\usepackage{amssymb,amsmath,amsthm}
 %\usepackage[hidelinks]{hyperref}
 \usepackage{algorithm}
 %\usepackage{algorithmic}
@@ -324,12 +324,11 @@ to find fast explicit formulas describing $C_{3,4}$ curve arithmetic that are co
 % Epigraph (this section is OPTIONAL)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-  \chapter{Epigraph}
-
-  \begin{epiquote} 
-   \textit{A quotation is a handy thing to have about, saving one the trouble of thinking for oneself, always a laborious business.} 
-  \end{epiquote}    
-  \begin{flushright} - A.A. Milne, \textit{If I May}\end{flushright}\bigskip
+%  \chapter{Epigraph}
+%  \begin{epiquote} 
+%   \textit{A quotation is a handy thing to have about, saving one the trouble of thinking for oneself, always a laborious business.} 
+%  \end{epiquote}    
+%  \begin{flushright} - A.A. Milne, \textit{If I May}\end{flushright}\bigskip
    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -404,8 +403,8 @@ to find fast explicit formulas describing $C_{3,4}$ curve arithmetic that are co
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \appendix             %% Do not remove this line
-
-%\include{appendixa}
+\renewcommand{\thesection}{\Alph{section}}
+\include{appendix-formulae}
 %\include{appendixb}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
