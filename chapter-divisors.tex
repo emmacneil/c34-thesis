@@ -12,9 +12,10 @@
 \subsection{Divisors}
 
 Let $C$ be a $C_{3,4}$ curve.
-A \defn{divisor} $D$ of $C$ is a formal sum of points in $C(\bar K)$, including possibly the point at infinity, $P_\infty$.
+A \defn{divisor} $D$ of $C$ is a formal sum of points in $C(\bar K)$,
+including possibly the point at infinity, $P_\infty$.
 If $P$, $Q$, and $R$ are points on the curve $C$, then examples of divisors include
-  \[ \begin{array}{c} P + Q + R - 3P_\infty \\ P + 3Q - 2R \\ Q \\ 0 \end{array}. \]
+  \[ \begin{array}{c} P + Q + R - 3P_\infty \\ P + 3Q - 2R \\ Q \\ 0. \end{array} \]
 More generally, a divisor has the form
   \[ D = \sum_{P \in C(\bar K)} n_P P,\]
 where only finitely many $n_P$'s are non-zero.
@@ -31,10 +32,13 @@ The \defn{degree} of a divisor $D$, denoted by $\deg(D)$, is the sum of its orde
   \[ \deg(D) = \sum_{P \in C(\bar K)} \ord_P(D). \]
 For example, $\deg(P + 3Q - 2R) = 1 + 3 - 2 = 2$.
 
+The \defn{support} of a divisor, denoted $\supp(D)$ is the set of points with $n_P \neq 0$,
+\[ \supp(D) := \{ P \in C(\bar K) ~|~ \ord_P(D) \neq 0 \}. \]
+
 It is easily verified that the map $\deg$ and the family of maps $\ord_P$ have the additive properties
   \[ \ord_P(A + B) = \ord_P(A) + \ord_P(B) \]
   \[ \deg(A + B) = \deg(A) + \deg(B). \]
-In particular, $\ord_P$ and $\deg$ are group homomorphisms $\Div(C) \to \bb Z$.
+In fact, $\ord_P$ and $\deg$ are group homomorphisms $\Div(C) \to \bb Z$.
 
 We are able to put a partial order on divisors.
 For two divisors $D = \sum n_P P$ and $D' = \sum m_P P$,
@@ -42,16 +46,15 @@ we order them
   \[ D \leq D' \iff \forall P \in C(\bar K) : n_P \leq m_P. \]
 The divisor $D$ precedes $D'$ if it has lesser order than $D'$ at every point.
 This partial order is compatible with addition, in the sense that for any divisors $A, B, D$,
-  \[ A \leq B \implies A + D \leq B + D \]
-  \[ A \leq B \implies -B \leq -A. \]
+  \[ A \leq B \implies A + D \leq B + D. \]
 If $D \geq 0$, then $D$ is called an \defn{effective} divisor.
 
 Divisors of a curve, together with this partial order, form a lattice --
 every pair of divisors have a unique join and meet,
 which we call their \defn{least common multiple} and \defn{greatest common divisor}.
 Given two divisors $D$ and $D'$, their least common multiple is the unique, smallest divisor $L$ such that $D \leq L$ and $D' \leq L$.
-Their greatest common divisor is the unique, largest divisors $G$ such that $G \leq D$ and $G \leq D'$.
-Explicitly,
+Their greatest common divisor is the unique, largest divisor $G$ such that $G \leq D$ and $G \leq D'$.
+Defined explicitly,
 \begin{align*}
   \lcm(D, D') &= \sum_{P \in C(\bar K)}\max\{\ord_P(D), \ord_P(D')\}P \\
   \gcd(D, D') &= \sum_{P \in C(\bar K)}\min\{\ord_P(D), \ord_P(D')\}P.
@@ -60,7 +63,7 @@ Just as integers $a$ and $b$ satisfy the law
   \[ \left| ab \right| = \lcm(a,b)\gcd(a,b), \]
 divisors satisfy the law
   \[ D + D' = \lcm(D, D') + \gcd(D, D'). \]
-This property will play a prominent role in adding divisors \note{in chapter ???}.
+This property will play a prominent role when adding divisors in Chapter \ref{chap_addition}.
 
 There is a short chain of subgroups of $\Div(C)$,
 \[ \Princ(D) \subset \Div_K^0(C) \subset \Div^0(C) \subset \Div(C), \]
@@ -70,7 +73,7 @@ Since $\deg : \Div(C) \to \bb Z$ is a group homomorphism, its kernel is a subgro
 The kernel, of course, is the subgroup of divisors of degree zero, which we denote by $\Div^0(C) := \ker \deg$.
 
 Let $\sigma \in \Gal(\bar K / K)$.
-In \note{an earlier chapter}, we define the action of $\sigma$ of $C(\bar K)$.
+In Chapter \ref{chap_curves}, we defined the action of $\sigma$ on a point (Equation \ref{eq_galois_action_on_point}).
 This may be extended to an action on $\Div(C)$ in a natural way.
 If $D = \sum n_P P$, then define
 \[ \sigma(D) = \sum_{P \in C(\bar K)} n_P \sigma(P). \]
@@ -88,16 +91,16 @@ Divisors defined over $K$ therefore form a subgroup $\Div_K(C) \subset \Div(C)$.
   \[ \Div_K(C) := \Div(C)^{\Gal(\bar K/K)} \]
 
 \begin{example}
-  Let $K$ be any field, $L$ any algebraic extension and $\sigma \in \Gal(\bar K/L)$.
+  Let $K$ be any field, $L/K$ any algebraic extension and $\sigma \in \Gal(\bar K/L)$.
   By definition, $\sigma$ fixes $L$.
   If $P$ is any point with coordinates in $L$, then $\sigma(P) = P$.
   If $D$ is any divisor consisting only of points with coordinates in $L$, then $\sigma(D) = D$ and $D$ is defined over $L$.
 \end{example}
 \begin{example}
   Let $K = \bb F_2$ and let $L = K(\alpha)$ be an algebraic extension with $\alpha^2 + \alpha = 1$.
-  Let $C$ be the curve $x^4 + y^3 + x + 1$ over $K$.
+  Let $C$ be the $C_{3,4}$ curve $y^3 + x^4 + x + 1$ over $K$.
   Let $P$ be the point $(\alpha : 1 : 1)$ on $C$ and let $D$ be the divisor $D = P$.
-  There is an automorphism $\sigma \in \Gal(\bar K/K)$ that maps $\alpha \mapsto \alpha + 1$, so 
+  There is an automorphism $\sigma \in \Gal(\bar K/K)$ that maps $\alpha \mapsto \alpha + 1$, and
     \[ \sigma(D) = \sigma(P) = (\sigma(\alpha) : \sigma(1) : \sigma(1)) = (\alpha + 1 : 1 : 1) \neq D. \]
   Hence $D$ is not defined over $K$.
 \end{example}
@@ -128,68 +131,69 @@ The intersection of subgroups is again a subgroup, so define
 These are the divisors defined over $K$ of degree zero.
 
 If $f \in K(C)$ is a rational function on $C$,
-then $f$ has finitely may zeros and poles along $C$, and,
-counting multiplicities, there are as many zeros as there are poles.
-\note{What theorem is this?}
-Define the \defn{order} of $f$ at $P$ by
-\[ \ord_P(f) = \begin{cases}
-  n & \text{$f$ has a zero of order $n$ at $P$} \\
-  -n & \text{$f$ has a pole of order $n$ at $P$}
-\end{cases}. \]
-Define the \defn{divisor of $f$} as
-\[ \div(f) = \sum_{P \in C(\bar K)} \ord_P(f) P. \]
-Since $f$ has finitely many zeros and poles, this formal sum belongs properly to $\Div(C)$,
-thus it is correctly called a divisor.
-Since these poles and zeros add to zero, this is a degree zero divisor.
-\note{Need a proof that this is defined over $K$.}
-Therefore $\div (f)$ is an element of $\Div_K^0(C)$.
-
-If $D$ is a divisor and there is an $f$ such that $D = \div(f)$,
+define the \defn{divisor of $f$} as
+\[ \div(f) = \sum_{P \in C(\bar K)} \nu_P(f) P. \]
+If $D = \div(f)$ for some rational function $C$,
 then $D$ is called a \defn{principal divisor}.
-Principal divisors form a subgroup \note{(prove it is closed under addition)} $\Princ(C) \subset \Div_K^0(C)$.
-
-Finally, we have describe the subsets
+\begin{proposition}
+  Let $f \in K(C)$ be a rational function on $C$.
+  Then $\div f \in \Div_K^0(C)$.
+\end{proposition}
+\begin{proof}
+  By Theorem 7.7.1 in \cite{galbraith12}, $f$ has finitely many poles and zeroes, so that the formal sum
+  \[ \div(f) = \sum_{P \in C(\bar K)} \nu_P(f) P \]
+  is finite.
+  By Theorem 8.3.14 in \cite{galbraith12}, $f$ has as many poles as it has zeroes, so that $\div(f)$ has degree zero.
+  By Proposition \ref{prop_valuation_on_orbit}, $\div(f)$ is defined over $K$.
+\end{proof}
+Observe also that
+\begin{align*}
+  \div(f) + \div(g)
+    &= \sum_{P \in C(\bar K)} \nu_P(f) P + \sum_{P \in C(\bar K)} \nu_P(g) P \\
+    &= \sum_{P \in C(\bar K)} (\nu_P(f) + \nu_P(g))P \\
+    &= \sum_{P \in C(\bar K)} \nu_P(fg)P \\
+    &= \div(fg).
+\end{align*}
+We have also $\div(f) - \div(g) = \div(f/g)$,
+so that principal divisors form a subgroup $\Princ(C) \subset \Div_K^0(C)$.
+Finally, we have described the subsets
 \[ \Princ(D) \subset \Div_K^0(C) \subset \Div^0(C) \subset \Div(C). \]
+
 The \defn{divisor class group} of $C$ is the quotient group
 \[ \Cl(C) = \frac {\Div_K^0(C)} {\Princ(C)}. \]
-In the literature, the divisor class group is often called the \defn{Jacobian} $\Jac(C)$ of $C$
-\note{e.g. Abu Salem, Khuri-Makdisi, Arita, Basiri, Flon, Oyono, Harasawa}
-or the \defn{Picard group} $\Pic^0(C)$ of $C$.
-\note{Does Galbraith use this?}
-\note{Hess and Weir use DCG.}
+In the literature, the divisor class group is usually called the \defn{Jacobian}, $\Jac(C)$, of $C$,
+e.g. \cite{arita05-2}, \cite{basiri04}, \cite{flon08}, \cite{harasawa00}, \cite{salem07}.
+Other authors call it the divisor class group while giving it the notation $\Pic_K^0(C)$,
+as it is isomorphic to the \defn{Picard group} of $C$,
+e.g. \cite{eisenbud95} \cite{galbraith12} \cite{sutherland16}.
 In this thesis, we will use the term divisor class group,
 as the Picard group is usually defined in terms of line bundles
-and the Jacobian in terms of a Jacobian variety,
+and the Jacobian implies a relationship to a Jacobian variety,
 neither perspective being adopted here.
 
-
-
-\subsection{Remarks}
-
-Let $D$ be a divisor and suppose $\ord_P(D) = -1$ for some point $P = (x_0 : y_0 : 1)$.
+The \defn{affine part} or \defn{finite part} of a divisor $D$ is
+\[ D_{\text{aff}} = \sum_{\substack{P \in C(\bar K) \\ P \neq P_\infty}} n_P P. \]
+In the divisor class group, every divisor is equivalent to one whose finite part is effective.
+To illustrate this, let $D$ be a divisor and suppose $\ord_P(D) = n < 0$ for some finite point $P = (x_0 : y_0 : 1)$.
 Consider the vertical line through $P$.
-This line is given by the polynomial $f = x - x_0$ and intersects $C$ at three points (counting multiplicity), $P$, $Q$, and $R$.
-Then $\div f = P + Q + R - 3P_\infty$.
-In the divisor class group,
-  \[ \div f \equiv 0 \equiv P + Q + R - 3P_\infty. \]
-Thus $-P \equiv Q + R - 3P_\infty$.
+This line is given by the polynomial $f = x - x_0$ and intersects $C$ at three points $P$, $Q$, and $R$,
+not necessarily distinct, but counting multiplicity.
+Then $\div f = P + Q + R - 3P_\infty$, and in the divisor class group, $\div f \equiv 0$.
+Let $D' = D + n \div f$.
+Then $D' \equiv D$ in the divisor class group and $\ord_P(D') \geq 0$.
 
-Because of this, anytime an affine point appears in a divisor with some negative multiplicity,
-it may be replaced by positive points minus some multiple of the point at infinity.
 Every divisor may therefore be written in the form
   \[ D = P_1 + \ldots + P_n - nP_\infty \]
 where the points $P_i$ are not necessarily distinct.
 In other words, $D$ can be written in the form
-  \[ D = D^+ - D^\infty \]
-where $D^+$ is an effective divisor and $D^\infty = \deg(D^+)P_\infty$ (also effective).
-
+  \[ D = D_+ - D_\infty \]
+where $D_+$ is an effective divisor and $D_\infty = \deg(D_+)P_\infty$ (also effective).
+\begin{comment}
 Unless otherwise specified, we will assume that a divisor $D$ is of this form.
-Since $D^\infty$ is determined uniquely by $D^+$,
-we will furthermore drop the $D^\infty$ part and denote $D$ by its positive part only.
-That is, if $D = P + Q + R - 3P_infty$, we will instead write simply $D = P + Q + R$ and call $D$ a degree 3 divisor.
-
-
-
+Since $D_\infty$ is determined uniquely by $D^+$,
+we will furthermore drop the $D_\infty$ part and denote $D$ by its positive part only.
+That is, if $D = P + Q + R - 3P_\infty$, we will instead write simply $D = P + Q + R$ and call $D$ a degree 3 divisor.
+\end{comment}
 
 
 
@@ -206,25 +210,43 @@ For $A, B \in \Div^0(C)$
 However, we will write $\leq$ rather than $\leq_{\text{aff}}$.
 
 Now for degree zero divisors defined over $K$, we say that a divisor $0 < D \in \Div_K^0(C)$ is \defn{prime}
-if for divisors $0 < A, B \in \Div_K^0(C)$,
-  \[ D = A + B \implies A = D \text{ or } B = D. \]
+if for divisors $0 \leq A, B \in \Div_K^0(C)$,
+  \[ D = A + B \implies D \leq A \text{ or } D \leq B. \]
 The prime divisors are the least non-zero divisors in the lattice $(\Div_K^0(C), \leq)$.
-
+Another characterization of prime divisors is that they are orbits of points on $C$, which we will show now.
+If $P \in C(\bar K)$ is a finite point, define
+\[ [P] := \sum_{Q \in \orb(P)}(Q - P_\infty). \]
 \begin{proposition}
-  Let $P$ be an affine point on $C$ and let $[P] = \sum_{P_0 \in \orb(P)}(P_0 - P_\infty)$.
-  Then $[P]$ is a prime divisor.
+  \label{prop_prime_divisors}
+  Let $D \in \Div_K^0(C)$. The following are equivalent.
+  \begin{enumerate}[label=(\roman*)]
+    \item $D$ is prime;
+    \item There is a finite point $P \in C(\bar K)$ such that $D = [P]$.
+  \end{enumerate}
 \end{proposition}
-\note{Show the converse as well! Make this if and only if.}
 \begin{proof}
-  It is clear that $0 < [P]$, since
-  \[ 0 < \sum_{P_0 \in \orb(P)}P_0. \]
-  Now suppose $A, B \in \Div_K^0(C)$ are such that $0 < A, B$ and $A + B = D$.
-  Then $P$ is in the support of either $A$ or $B$.
-  Without loss of generality, suppose $P \in \supp(A)$.
-  Since $A$ is defined over $K$, the support of $A$ must also contain all other points in $\orb(P)$,
-  whence $A = [P]$.
+  Let $D \in \Div_K^0(C)$.
+  \begin{description}
+    \item[(i) $\implies$ (ii):]
+      Suppose $D$ is prime.
+      Then $D$ is effective, so let $P$ be a finite point in $\supp(D)$.
+      Since $D$ is defined over $K$, $[P] \leq D$, so $D = [P] + D'$ for some $D'$.
+      Since $D$ is prime, either $D \leq [P]$ or $D \leq D'$.
+      Suppose $D \leq D'$.
+      Then $D + [P] \leq D' + [P] = D$, hence $[P] \leq 0$, which is impossible.
+      Therefore $D \leq [P]$.
+      Since we have both $D \leq [P]$ and $[P] \leq D$, the result follows.
+      
+    \item[(ii) $\implies$ (i):]
+      Suppose $D = [P]$ for some finite point $P$.
+      Let $A, B \in \Div_K^0(C)$ be effective divisors such that $D = A + B$.
+      Then either $P \in \supp A$ or $P \in \supp B$.
+      Suppose, without loss of generality, that $P \in \supp A$.
+      Since $A$ is defined over $K$, every other point in $\orb P$ is in $\supp A$, hence $[P] \leq A$.
+      Since $D = [P]$, $D \leq A$.
+  \end{description}
 \end{proof}
 
 Just as non-zero ideals in a Dedekind domain can be uniquely factored into products of prime ideals,
-non-zero divisors in $\Div_K^0(C)$ can be factored into sums of prime divisors.
+non-zero divisors in $\Div_K^0(C)$ can be uniquely partitioned into sums of prime divisors.
 This relationship is explored in the next chapter.
