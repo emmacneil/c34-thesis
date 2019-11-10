@@ -7,24 +7,67 @@
 \section{Addition}
 \label{chap_addition}
 
-The addition algorithm presented in this chapter is based on the algorithm presented in \cite{salem07},
-but extended to operate on divisors not considered \cite{salem07}.
-In particular, the authors in \cite{salem07} only considered adding disjoint typical degree 3 divisors,
-and their algorithm would only return a meaningful value when the sum of the divisors was also typical ---
-otherwise it would return an error code.
-They also assumed the $C$ is defined over a large finite field by an equation of the short form \ref{eq_c34_short}.
-The modification to the algorithm in this chapter will operate on typical or atypical divisors of degree 3 or less
-and non-disjoint divisors,
-and it will return a correct result (up to equivalence in the divisor class group)
-even when the sum of the divisors is atypical.
-It also works for the more general curve equation \ref{eq_c34}.
+The addition algorithm presented in this chapter
+is based on the algorithm presented by Abu Salem and Khuri-Makdisi in \cite{salem07},
+but extended to operate on divisors not considered in \cite{salem07}.
+The authors in \cite{salem07} only considered adding disjoint typical degree 3 divisors,
+and their algorithm would only return a meaningful value
+when the sum of the divisors was also typical ---
+otherwise it would return a value indicating an error has occurred.
+They also assumed that $C$ is defined over a large finite field
+by an equation of the short form \ref{eq_c34_short}.
 
-In \cite{arita05-2}, Arita's algorithm also works in this more general setting.
-As we are adopting Arita's classification of divisors into types,
-this chapter is in a sense a marriage of Khuri-Makdisi/Abu Salem's and Arita's algorithms.
-Khuri-Makdisi and Abu Salem's algorithm was a significant speed-up over Arita's in the typical setting that they considered.
-The generalization in this chapter maintains that speed improvement.
-Chapter \ref{chap_typical_case} will show a speed-up over Khuri-Makdisi/Abu Salem as well.
+Their algorithm may be briefly described as follows.
+To add two disjoint typical degree 3 divisors $D$ and $D'$,
+they first identify these divisors with vector spaces $W_D^{x^2y}$ and $W_{D'}^{x^2y}$.
+These vector spaces will be defined properly below.
+The sum $D + D'$ is also identified with the vector space $W_{D + D'}^{x^2y}$
+and is related to $W_D^{x^2y}$ and $W_{D'}^{x^2y}$ via
+\[ W_{D + D'}^{x^2y} = W_D^{x^2y} \cap W_{D'}^{x^2y}. \]
+The intersection of vector spaces is computed by instead computing the kernel of the quotient
+\begin{center}
+\begin{tikzcd}
+  W_{D + D'}^{x^2y} \arrow[hook]{r}{\ker M} &
+  W_D^{x^2y} \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} &
+  W^{x^2y} \arrow[two heads]{r}{\pi} &
+  \frac {W^{x^2y}} {W_{D'}^{x^2y}}
+\end{tikzcd},
+\end{center}
+where $\iota$ and $\pi$ indicate the canonical inclusion and quotient maps,
+and $M = \pi \circ \iota$ is their composition.
+
+In this chapter, we will generalize this algorithm to cover all cases of divisor addition
+by making three key observations:
+\begin{enumerate}[label=(\roman*)]
+  \item when $D$ and $D'$ are non-disjoint,
+        the kernel is in fact computing $L = \lcm(D, D')$;
+  \item $G = \gcd(D, D')$ may be computed by computing the image of the quotient; and
+  \item the monomial $x^2y$ indicates an upper bound on a search space ---
+        by choosing a larger monomial $m > x^2y$, one can account for the case where
+        $D + D'$ is atypical.
+\end{enumerate}
+The generalization of Abu Salem and Khuri-Makdisi's addition requires
+computing the kernel and image of $M$ in
+\begin{center}
+\begin{tikzcd}
+  W_L^m \arrow[hook]{r}{\ker M} &
+  W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} &
+  W^m \arrow[two heads]{r}{\pi} &
+  \frac {W^m} {W_{D'}^m} \arrow[two heads]{r}{\im M} &
+  W_G^m
+\end{tikzcd}.
+\end{center}
+In the sections to follow, we explain the steps in detail.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                 %%%%%
+%%%%%   AFTER INTRO   %%%%%
+%%%%%                 %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{AFTER INTRO}
 
 We wish to add two divisors $D$ and $D'$ and receive a divisor $D'' \equiv D + D'$.
 We make the following assumptions on $D$ and $D'$:
