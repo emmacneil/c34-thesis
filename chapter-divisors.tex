@@ -7,6 +7,20 @@
 \section{The Divisor Class Group}
 \label{chap_divisors}
 
+The main matter of this thesis is to describe efficient arithmetic in the divisor class group of a $C_{3,4}$ curve,
+so we come now to defining that group.
+We begin with a description of divisors on a curve.
+Divisors on a curve $C$ form an Abelian group, $\Div(C)$, of which we will describe several subgroups,
+most notably the subgroups $\Div_K^0(C)$ and $\Princ(C)$.
+The divisor class group is the quotient of these two subgroups.
+
+We will assume that $C$ is a $C_{3,4}$ curve,
+though the definitions given in this chapter up to and including the divisor class group
+work equally well for any curve.
+Some facts towards the end of the chapter related to a partial order $(\Div_K^0(C), \leq)$,
+including a characterization of prime divisors,
+depend on the fact that a $C_{3,4}$ curve has a unique point at infinity, $P_{\infty}$.
+
 
 
 \subsection{Divisors}
@@ -15,7 +29,7 @@ Let $C$ be a $C_{3,4}$ curve.
 A \defn{divisor} $D$ of $C$ is a formal sum of points in $C(\bar K)$,
 including possibly the point at infinity, $P_\infty$.
 If $P$, $Q$, and $R$ are points on the curve $C$, then examples of divisors include
-  \[ \begin{array}{c} P + Q + R - 3P_\infty \\ P + 3Q - 2R \\ Q \\ 0. \end{array} \]
+  \[ \begin{array}{c} P + Q + R - 3P_\infty, \\ P + 3Q - 2R, \\ Q, \\ 0. \end{array} \]
 More generally, a divisor has the form
   \[ D = \sum_{P \in C(\bar K)} n_P P,\]
 where only finitely many $n_P$'s are non-zero.
@@ -43,17 +57,18 @@ In fact, $\ord_P$ and $\deg$ are group homomorphisms $\Div(C) \to \bb Z$.
 We are able to put a partial order on divisors.
 For two divisors $D = \sum n_P P$ and $D' = \sum m_P P$,
 we order them
-  \[ D \leq D' \iff \forall P \in C(\bar K) : n_P \leq m_P. \]
+  \[ D \preceq D' \iff \forall P \in C(\bar K) : n_P \leq m_P. \]
 The divisor $D$ precedes $D'$ if it has lesser order than $D'$ at every point.
 This partial order is compatible with addition, in the sense that for any divisors $A, B, D$,
-  \[ A \leq B \implies A + D \leq B + D. \]
-If $D \geq 0$, then $D$ is called an \defn{effective} divisor.
+  \[ A \preceq B \implies A + D \preceq B + D. \]
+If $D \succeq 0$, then $D$ is called an \defn{effective} divisor.
 
 Divisors of a curve, together with this partial order, form a lattice --
 every pair of divisors have a unique join and meet,
 which we call their \defn{least common multiple} and \defn{greatest common divisor}.
-Given two divisors $D$ and $D'$, their least common multiple is the unique, smallest divisor $L$ such that $D \leq L$ and $D' \leq L$.
-Their greatest common divisor is the unique, largest divisor $G$ such that $G \leq D$ and $G \leq D'$.
+Given two divisors $D$ and $D'$, their least common multiple is the unique, smallest divisor $L$
+such that $D \preceq L$ and $D' \preceq L$.
+Their greatest common divisor is the unique, largest divisor $G$ such that $G \preceq D$ and $G \preceq D'$.
 Defined explicitly,
 \begin{align*}
   \lcm(D, D') &= \sum_{P \in C(\bar K)}\max\{\ord_P(D), \ord_P(D')\}P \\
@@ -105,6 +120,7 @@ Divisors defined over $K$ therefore form a subgroup $\Div_K(C) \subset \Div(C)$.
   Hence $D$ is not defined over $K$.
 \end{example}
 \begin{example}
+  \label{ex_defined_over_k}
   Let $K$, $L$, $C$, and $P$ be as in the previous example.
   Let $Q = (\alpha + 1 : 1 : 1)$, which is also a point on $C$.
   Let $D$ be the divisor $D = P + Q$.
@@ -180,7 +196,7 @@ This line is given by the polynomial $f = x - x_0$ and intersects $C$ at three p
 not necessarily distinct, but counting multiplicity.
 Then $\div f = P + Q + R - 3P_\infty$, and in the divisor class group, $\div f \equiv 0$.
 Let $D' = D + n \div f$.
-Then $D' \equiv D$ in the divisor class group and $\ord_P(D') \geq 0$.
+Then $D' \equiv D$ in the divisor class group and $\ord_P(D') \succeq 0$.
 
 Every divisor may therefore be written in the form
   \[ D = P_1 + \ldots + P_n - nP_\infty \]
@@ -197,22 +213,39 @@ That is, if $D = P + Q + R - 3P_\infty$, we will instead write simply $D = P + Q
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                    %%%%%
+%%%%%   Prime Divisors   %%%%%
+%%%%%                    %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Prime Divisors}
+\label{sec_prime_divisors}
 
-We have a partial order on divisors, with the property that $A < B \implies \deg A < \deg B$.
-On the subgroup of degree zero divisors, this partial order is uninteresting, since there are no two distinct degree zero divisors with $A < B$.
+We have a partial order on divisors, with the property that $A \preceq B \implies \deg A \leq \deg B$.
+On the subgroup $\Div_K^0(C)$, this partial order is uninteresting,
+since there are no two distinct degree zero divisors with $A \preceq B$.
 
-If $D$ is a degree zero divisor, then we can write $D = D_{\text{aff}} - D_\infty$, where $D_\infty = \deg D_{\text{aff}}P_\infty$.
+If $D$ is a degree zero divisor,
+then we can separate out the point at infinity and write $D = D_{\text{aff}} - D_\infty$,
+where $P_\infty \not\in \supp(D_{\text{aff}})$ and $D_\infty = (\deg D_{\text{aff}})P_\infty$.
 The $D_\infty$ part is uniquely determined by the $D_{\text{aff}}$ part.
 This leads to a more useful partial order on degree zero divisors.
-For $A, B \in \Div^0(C)$
-  \[ A \leq_{\text{aff}} B \iff A_{\text{aff}} \leq B_{\text{aff}}. \]
-However, we will write $\leq$ rather than $\leq_{\text{aff}}$.
+For $A, B \in \Div_K^0(C)$, define the partial order $\leq$ by
+  \[ A \leq B \iff A_{\text{aff}} \preceq B_{\text{aff}}. \]
+Define also the set
+  \[ \Div_K^{\geq 0}(C) := \{ D \in \Div_K^0(C) ~|~ D \geq 0 \}. \]
+The set $\Div_K^{\geq 0}(C)$ forms a monoid under addition,
+and $(\Div_K^{\geq 0}(C), \leq)$ forms a lattice with a minimum element, 0.
 
-Now for degree zero divisors defined over $K$, we say that a divisor $0 < D \in \Div_K^0(C)$ is \defn{prime}
-if for divisors $0 \leq A, B \in \Div_K^0(C)$,
+With this partial order, we may define prime divisors in a manner that echoes
+the definition of prime ideals\footnote{$\frak{ab} \subseteq \frak p \implies \frak a \subseteq \frak p \text{ or } \frak b \subseteq \frak p$.}
+and Euclid's Lemma.\!\footnote{$p | ab \implies p | a \text{ or } p | b$.}
+\begin{definition}
+  A divisor $D \in \Div_K^{\geq 0}(C)$ is \defn{prime} if $D > 0$ and for all $A, B \in \Div_K^{\geq 0}(C)$,
   \[ D = A + B \implies D \leq A \text{ or } D \leq B. \]
-The prime divisors are the least non-zero divisors in the lattice $(\Div_K^0(C), \leq)$.
+\end{definition}
+The prime divisors are the least non-zero divisors in the lattice $(\Div_K^{\geq 0}(C), \leq)$.
 Another characterization of prime divisors is that they are orbits of points on $C$, which we will show now.
 If $P \in C(\bar K)$ is a finite point, define
 \[ [P] := \sum_{Q \in \orb(P)}(Q - P_\infty). \]
@@ -229,7 +262,7 @@ If $P \in C(\bar K)$ is a finite point, define
   \begin{description}
     \item[(i) $\implies$ (ii):]
       Suppose $D$ is prime.
-      Then $D$ is effective, so let $P$ be a finite point in $\supp(D)$.
+      Then $D > 0$, so let $P$ be a finite point in $\supp(D)$.
       Since $D$ is defined over $K$, $[P] \leq D$, so $D = [P] + D'$ for some $D'$.
       Since $D$ is prime, either $D \leq [P]$ or $D \leq D'$.
       Suppose $D \leq D'$.

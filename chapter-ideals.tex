@@ -8,7 +8,7 @@
 \label{chap_ideals}
 
 Performing arithmetic on divisors themselves is cumbersome.
-As shown in examples in Chapter \ref{chap_divisors},
+As shown in Example \ref{ex_defined_over_k},
 even if a divisor is defined over a field $K$,
 the coordinates of its points may live in an algebraic extension $L/K$.
 Performing arithmetic on the points therefore requires operations in $L$,
@@ -33,17 +33,17 @@ We then extend this isomorphism to act on non-prime ideals, fractional ideals, a
 
 Let $\frak p$ be a non-zero prime ideal of $K[C]$.
 Define the \defn{divisor of $\frak p$} to be
-  \[ \div \frak p = \sum_{P \in C - P_\infty} \min_{f \in \frak p - \{0\}}\{\ord_P(f)\}(P - P_\infty). \]
+  \[ \div \frak p = \sum_{P \in C - P_\infty} \min_{f \in \frak p - \{0\}}\{\nu_P(f)\}(P - P_\infty). \]
 The affine support of this divisor consists of those points at which \emph{every} polynomial in $\frak p$ is zero.
 It is balanced by a negative multiple of the point at infinity,
 so that, by construction, this divisor is of degree zero.
-We will see that it is accurate to call such a divisor a \defn{prime divisor} --
-this section will show that the divisors of prime ideals are exactly the prime divisors as defined in the previous chapter.
+The goal of the next few propositions is to show that divisors of the form $\div \frak p$
+are exactly the prime divisors as defined in section \ref{sec_prime_divisors}.
 
-If $[P]$ is a prime divisor on $C$ as per the definition in Chapter \ref{chap_divisors}, then define
+If $[P]$ is a prime divisor on $C$ as per the Proposition \ref{prop_prime_divisors}, and define
 \[ I_{[P]} = \{ f \in K[C] ~|~ f(P) = 0 \}. \]
 This is the set of polynomials in $K[C]$ that vanish on the support of $[P]$.
-The following proposition shows that this set is in fact a prime (and therefore maximal) ideal.
+The following proposition shows that this set is in fact a non-zero prime (and therefore maximal) ideal.
 
 \begin{proposition}
   \label{prop_I_P_is_prime}
@@ -80,7 +80,7 @@ The following proposition shows that this set is in fact a prime (and therefore 
     Therefore one of $f$ and $g$ is in $\frak p$.
     
     \item
-    In a Dedekind domain, all non-zero prime ideals are maximal.
+    In a Dedekind domain, all non-zero prime ideals are maximal.\qedhere
     
 %    \item
 %    \note{TODO. Is this fact even needed?}
@@ -101,7 +101,7 @@ in terms of a prime ideal $\frak q$ of $\bar K[C]$ that ``lies over'' $I_{[P]}$.
       &= \pid{ f ~|~ f \in K[C], f(P) = 0 } \\
       &= \pid{ f ~|~ f \in K[C], f \in \frak q } \\
       &= \pid{ f ~|~ f \in K[C]} \cap \pid{ f ~|~ f \in \frak q } \\
-      &= K[C] \cap \frak q.
+      &= K[C] \cap \frak q.\qedhere
   \end{align*}
 \end{proof}
 Intuitively, while $I_{[P]}$ is prime as a $K[C]$-ideal, it might be non-prime as a $\bar K[C]$-ideal.
@@ -302,14 +302,7 @@ its prime factorization is the empty product which maps to the empty sum:
 Note that the divisor of $\frak a$ is of degree zero and defined over $K$,
 by virtue of it being a sum of prime divisors in $\Div_K^0(C)$.
 
-In the other direction, denote by $\Div_K^{\geq 0}(C)$ the subset
-  \[ \Div_K^{\geq 0} = \{ D \in \Div_K^0(C) ~|~ D \geq 0 \}. \]
-This notation is misleading and will not be used outside this chapter.
-These are not divisors of degree greater than 0, but rather divisor of degree 0 that are greater than 0
-as per the relation $\leq$ on $\Div_K^0(C)$ defined in Chapter \ref{chap_divisors}.
-
-This set $\Div_K^{\geq 0}(C)$ is a monoid under addition.
-Let $D$ be a non-zero divisor in $\Div_K^{\geq 0}(C)$.
+In the other direction, let $D$ be a non-zero divisor in $\Div_K^{\geq 0}(C)$.
 Then it factors into a sum of prime divisors, say $D = k_1[P_1] + \dots + k_n[P_n]$.
 Define the ideal of $D$ to be
 \[ I_D = \prod_{i=1}^n I_{[P_i]}^{k_i}. \]

@@ -627,15 +627,16 @@ $f \in I^2$ if and only if $f$ and its differential $df$ vanish modulo $I$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Gr\"obner Bases in Coordinate Rings}
+\label{sec_groebner_bases_in_coordinate_rings}
 
 While the theory of Gr\"obner bases always takes place in polynomial rings,
-in Chapter \ref{chap_representation}, we will speak of Gr\"obner bases for ideals of a coordinate ring,
-which is the quotient of a polynomial ring by a prime ideal (see Definition \ref{def_coordinate_ring}).
-\note{Fix this reference.}
+the theory may be extended to the coordinate ring of a $C_{3,4}$ curve,
+though the equivalence relation leads to a complication.
 Take, for example, the ring $K[x,y]$ for some field $K$ with the $C_{3,4}$ monomial order.
 Then $x^4 < y^3$ in $K[x,y]$.
-However, if take the quotient $K[C] := K[x,y]/\pid{y^3 + x^4 + 1}$,
-this places a relation on $1$, $x^4$, and $y^3$.
+Now consider the coordinate ring $K[C] := K[x,y]/\pid{y^3 + x^4 + 1}$
+(supposing this curve is non-singular).
+This places a relation on $1$, $x^4$, and $y^3$.
 How can we compare the monomials $y^3$ and $x^4$ in $K[C]$ if $y^3 \equiv -x^4 - 1$?
 Given that $y$ divides $x^4 + 1$ in $K[C]$, is $\pid{y, x^4 + 1}$ a reduced Gr\"obner basis in $K[C]$ or not?
 We must therefore make clear what we mean by a Gr\"obner basis in a coordinate ring.
