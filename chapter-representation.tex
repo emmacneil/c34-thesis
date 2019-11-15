@@ -494,6 +494,51 @@ This polynomial $f$ is not necessarily unique.
   hence $\bar{\bar D} = D$ and $D$ is reduced.
 \end{proof}
 
+We now give a couple more examples of determining types for flips of divisors
+and fill in Table \ref{tab_small_flip_type} for all remaining divisor types.
+
+\begin{example}
+  Let $D$ be a type 61 divisor.
+  By equation \ref{eq_flip_degree}, $\deg \bar D = 3$.
+  By Proposition \ref{prop_flip_properties}, $\bar D$ is reduced.
+  By Theorem \ref{thm_reduced_divisor_types}, $\bar D$ must be of type 31.
+\end{example}
+\begin{example}
+  Let $D$ be a type 62 divisor.
+  By equation \ref{eq_flip_degree}, $\deg \bar D = 2$, so $\bar D$ must be of type 21 or 22.
+  The ideal of $D$ is $I_D = \pid{f,g}$,
+  where $\LM(f) = y^2$ and $\LM(g) = x^3$.
+  There is no polynomial $r \in f : g$ with leading monomial $y$.
+  If there were, then there would be a polynomial $s \in K[C]$ such that $rg \equiv sf$. Then
+  \begin{align*}
+    -\nu_{P_\infty}(rg) &= -\nu_{P_\infty}(sf) \\
+    -\nu_{P_\infty}(r) - \nu_{P_\infty}(g) &= -\nu_{P_\infty}(s) - \nu_{P_\infty}(f) \\
+    4 + 9 &= -\nu_{P_\infty}(s) + 8 \\
+    -\nu_{P_\infty}(s) &= 5.
+  \end{align*}
+  However, there is no polynomial in $K[C]$ with pole order 5 at infinity.
+  
+  Since no polynomial with leading monomial $y$ can exist in $f : g = I_{\bar D}$,
+  $\bar D$ cannot be of type 21 and must therefore be of type 22.
+\end{example}
+
+\begin{table}[h]
+\label{tab_large_flip_type}
+\begin{center}
+  \begin{tabular}{r|cccccccccc}
+    $\type(D)$             & 0 & 11 & 21 & 22 & 31 & 32 & 33 & 41 & 42 & 43 \\
+    \hline
+    $\type(\bar D)$        & 0 & 22 & 21 & 11 & 31 & 11 &  0 & 31 & 22 & 21 \\
+    $\type(\bar {\bar D})$ & 0 & 11 & 21 & 22 & 31 & 22 &  0 & 31 & 11 & 21 \\
+    \hline\hline
+    $\type(D)$             & 44 & 51 & 52 & 53 & 54 & 61 & 62 & 63 & 64 & 65 \\
+    \hline
+    $\type(\bar D)$        &  0 & 31 & 22 & 21 & 11 & 31 & 22 & 21 & 11 &  0 \\
+    $\type(\bar {\bar D})$ &  0 & 31 & 11 & 21 & 22 & 31 & 11 & 21 & 22 &  0 \\
+  \end{tabular}
+\end{center}
+\caption{Divisor types and the type of their flips}
+\end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -711,6 +756,31 @@ In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preser
   If $\bar{\bar D}$ is not of type 31, then $\bar D$ is of degree less than 3 (see Table \ref{tab_flip_degree})
   and cannot be typical.
 \end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                      %%%%%
+%%%%%   Type *1 Divisors   %%%%%
+%%%%%                      %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Types 31, 41, 51, and 61}
+\label{sec_types_31_41_51_61}
+
+\note{
+Later in the thesis, particularly in Chapters \ref{chap_doubling} and \ref{chap_reduction},
+I make reference to cases where
+$\pid{f,g,h} = \pid{f,g}$,
+$\pid{f,g} \neq \pid{f,g,h} = \pid{f,h}$,
+and $\pid{f,g} \neq \pid{f,g,h} \neq \pid{f,h}$.
+Put some notes here about how one is able to distinguish between these cases.
+Briefly, there exist polynomials $r, s, r', t'$ and constants $s'_0, t_0$ such that
+\[ fr + sg = t_0h \]
+and
+\[ fr' + s'_0g = t'h. \]
+These cases are recognizable by whether the constants $s'_0$ and $t_0$ are zero or non-zero.
+}
 
 
 

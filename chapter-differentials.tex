@@ -418,6 +418,7 @@ We will need only the fact that $C \cong B / \im f$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Differential Forms in $K[C]$}
+\label{sec_differentials_in_coordinate_ring}
 
 In Section \ref{sec_kahler_differentials}, we defined $\Omega_{A/R}$,
 the module of K\"ahler differentials on an $R$-algebra $A$.
@@ -498,19 +499,24 @@ when it is clear in context which differential map is meant.
   Then $du = dx = C_y \not\in \frak m_{\frak p}$.
 \end{proof}
 \begin{theorem}
-  Let $\frak p$ be a non-zero prime ideal of $K[C]$.
-  Let $\nu_{\frak p}(f) \geq 1$. Then
-  \[ \nu_{\frak p}(f) \geq 2 \iff \nu_{\frak p}(df) \geq 1. \]
+  \label{thm_differential_increases_order}
+  Let $\frak p$ be a non-zero prime ideal of $K[C]$ and let $n \geq $ be an integer.
+  Suppose $\nu_{\frak p}(f) \geq n$. Then
+  \[ \nu_{\frak p}(f) \geq n + 1 \iff \nu_{\frak p}(df) \geq n. \]
 \end{theorem}
 \begin{proof}
 %\frak m_{\frak p}
   Let $u$ be a uniformizer for $\frak m_{\frak p}$.
-  Then $f = au$ for some $a \in K(C)^*$. Then
-  \[ df = d(au) = uda + adu. \]
-  Now $uda \in \frak m_{\frak p}$,
-  so $df \in \frak m_{\frak p}$ if and only if $adu \in \frak m_{\frak p}$.
-  But $du \not\in \frak m_{\frak p}$, so
-  \[ df \in \frak m_{\frak p} \iff a \in \frak m_{\frak p} \iff f \in \frak m_{\frak p}^2. \qedhere \]
+  Then $f = au^n$ for some $a \in K(C)^*$. Then
+  \[ df = d(au^n) = u^nda + nau^{n-1}du. \]
+  Now $u^nda \in \frak m_{\frak p}^n$,
+  so $df \in \frak m_{\frak p}^n$ if and only if $nau^{n-1}du \in \frak m_{\frak p}^n$.
+  But $n, du \not\in \frak m_{\frak p}$,
+  so this is true if and only if $au^{n-1} \in \frak m_{\frak p}^n$. Hence
+  \[ df \in \frak m_{\frak p}^n
+    \iff au^{n-1} \in \frak m_{\frak p}^n
+    \iff au^n \in \frak m_{\frak p}^{n+1}
+    \iff f \in \frak m_{\frak p}^{n+1}. \qedhere \]
 \end{proof}
 \begin{comment}
 \begin{theorem}
