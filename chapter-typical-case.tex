@@ -7,7 +7,17 @@
 \section{Typical Case}
 \label{chap_typical_case}
 
-
+\begin{itemize}
+  \item Algorithms for typical case
+  \item Construct matrix for addition
+  \item Construct matrix for doubling
+  \item Row-reducing matrix and computing kernel identical for both after matrix constructed
+  \item Typically, u, v are enough.
+  \item Constant coefficients of u and v are not needed
+  \item Computing RREF requires one inversion
+  \item Reducing requires another inversion
+  \item Save time by performing both inversions simultaneously
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%                     %%%%%
@@ -24,8 +34,11 @@ given by ideals $I_D = \pid{f,g,h}$ and $I_{D'} = \pid{f',g',h'}$, where
   g &=  xy + g_2y + g_1x + g_0 & g' &=  xy + g'_2y + g'_1x + g'_0 \\
   h &= y^2 + h_2y + h_1x + h_0 & h' &= y^2 + h'_2y + h'_1x + h'_0.
 \end{align*}
-We will not assume that $D$ or $D'$ are typical,
-though this algorithm will fail if their sum is atypical.
+We need not assume that $D$ or $D'$ are typical.
+It is possible for the sum of a typical and an atypical divisor to be typical
+and for the sum of two atypical divisors to be typical.
+The formulae to follow work equally well whether or not $D$ or $D'$ are typical,
+though they will fail if the sum $D + D'$ is atypical.
 
 We construct the matrix 
 \[ M_{\text{add}} =
@@ -40,7 +53,15 @@ The first three columns are simply the reductions of $f$, $g$, and $h$ modulo $f
   a_6    &= f_1 - f'_1 & a_7    &= g_1 - g'_1 & a_8    &= h_1 - h'_1 \\
   a_{11} &= f_2 - f'_2 & a_{12} &= g_2 - g'_2 & a_{13} &= h_2 - h'_2.
 \end{align*}
-
+The last two columns are the reductions of $xf$ and $xg$ modulo $f,g,h$.
+We may view multiplication by $x$ as a linear transformation $T_x$ on the space $W^{x^2y}/W_{D'}^{x^2y}$.
+The matrix of $T_x$ is
+\[ T_x = \begin{pmatrix}
+    0 & -f'_0 & -g'_0 \\
+    1 & -f'_1 & -g'_1 \\
+    0 & -f'_2 & -g'_2
+  \end{pmatrix}. \]
+Therefore we compute the last two columns via
 \[ 
   \begin{pmatrix}
     a_4    & a_5    \\
@@ -56,15 +77,18 @@ The first three columns are simply the reductions of $f$, $g$, and $h$ modulo $f
     a_1    & a_2    \\
     a_6    & a_7    \\
     a_{11} & a_{12}
-  \end{pmatrix}.
+  \end{pmatrix}
 \]
-
+to get
 \begin{align*}
   a_4    &=     - f'_0a_6 - g'_0a_{11} & a_5    &=     - f'_0a_7 - g'_0a_{12} \\
   a_9    &= a_1 - f'_1a_6 - g'_1a_{11} & a_{10} &= a_2 - f'_1a_7 - g'_1a_{12} \\
   a_{14} &=     - f'_2a_6 - g'_2a_{11} & a_{15} &=     - f'_2a_7 - g'_2a_{12}.
 \end{align*}
 
+\begin{lemma}
+  The matrix $M_{\text{add}}$ may be computed in 12M+17A.
+\end{lemma}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,24 +99,45 @@ The first three columns are simply the reductions of $f$, $g$, and $h$ modulo $f
 
 \subsection{Constructing the Matrix $M_{\text{doub}}$.}
 
-Assume that $f_2 \neq 0$.
-We must find $g', h'$ such that $fh' \equiv gg'$
-Assuming $1/f_2$ is known,
+We wish to double a type 31 divisor $D$, given by the ideal $I_D = \pid{f,g,h}$, where
+\begin{align*}
+  f &= x^2 + f_2y + f_1x + f_0 \\
+  g &=  xy + g_2y + g_1x + g_0 \\
+  h &= y^2 + h_2y + h_1x + h_0.
+\end{align*}
+We will assume that $D$ is typical, so that $f_2 \neq 0$.
+Let the inverse of $f_2$ be $\phi = \frac 1 {f_2}$.
+We will assume that $\phi$ is given as an input to the doubling algorithm.
+
+We must find $g', h' \in K[C]$ such that $fh' \equiv gg' \pmod F$.
+The polynomials $g'$ and $h'$ are of the forms
 \begin{align*}
   g' &= xy            + g'_2y + g'_1x + g'_0 \\
-  h' &= y^2 + h'_3x^2 + h'_2y + h'_1x + h'_0
+  h' &= y^2 + h'_3x^2 + h'_2y + h'_1x + h'_0.
 \end{align*}
-where
+Solving the equation $fh' - gg' - f_2F = 0$, gives the solution
+\begin{align*}
+  h'_3 &= f_2 \\
+  g'_2 &= f_1 - g_2 \\
+  h'_2 &= \phi(g'_2g_2 - f_0) \\ 
+  g'_1 &= f_2(f_2 - c_7) + h'_2 - g_1 \\
+  h'_1 &= -f_1f_2 \\
+  g'_0 &= h'_2f_1 + f_2(h'_1 - c_4) - g'_2g_1 - g'_1g_2 - g_0 \\
+  h'_0 &= f_2(c_3 - f_0) - h'_1f_1 + g'_1g_1.
+\end{align*}
+\begin{comment}
+% For arbitrary field characteristic
 \begin{align*}
   h'_3 &= f_2 \\
   g'_2 &= - c_8f_2 + f_1 - g_2 \\
-  h'_2 &= c_5 + (g'_2g_2 - f_0)/f_2 \\ 
+  h'_2 &= c_5 + \phi(g'_2g_2 - f_0) \\ 
   g'_1 &= f_2(f_2 - c_7) + h'_2 - g_1 \\
   h'_1 &= f_2(c_6 - f_1) \\
-  g'_0 &= h'_2f_1 + h'_1f_2 - c_4f_2 - g'_2g_1 - g'_1g_2 - g_0 \\
-  h'_0 &= -f_0f_2 - h'_1f_1 - c_3f_2 - g'_1g_1
+  g'_0 &= h'_2f_1 + f_2(h'_1 - c_4) - g'_2g_1 - g'_1g_2 - g_0 \\
+  h'_0 &= f_2(c_3 - f_0) - h'_1f_1 + g'_1g_1.
 \end{align*}
-
+\end{comment}
+\note{12M, or 11M with Karatsuba.}
 \[ M_{\text{doub}} =
 \begin{pmatrix}
   a_1 & a_2 & a_3 & a_4 & a_5 \\
@@ -100,11 +145,11 @@ where
   a_{11} & a_{12} & a_{13} & a_{14} & a_{15}
 \end{pmatrix}. \]
 \begin{align*}
-  a_1    &= g'_0 - g_0 & a_2    &= h'_0 - h_0 - h'_3f_0 \\
-  a_6    &= g'_1 - g_1 & a_7    &= h'_1 - h_1 - h'_3f_1 \\
-  a_{11} &= g'_2 - g_2 & a_{12} &= h'_2 - h_2 - h'_3f_2 \\
+  a_1    &= g'_0 - g_0 & a_2    &= h'_0 - h_0 - f_0f_2 \\
+  a_6    &= g'_1 - g_1 & a_7    &= h'_1 - h_1 - f_1f_2 \\
+  a_{11} &= g'_2 - g_2 & a_{12} &= h'_2 - h_2 - f_2f_2 \\
 \end{align*}
-
+However, observe that $h'_1 = -f_1f_2$, so $a_7 = 2h'_1 - h_1$.
 \[ 
   \begin{pmatrix}
     a_4    & a_5    \\
@@ -124,23 +169,47 @@ where
 \]
 
 \begin{align*}
-  a_4    &=     - f'_0a_6 - g'_0a_{11} & a_5    &=     - f'_0a_7 - g'_0a_{12} \\
-  a_9    &= a_1 - f'_1a_6 - g'_1a_{11} & a_{10} &= a_2 - f'_1a_7 - g'_1a_{12} \\
-  a_{14} &=     - f'_2a_6 - g'_2a_{11} & a_{15} &=     - f'_2a_7 - g'_2a_{12}.
+  a_4    &=     - f_0a_6 - g_0a_{11} & a_5    &=     - f_0a_7 - g_0a_{12} \\
+  a_9    &= a_1 - f_1a_6 - g_1a_{11} & a_{10} &= a_2 - f_1a_7 - g_1a_{12} \\
+  a_{14} &=     - f_2a_6 - g_2a_{11} & a_{15} &=     - f_2a_7 - g_2a_{12}.
 \end{align*}
 
 Column 3 is computed by
 \begin{align*}
-  C_3 &= \frac 1 {f_2} \left( T_y(C_1) + g_1C_1 - T_x(C_2) - (f_1 - g_2)C_2 \right) \\
-      &= \frac 1 {f_2} \left( T_y(C_1) + g_1C_1 - C_5 - (f_1 - g_2)C_2 \right)
+  C_3 &= \phi \left( T_y(C_1) + g_1C_1 - T_x(C_2) - (f_1 - g_2)C_2 \right) \\
+      &= \phi \left( T_y(C_1) + g_1C_1 - C_5 - (f_1 - g_2)C_2 \right)
 \end{align*}
+Noting that $f_1 - g_2 = g'_2$,
 \begin{align*}
-  a_3    &= \frac 1 {f_2} \left(     - g_0a_6 - h_0a_{11} + g_1a_1    - a_5    - (f_1 - g_2)a_2    \right) \\
-  a_8    &= \frac 1 {f_2} \left(              - h_1a_{11}             - a_{10} - (f_1 - g_2)a_7    \right) \\
-  a_{13} &= \frac 1 {f_2} \left( a_1 - g_2a_6 - (h_2 - g_1)a_{11}     - a_{15} - (f_1 - g_2)a_{12} \right) .
+  a_3    &= \phi \left(     - g_0a_6 - h_0a_{11} + g_1a_1    - a_5    - g'_2a_2    \right) \\
+  a_8    &= \phi \left(              - h_1a_{11}             - a_{10} - g'_2a_7    \right) \\
+  a_{13} &= \phi \left( a_1 - g_2a_6 - (h_2 - g_1)a_{11}     - a_{15} - g'_2a_{12} \right) .
 \end{align*}
+\begin{comment}
+\begin{align*}
+  a_3    &= \phi \left(     - g_0a_6 - h_0a_{11} + g_1a_1    - a_5    - (f_1 - g_2)a_2    \right) \\
+  a_8    &= \phi \left(              - h_1a_{11}             - a_{10} - (f_1 - g_2)a_7    \right) \\
+  a_{13} &= \phi \left( a_1 - g_2a_6 - (h_2 - g_1)a_{11}     - a_{15} - (f_1 - g_2)a_{12} \right) .
+\end{align*}
+\end{comment}
 
-\note{39M}
+\begin{lemma}
+  The matrix $M_{\text{doub}}$ may be computed in 36M+42A.
+\end{lemma}
+\begin{proof}
+  The coefficients of $g'$ and $h'$ require 11M+13A to compute as written,
+  however, the terms $g'_1g_1$, $g'_1g_2 + g'_2g_1$, and $g'_2g_2$ all appear.
+  Given $g'_1g_1$ and $g'_2g_2$, rather than compute $g'_1g_2 + g'_2g_1$ in 2M+1A,
+  we may compute it in 1M+4A via
+  \[ g'_1g_2 + g'_2g_1 = (g'_1 + g'_2)(g_1 + g_2) - g'_1g_1 - g'_1g_2. \]
+  Thus the coefficients of $g'$ and $h'$ are obtained in 10M+16A.
+  
+  The first column of $M_{\text{doub}}$ costs 3A to compute.
+  The second column costs 2M+5A to compute, counting doubling $h'_1$ as 1 addition.
+  Columns 4 and 5 each cost 6M+4A, while column 3 costs 12M+10A.
+\end{proof}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%                      %%%%%
@@ -150,27 +219,45 @@ Column 3 is computed by
 
 \subsection{Computing Kernel}
 
-Let
+After computing the matrix $M_{\text{add}}$ or $M_{\text{doub}}$,
+the addition and doubling algorithms proceed identically,
+so let $M$ be one of the above matrices.
+If we are adding, let $M = M_{\text{add}}$ and $A = D + D'$.
+If we are doubling, let $M = M_{\text{doub}}$ and $A = 2D$ instead.
+
+In Chapters \ref{chap_addition} and \ref{chap_doubling},
+we would find a reduced Gr\"obner basis for $A$ by finding a reduced echelon basis for $\ker M$.
+Reducing $M$ to its reduced row echelon form typically requires an inversion in $\bb F_q$
+and this ensures that the resulting Gr\"obner basis for $A$ is monic.
+In the following, we delay inversion until the next section.
+Instead, we compute a multiple of $\rref(M)$.
+Consequently, we obtain a pair $\{U,V\}$ of non-monic polynomials that generate $I_A$.
+
+Recall that the elements of $M$ were
 \[ M =
 \begin{pmatrix}
   a_1 & a_2 & a_3 & a_4 & a_5 \\
   a_6 & a_7 & a_8 & a_9 & a_{10} \\
   a_{11} & a_{12} & a_{13} & a_{14} & a_{15}
 \end{pmatrix}. \]
-We compute the row echelon form of $M$,
+If the first column of $M$ is zero, then $A$ is not a type 61 divisor,
+so we must abort and fall back on other methods described in this thesis.
+If the first column is non-zero, but $a_1 = 0$, then swap rows and relabel the elements so that $a_1 \neq 0$.
+We now put $M$ into echelon form,
 \[ M' =
 \begin{pmatrix}
   a_1 & a_2 & a_3 & a_4 & a_5 \\
     0 & b_1 & b_2 & b_3 & b_4 \\
-    0 &   0 & c_1 & c_2 & c_3
+    0 &   0 & b_5 & b_6 & b_7
 \end{pmatrix}. \]
 \begin{align*}
-  d_1 &= a_1a_{12} - a_2a_{11} & b_1 &= a_1a_7    - a_2a_6 & c_1 &= b_1a_{13} - d_1a_8    + d_2a_3 \\
-  d_2 &= a_6a_{12} - a_7a_{11} & b_2 &= a_1a_8    - a_3a_6 & c_2 &= b_1a_{14} - d_1a_9    + d_2a_4 \\
-      &                        & b_3 &= a_1a_9    - a_4a_6 & c_3 &= b_1a_{15} - d_1a_{10} + d_2a_5 \\
+  d_1 &= a_1a_{12} - a_2a_{11} & b_1 &= a_1a_7    - a_2a_6 & b_5 &= b_1a_{13} - d_1a_8    + d_2a_3 \\
+  d_2 &= a_6a_{12} - a_7a_{11} & b_2 &= a_1a_8    - a_3a_6 & b_6 &= b_1a_{14} - d_1a_9    + d_2a_4 \\
+      &                        & b_3 &= a_1a_9    - a_4a_6 & b_7 &= b_1a_{15} - d_1a_{10} + d_2a_5 \\
       &                        & b_4 &= a_1a_{10} - a_5a_6
 \end{align*}
-
+If $b_1 = 0$ or $b_5 = 0$, then $A$ is not of type 61, so we must abort.
+Otherwise, we reduce $M'$ further to
 \[ M'' =
 \begin{pmatrix}
   Z & 0 & 0 & A_1 & A_2 \\
@@ -178,21 +265,152 @@ We compute the row echelon form of $M$,
   0 & 0 & Z & C_1 & C_2
 \end{pmatrix}. \]
 \begin{align*}
-  Y &= a_1b_1 & e_1 &= b_3c_1 - b_2c_2 \\
-  Z &= Yc_1   & e_2 &= b_4c_1 - b_2c_3
+  Y &= a_1b_1 & e_1 &= b_3b_5 - b_2b_6 \\
+  Z &= Yb_5   & e_2 &= b_4b_5 - b_2b_7
 \end{align*}
 \begin{align*}
-  A_1 &= b_1(a_4c_1 - c_2a_3) - a_2e_1 & B_1 &= a_1e_1 & C_1 &= Yc_2 \\
-  A_2 &= b_1(a_5c_1 - c_3a_3) - a_2e_2 & B_2 &= a_1e_2 & C_2 &= Yc_3
+  A_1 &= b_1(a_4b_5 - b_6a_3) - a_2e_1 & B_1 &= a_1e_1 & C_1 &= Yb_6 \\
+  A_2 &= b_1(a_5b_5 - b_7a_3) - a_2e_2 & B_2 &= a_1e_2 & C_2 &= Yb_7
 \end{align*}
+This matrix $M''$ is $Z \cdot \rref(M)$.
+If we have made it this far without aborting, then $a_1$, $b_1$, and $b_5$ are non-zero, so $Z$ is non-zero too.
 
+The kernel of $M$ is $\Span_K\{U,V\}$, where
+\begin{align*}
+  U &= Zxf - C_1h - B_1g - A_1f \\
+  V &= Zxg - C_2h - B_2g - A_2f.
+\end{align*}
+Let $U_1, \ldots, U_5$ be the coefficients of $x, \ldots, y^2$ in $U$
+and let $V_1, \ldots, V_5$ be the coefficients of $x, \ldots, y^2$ in $V$.
+These are given explicitly by
 \begin{align*}
   U1 &= Zf_0 - C_1h_1 - B_1g_1 - A_1f_1 & V1 &= Zg_0 - C_2h_1 - B_2g_1 - A_2f_1 \\
   U2 &=      - C_1h_2 - B_1g_2 - A_1f_2 & V2 &=      - C_2h_2 - B_2g_2 - A_2f_2 \\
   U3 &= Zf_1 - A_1 & V3 &= Zg_1 - A_2 \\
   U4 &= Zf_2 - B_1 & V4 &= Zg_2 - B_2 \\
-  U5 &=      - C_1 & V5 &=      - C_2
+  U5 &=      - C_1 & V5 &=      - C_2.
 \end{align*}
+Note that in the computations to follow, we will not need the constant coefficients of $U$ and $V$.
 
+\begin{lemma}
+  Given $M$, the non-constant coeffiencts of the polynomials $U$ and $V$ may be computed in 57M+32A.
+\end{lemma}
+\begin{proof}
+  The elements $b_i$ of the matrix $M'$ are computed in a total of 21M+12A.
+  The matrix $M''$ is then computed in an additional 18M+6A.
+  Given $M''$, the coefficients $U_i, V_i$ for $1 \leq i \leq 5$ cost a total of 18M+14A.
+\end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%              %%%%%
+%%%%%   Reducing   %%%%%
+%%%%%              %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Reducing}
+
+We now have two (non-monic) polynomials $U$ and $V$.
+Let $u = \frac U Z$ and $v = \frac V Z$.
+The type 61 divisor $A$ has the ideal $I_A = \pid{u, v}$,
+where $u$ and $v$ are the first two of three polynomials needed for the reduced Gr\"obner basis of $I_A$.
+We will not need the third polynomial $w$ of $I_A$'s Gr\"obner basis,
+but we note that by Lemma \ref{lem_fgh_is_fg_61},
+there are polynomials $r,s \in K[C]$ and a constant $t \in K$
+such that $ru + sv + tw \equiv 0 \pmod F$.
+The divisor $A$ is typical if and only if $t \neq 0$.
+Moreover, $-t$ will become the coefficient of $y$ in $f''$ in the ideal of the reduced divisor
+$I_{\bar{\bar{A}}} = \pid{f'', g'', h''}$.
+
+The inverse of $-t$ will be needed, as will the inverse of $Z$.
+Let their inverses be $\zeta = \frac 1 Z$ and $\tau = -\frac 1 t$.
+We compute them using only a single inversion operation by
+\begin{align*}
+  z_0 &= U_5^2 + Z(u_4 - v_5) \\
+  z_1 &= Zz_0 \\
+  z_2 &= \frac 1 {z_1} \\
+  z_3 &= Zz_2 \\
+  \zeta &= z_0z_2 \\
+  \tau  &= Z^2z_3.
+\end{align*}
+\begin{comment}
+\begin{align*}
+  z_0 &= U_5^2 - Z(U_5c_8 - u_4 + v_5) \\
+  z_1 &= Zz_0 \\
+  z_2 &= \frac 1 {z_1} \\
+  z_3 &= Zz_2 \\
+  \zeta &= z_0z_2 \\
+  \tau  &= Z^2z_3.
+\end{align*}
+\end{comment}
+Note the value of $t$ according to Lemma \ref{lem_fgh_is_fg_61} and the value of $z_0$ above.
+We have $z_0 = Z^2t$, so
+\[ \frac 1 \tau = \frac 1 {Z^2z_3} 
+                = \frac 1 {Z^3z_2} 
+                = \frac {z_1} {Z^3} 
+                = \frac {z_0} {Z^2}
+                = \frac {U_5^2 + Z(U_4 - V_5)} {Z^2}
+                = u_5^2 + u_4 - v_5
+                = -t. \]
+\begin{comment}
+\[ \frac 1 \tau = \frac 1 {Z^2z_3} 
+                = \frac 1 {Z^3z_2} 
+                = \frac {z_1} {Z^3} 
+                = \frac {z_0} {Z^2}
+                = \frac {U_5^2 - Z(U_5c_8 - U_4 + V_5)} {Z^2}
+                = u_5^2 - u_5c_8 + u_4 - v_5
+                = -t. \]
+\end{comment}
+Now let $u_1, \ldots, u_5$ and $v_1, \ldots, v_5$ be the coefficients of $x, y, \ldots, y^2$ in $u$ and $v$.
+Compute them by
+\[ u_i = \zeta U_i, ~~v_i = \zeta V_i, ~~1 \leq i \leq 5. \]
+
+Following Theorem \ref{thm_fast_reduction},
+we find polynomials $f'' = x^2 + f''_2y + f''_1x + f''_0$
+and $G = xy + G_3x^2 + G_2y + G_1x + G_0$ such that $I_{\bar{\bar A}} = \pid{f'', G}$.
+\begin{align*}
+  G_3 &= u_5 \\
+  f''_2 &= u_5^2 + u_4 - v_5 \\
+  G_2 &= v_4 + u_5v_5 + \tau(u_5(u_3u_5 + v_5(u_4 - c_7) - v_3) + v_5(u_3 - v_4) - u_2) \\
+  e_3 &= f''_2v_5 - G_2u_5 \\
+  f''_1 &= u_5(u_4 - c_7) + G_2 + u_3 - v_4 \\
+  G_1 &= -u_3u_5 - e_3 + v_3 \\
+  f''_0 &= c_7e_3 + u_5(u_2 - c_4) + G_2u_3 + G_1u_4 - f''_2v_3 - f''_1v_4 + u_1 - v_2 \\
+  G_0 &= u_5(c_3 - u_1) - G_1u_3 + f''_1v_3 + v_1.
+\end{align*}
+\begin{comment}
+\begin{align*}
+  G_3 &= u_5 \\
+  f''_2 &= u_5(u_5 - c_8) + u_4 - v_5 \\
+  G_2 &= v_4 + v_5(u_5 - c_8) + \tau(u_5(u_5(u_3 - c_6) + v_5(u_4 - c_7) + c_5 - v_3) + v_5(u_3 - v_4) - u_2) \\
+  e_3 &= f''_2v_5 - G_2u_5 \\
+  f''_1 &= u_5(u_4 - c_7) + G_2 + u_3 - v_4 \\
+  G_1 &= u_5(c_6 - u_3) - e_3 + v_3 \\
+  f''_0 &= c_7e_3 + u_5(u_2 - c_4) + G_2u_3 + G_1u_4 - f''_2v_3 - f''_1v_4 + u_1 - v_2 \\
+  G_0 &= -c_6e_3 + u_5(c_3 - u_1) - G_1u_3 + f''_1v_3 + v_1.
+\end{align*}
+\end{comment}
+Next reduce $G$ modulo $f''$ to get $g'' = xy + g''_2y + g''_1x + g''_0$.
+\begin{align*}
+  g''_2 &= G_2 - u_5f''_2 \\
+  g''_1 &= G_1 - u_5f''_1 \\
+  g''_0 &= G_0 - u_5f''_0.
+\end{align*}
+Finally, compute $h'' = y^2 + h''_2y + h''_1x + h''_0$,
+the third polynomial in the reduced Gr\"obner basis of $I_{\bar{\bar A}} = \pid{f'', g'', h''}$.
+\begin{align*}
+  h''_0 &= \tau(f''_0g''_1 + g''_0(g''_2 - f''_1)) \\
+  h''_1 &= \tau(g''_1g''_2 - g''_0) \\
+  h''_2 &= g''_1 + \tau(g''_2(g''_2 - f''_1) + f''_0).
+\end{align*}
+
+\begin{lemma}
+  Given $Z, U_1, \ldots, U_5, V_1, \ldots, V_5$,
+  the reduced Gr\"obner basis for $I_{\bar{\bar A}}$ can be computed in ???
+\end{lemma}
+\begin{proof}
+  tau and zeta 1I+ 5M+2SQ+2A
+  ui and vi       10M
+  f'' and G    
+\end{proof}
