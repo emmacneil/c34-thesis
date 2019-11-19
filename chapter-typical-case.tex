@@ -63,6 +63,7 @@ For the remainder of this chapter, we will assume that $C$ is a $C_{3,4}$ curve
 over a field $K$ with $\Char K = 0$ or $\Char K > 3$.
 The curve $C$ will be assumed to be given by an equation in short form,
 i.e. with coefficients $c_5$, $c_6$, and $c_8$ all equal to 0.
+The resulting formulae are collected and reproduced in one place in Section \ref{sec_explicit_formulae}.
 
 
 
@@ -532,16 +533,18 @@ The coefficients of $h''$ are given by
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%                       %%%%%
-%%%%%   Explicit Formulae   %%%%%
-%%%%%                       %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Explicit Formulae}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                                    %%%%%
+%%%%%   Comparison to State-of-the-art   %%%%%
+%%%%%                                    %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Comparison to State-of-the-art}
 
 Putting together the operation counts from the previous sections,
 we sum up the costs of adding and doubling typical divisors.
 \begin{theorem}
+  \label{thm_op_count}
   Let $C$ be a $C_{3,4}$ curve over a field $K$.
   Suppose that $\Char K = 0$ or $\Char K > 3$ and that $C$ is given by a polynomial in short form,
   Equation \ref{eq_c34_short}.
@@ -557,9 +560,93 @@ we sum up the costs of adding and doubling typical divisors.
   Lemmas \ref{lem_Madd_op_count}, \ref{lem_Mdoub_op_count}, \ref{lem_UV_op_count}, and \ref{lem_fgh_op_count}.
 \end{proof}
 
-Below, we collect the formulae and their operation counts in one place.
+Now compare this to the current state-of-the-art given by
+Abu Salem and Khuri-Makdisi.\footnote{
+As \cite{kmakdisi18} and \cite{salem07} provided only counts for inversions and multiplications,
+their results being 2I+98M/2I+110M for addition/doubling. The counts in this table are my own.}
+\begin{center}
+\begin{tabular}{|l|rrrrr|rrrrr|}
+  \hline
+  & \multicolumn{5}{c|}{Addition} & \multicolumn{5}{c|}{Doubling} \\
+  Author                  & I &  M & SQ & C &   A & I &   M & SQ & C & A \\
+  \hline
+  Abu Salem/Khuri-Makdisi \cite{kmakdisi18,salem07}
+                          & 2 & 97 &  1 & 2 & 132 & 2 & 107 &  3 & 2 & 151 \\
+  This thesis             & 1 & 111 & 3 & 0 &  99 & 1 & 135 &  3 & 0 & 116 \\
+  \hline
+\end{tabular}
+\end{center}
+The symbols I, M, SQ, C, and A denote, respectively,
+inversions, multiplications, squares, multiplications by a constant, and additions.
+Abu Salem and Khuri-Makdisi also consider division by 2 in a finite field as being of negligeable cost.
+Here, division by 2 is labeled under C, multiplication by a constant.
 
+The explicit formulae produced by this thesis use considerably fewer additions, but considerably more multiplications.
+More importantly, they use one fewer inversion.
+While it is claimed in \cite{salem07} that an inversion costs approximately as much as 3 to 10 multiplications,
+\note{another source} shows that the cost is closer to 50 to 100 multiplications.
+The latter has been borne out by my own measurements of the runtimes of the two sets of formulae.
+
+Sage implementations both of the formulae from Chapter \ref{chap_typical_case}
+and of the formulae from \cite{salem07} and \cite{kmakdisi18} are available at \cite{github}.
+These implementations were used to compare the number of additions and doublings each can compute in a unit of time.
+
+In order to do the fairest comparison between the two, these steps were followed.
+Let $p$ be the prime number $p = 2^{28} - 57 = 268,435,399$
+and let $C$ be the $C_{3,4}$ curve over $\bb F_p$ defined by
+ \[y^3 + x^4 - 114167898x^2y - 126472665xy - 20302892x^2 + 56254855y + 63973501x + 65135542.\]
+The coefficients of this curve were chosen at random.
+The prime $p$ was chosen as it is the largest prime number less than $2^{28}$;
+in \cite{sutherland16}, Sutherland computes Sato-Tate distributions
+on genus 3 ramified hyperelliptic curves over primes $p < 2^{28}$,
+thus this choice of prime corresponds to a real-world application where this $C_{3,4}$ curve arithmetic might be used.
+Let $D_1$ and $D_2$ be the divisors
+\begin{align*}
+  D_1 &= \left\langle \begin{array}{r}
+    x^2 -  58199944y + 26531881x - 32437186 \\
+     xy - 121857018y + 87572390x - 13153072 \\
+    y^2 +   9642394y - 58287154x + 13450942
+  \end{array} \right\rangle \\
+  D_2 &= \left\langle \begin{array}{r}
+    x^2 - 91512999y -  67449632x + 64403020 \\
+     xy - 92024952y - 121602716x + 97210118 \\
+    y^2 + 43402044y - 11043566x  - 21890587
+  \end{array} \right\rangle
+\end{align*}
+chosen at random, and compute the Fibonacci-like sequence 
+  \[ D_{i+2} = D_{i+1} + D_i, ~~ i > 0. \]
+The implementation of the formulae from Chapter \ref{chap_typical_case} were able to compute
+the first 6,532,301 elements of this sequence in 10 minutes.
+The implementation of the formulae of Abu Salem and Khuri-Makdisi were able to compute
+the first 5,514,964 in the same period of time.
+This represents a speed-up of approximately 18.4\%.
+None of the divisors encountered in this sequence were atypical,
+nor was there ever a case where $D_{i+1} = D_{i}$
+(in which case we would be doubling, not adding).
+
+To compare doubling, let $D_1$ be as above,
+and repeatedly double $D_1$, computing the sequence
+  \[ D_{i+1} = 2D_i, ~~ i > 0. \]
+Note that the $D_2$ produced by this sequence is not the same as the $D_2$ from above.
+The implementation of the formulae from Chapter \ref{chap_typical_case} were able to compute
+the first 6,156,174 elements of this sequence in 10 minutes.
+The implementation of the formulae of Abu Salem and Khuri-Makdisi were able to compute
+the first 5,249,322 in the same period of time.
+None of the divisors encountered in this sequence were atypical.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                       %%%%%
+%%%%%   Explicit Formulae   %%%%%
+%%%%%                       %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagebreak
+\subsection{Explicit Formulae}
+\label{sec_explicit_formulae}
+
+\setlength{\tempabovedisplayskip}{\abovedisplayskip}
+\setlength{\tempbelowdisplayskip}{\belowdisplayskip}
 \setlength{\abovedisplayskip}{-10pt}
 \setlength{\belowdisplayskip}{-10pt}
 %\setlength{\abovedisplayshortskip}{0pt}
@@ -782,3 +869,7 @@ Below, we collect the formulae and their operation counts in one place.
   \end{align*}} & \\
   \hline
 \end{tabularx}
+
+\setlength{\abovedisplayskip}{\tempabovedisplayskip}
+\setlength{\belowdisplayskip}{\tempbelowdisplayskip}
+
