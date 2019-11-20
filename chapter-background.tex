@@ -32,11 +32,11 @@ A \defn{$C_{3,4}$ curve} is the set of zeroes of a polynomial
   \label{eq_c34_intro}
   y^3 + x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0.
 \end{equation}
-For each of these classes of curves, one typically also demands that they be non-singular
-\note{(put a definition of singular in chapter 4 and refer to it here)},
+For each of these classes of curves, one typically also demands that they be non-singular,\footnote{
+See Section \ref{sec_plane_curves} for a definition.}
 as we will do in Chapter \ref{chap_curves}.
 
-If $C$ is an algebraic plane curve, a \defn{divisor} of a curve is a formal sum of points on $C$.
+If $C$ is an algebraic plane curve, a \defn{divisor} of $C$ is a formal sum of points on $C$.
 If $P$ and $Q$ are points on $C$, then $2P$ and $P - Q$ are examples of divisors on $C$.
 In Chapter \ref{chap_divisors}, we will place an equivalence relation on divisors,
 partitioning them into \defn{divisor classes}.
@@ -68,7 +68,7 @@ especially when $q$ is large.
 
 \begin{example}
   Let $p = 2^{31} - 1 = 2,147,483,647$, which is prime.
-  The elliptic curve $y^2 + x^3 - 1 = 0$ over $\bb F_p[x,y]$ has 2,147,391,324 rational points.
+  The elliptic curve defined by $y^2 + x^3 - 1 = 0$ over $\bb F_p[x,y]$ has 2,147,391,324 rational points.
 \end{example}
 
 Let $a_q = \frac {\#E(\bb F_q) - (q + 1)} {2\sqrt q}$.
@@ -80,7 +80,7 @@ The Sato-Tate Conjecture suggests that, for most elliptic curves, this probabili
 
 \begin{conjecture}[Sato-Tate, \cite{silverman92}]
   Let $E$ be an elliptic curve over $\bb Q$ without complex multiplication.
-  For any interval $[\alpha, \beta] \subseteq [0, \pi]$
+  For any interval $[\alpha, \beta] \subseteq [0, \pi]$,
   \[ \lim_{N \to \infty}
     \frac {\#\{ p \leq N : \alpha \leq \theta_p \leq \beta \}} {\pi(N)} =
     \frac 2 \pi \int_{\alpha}^{\beta} \sin^2 \theta\,d\theta, \]
@@ -151,12 +151,12 @@ Thus, in order to compute the order of the divisor class group of a curve,
 and ultimately to compute terms in the $L$-series of the curve,
 we need an algorithm to efficiently carry out addition in the divisor class group.
 
-The above-mentioned conjectures have been studied on genus 1 and genus 2 curves.
-\note{Cite some papers.}
+The above-mentioned conjectures have been studied on genus 1 and genus 2 curves \cite{kedlaya08}
 Attention has turned recently towards studying them on genus 3 curves.
 Genus 3 algebraic plane curves fall into two categories: hyperelliptic and non-hyperelliptic.
 Non-hyperelliptic genus 3 curves are also called $C_{3,4}$ curves, a special case of the broader family of $C_{a,b}$ curves.
-Therefore, fast algorithms are needed to compute in the divisor class group of a $C_{3,4}$ curve.
+In order to add in the divisor class group of genus 3 curves,
+we need fast algorithms are needed to compute in the divisor class group of $C_{3,4}$ curves in particular.
 
 The goal of this thesis is find such algorithms.
 More accurately, the goal of this thesis is to find \defn{explicit formulae} describing arithmetic in a $C_{3,4}$ curve's divisor class group.
@@ -180,7 +180,6 @@ We briefly highlight prior work on genus 3 hyperelliptic curves.
 For ramified genus 3 hyperelliptic curves, the most efficient published explicit formulae
 are due to Nyukai \cite{nyukai06-1} \cite{nyukai06-2},
 who adds divisors in 1I+67M (1 finite field inversion and 67 multiplications) and doubles divisors in 1I+68M.
-\note{(This is out of date!)}
 For split genus 3 hyperelliptic curves, Sutherland \cite{sutherland18} recently published explicit formulae
 requiring 1I+79M/1I+82M to add/double.
 Rezai Rad \emph{et al.} \cite{rezairad16} \cite{rezairad19} found comparably fast explicit formulae to add/double
@@ -293,7 +292,8 @@ The improvement in the typical case remains significant over all of the computat
 while the completion of the atypical cases becomes more significant over the smaller primes,
 where one frequently bumps into these atypical cases.
 
-A full implementation in Sage of the arithmetic presented in this thesis is available at {\tt https://github.com/emmacneil/c34-curves}.
+A full implementation in Sage of the arithmetic presented in this thesis is available at \cite{github}.
+%{\tt https://github.com/emmacneil/c34-curves}.
 This implementation has been tested by unit tests as well as by adding and doubling a large number of randomly chosen divisors
 and comparing the results to Sage's own provided ideal arithmetic.
 

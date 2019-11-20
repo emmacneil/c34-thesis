@@ -583,13 +583,15 @@ Here, division by 2 is labeled under C, multiplication by a constant.
 
 The explicit formulae produced by this thesis use considerably fewer additions, but considerably more multiplications.
 More importantly, they use one fewer inversion.
+Whether or not the formulae in this thesis are an improvement over the state-of-the-art depends
+on the cost of computing an inverse versus a product.
 While it is claimed in \cite{salem07} that an inversion costs approximately as much as 3 to 10 multiplications,
-\note{another source} shows that the cost is closer to 50 to 100 multiplications.
-The latter has been borne out by my own measurements of the runtimes of the two sets of formulae.
-
-Sage implementations both of the formulae from Chapter \ref{chap_typical_case}
-and of the formulae from \cite{salem07} and \cite{kmakdisi18} are available at \cite{github}.
-These implementations were used to compare the number of additions and doublings each can compute in a unit of time.
+\cite{dahmen07} claims that the cost may range anywhere from 4 to 80 multiplications, or higher on embedded devices,
+while \cite{hankerson04} assumes a cost of 80 multiplications.
+I have elected to create Sage implementations of both sets of formulae,
+those from Chapter \ref{chap_typical_case} and those from \cite{salem07} and \cite{kmakdisi18},
+to compare the number of additions and doublings each can compute in a unit of time.
+These implementations are available at \cite{github}.
 
 In order to do the fairest comparison between the two, these steps were followed.
 Let $p$ be the prime number $p = 2^{28} - 57 = 268,435,399$
@@ -599,7 +601,7 @@ The coefficients of this curve were chosen at random.
 The prime $p$ was chosen as it is the largest prime number less than $2^{28}$;
 in \cite{sutherland16}, Sutherland computes Sato-Tate distributions
 on genus 3 ramified hyperelliptic curves over primes $p < 2^{28}$,
-thus this choice of prime corresponds to a real-world application where this $C_{3,4}$ curve arithmetic might be used.
+thus this choice of prime corresponds to a real application where this $C_{3,4}$ curve arithmetic might be used.
 Let $D_1$ and $D_2$ be the divisors
 \begin{align*}
   D_1 &= \left\langle \begin{array}{r}
