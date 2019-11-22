@@ -23,12 +23,13 @@ and a way to test equality of ideals.
 Gr\"obner bases are always defined in terms of an ordering on monomials of $R$.
 One of the elements of the basis will be minimal with respect to that order,
 and this minimal polynomial will play an important role in the divisor arithmetic
-described beginning in chapter \ref{chap_addition}.
+described beginning in Chapter \ref{chap_addition}.
+The whole basis is minimal, in a sense; 
+the leading monomial of any polynomial in $I$ is divisible by the leading monomial of a basis element,
+though the notion of a leading monomial depends on an ordering on monomials.
 Gr\"obner bases also facilitate computations in $R/I$ and they induce a basis for $R/I$ as a $K$-vector space.
 
-Since Gr\"obner bases are always defined in terms of an ordering on monomials
-and are in a sense minimal with respect to that order.
-Thus we begin by describing this order.
+We begin by describing the monomial orderings underlying Gr\"obner basis theory.
 
 
 
@@ -42,7 +43,7 @@ Thus we begin by describing this order.
 
 As before, we will assume $R = K[x_1, \ldots, x_n]$,
 but the concepts in this subsection generalize to polynomial rings $R = S[x_1, \ldots, x_n]$ for a ring $S$,
-or even to free $S$-modules with a basis. (See chapter 15.2 in \cite{eisenbud95}).
+or even to free $S$-modules with a basis. (See Chapter 15.2 in \cite{eisenbud95}).
 
 When we write down a polynomial in one variable, we typically write the terms in increasing or decreasing order according to the terms' degrees.
 One might write $3x^2 + x + 2$ or $2 + x + 3x^2$, for example, but typically not $x + 3x^2 + 3$.
@@ -144,7 +145,7 @@ part (iii) of this proposition will be vital in proving the algorithm terminates
   Lemma 15.2 in \cite{eisenbud95}.
 \end{proof}
 
-It was said above that in a univariate polynomial $K[x]$,
+It was said above that in a univariate polynomial ring $K[x]$,
 it is ``natural'' to order monomials by their degree in $x$.
 That is because it is the \emph{only} monomial order on $\bb K[x]$.
 \begin{proposition}
@@ -160,7 +161,7 @@ That is because it is the \emph{only} monomial order on $\bb K[x]$.
   Now suppose $x^k < x^{k+1}$ for some natural number $k \geq 0$.
   By property (ii), $x^kx < x^{k+1}x$, hence $x^{k+1} < x^{k+2}$.
 \end{comment}
-  Necessarily, $1 < x$, by property (i) of Definition \ref{def_monomial_order}.
+  Necessarily, $1 < x$ by property (i) of Definition \ref{def_monomial_order}.
   By property (ii), $1 < x$ implies $x < x^2$. The rest follows by induction.
 \end{proof}
 Thus it is fair to call this order the natural order on monomials of $K[x]$.
@@ -177,12 +178,13 @@ Here, the $\cdot$ denotes the dot product in $\bb R^n$ and the vector $w$ is cal
 It is straightforward to show that this order satisfies properties (i) and (ii) of a monomial order, though it is not necessarily total.
 In the event that $x^u = x^v$, we can break the tie by refining by a second weight vector, $w'$:
 \[ x^u <_{w,w'} x^v \iff u \cdot w < v \cdot w \text{ or }(u \cdot w = v \cdot w \text{ and } u \cdot w' < v \cdot w'). \]
-Having $n$ $\bb R$-linearly independent weight vectors is sufficient (but not necessary) to break all ties, yielding a total monomial order
+Having $n$ $\bb R$-linearly independent weight vectors is sufficient (but not necessary) to break all ties, yielding a total monomial order.
 A single weight vector $w = (w_1, \ldots, w_n) \in \bb R^n$ alone yields a total order when the $w_i$'s are $\bb Q$-linearly independent. 
 
 Every monomial order on $R[x_1, \ldots, x_n]$ is a weight order given by at most $n$ $\bb R$-linearly independent weight vectors in $\bb R^n$
 (see \cite{robbiano86} and Exercises 2.4.11 and 2.4.12 in \cite{cox07}).
-For example, the lexicographic ordering on $R = K[x_1, \ldots, x_n]$ with $x_n < \dots < x_1$ is given by the rows $n \times n$ identity matrix $I_n$.
+For example, the lexicographic ordering on $R = K[x_1, \ldots, x_n]$ with $x_n < \dots < x_1$ is given by the rows
+of the $n \times n$ identity matrix $I_n$.
 The graded lexicographic ordering with with $x_n < \dots < x_1$ is given by the rows of
   \[ \begin{pmatrix}
        1 & 1 & 1 & \dots & 1 & 1 \\
@@ -201,13 +203,15 @@ Their chosen monomial order on $K[x,y]$ is one they define as the \defn{$C_{a,b}
   The \defn{$C_{a,b}$ order} on $R$ is the monomial order on $R$ determined by the rows of the matrix
   \[ \begin{pmatrix} a & b \\ 0 & 1 \end{pmatrix}. \]
 \end{definition}
-In Section \ref{sec_local_rings}, we will see that under the $C_{a,b}$ order,
-monomials are ordered according to the order of their pole at infinity.
-For example, in \cite{arita05-2}, Arita uses the \defn{$C_{3,4}$ order},
-given by the rows of
-\[ \begin{pmatrix} 3 & 4 \\ 0 & 1 \end{pmatrix}. \]
-In equations \ref{eq_elliptic} and \ref{eq_genus_3_hyperelliptic},
-the monomials are ordered by the $C_{2,3}$ and $C_{2,7}$ orders, respectively.
+The $C_{a,b}$ order may also be seen as ordering ordering monomials
+according to their pole orders at infinity on a $C_{a,b}$ curve,
+with ties broken according to their degrees in $y$.
+\[ m < m' \iff
+  \begin{array}{l}
+    -\nu_{P_\infty}(m) < -\nu_{P_\infty}(m') \text{ or} \\
+    (-\nu_{P_\infty}(m) = -\nu_{P_\infty}(m') \text{ and } \deg_y(m) < \deg_y(m')).
+  \end{array}
+\]
 
 \begin{example}
   \label{ex_c23_order}
@@ -223,6 +227,11 @@ the monomials are ordered by the $C_{2,3}$ and $C_{2,7}$ orders, respectively.
   On monomials less than $x^4$ and $y^3$,
   this order agrees with the degree lexicographic order with $x < y$.
 \end{example}
+In equations \ref{eq_elliptic} and \ref{eq_genus_3_hyperelliptic},
+the monomials are ordered by the $C_{2,3}$ and $C_{2,7}$ orders, respectively.
+In \cite{arita05-2}, Arita uses the \defn{$C_{3,4}$ order}, given by the rows of
+\[ \begin{pmatrix} 3 & 4 \\ 0 & 1 \end{pmatrix}. \]
+We will make regular use of the $C_{3,4}$ order in this thesis.
 
 
 
@@ -235,8 +244,11 @@ the monomials are ordered by the $C_{2,3}$ and $C_{2,7}$ orders, respectively.
 \subsection{Ideal of Leading Terms}
 
 Let $R = K[x_1, \ldots, x_n]$ be a polynomial ring over a field $K$,
-let $f \in R$ be a polynomial, and let $m \in \cal M_R$ be a monomial.
+let $f \in R$ be a polynomial,
+and let $m \in \cal M_R$ be a monomial.
 Denote the \defn{coefficient of $m$ in $f$} by $\coeff(f, m)$.
+For example, if $f = 2x + 3y + 5x + 8$,
+then $\coeff(f, 1) = 8$, $\coeff(f, x) = 7$, $\coeff(f, y) = 3$, and $\coeff(f, x^2) = 0$.
 
 Now let $\leq$ be a monomial order on $R$.
 Define also
@@ -251,10 +263,6 @@ If $f = 0$, then define $\LM_\leq(f) = 0$.
 It should always be clear what monomial order is being used in any given context, 
 hence we will omit the subscript and simply write $\LM(f)$ and $\LT(f)$.
 
-\begin{example}
-  Let $R = \bb Q[x,y]$ and $f = 2x + 3y + 5x + 8 \in R$.
-  Then $\coeff(f, 1) = 8$, $\coeff(f, x) = 7$, $\coeff(f, y) = 3$, and $\coeff(f, x^2) = 0$.
-\end{example}
 \begin{example}
   Let $R = \bb Q[x,y]$ with the lexicographic order $x < y$.
   Let $f = 3x^3 + 2y^2 + 1 \in R$.
@@ -313,7 +321,7 @@ As before, let $R = K[x_1, \ldots, x_n]$ be a multivariate polynomial ring over 
     \[ \LT(I) = \pid{ \LT(g_1), \ldots, \LT(g_m) }. \]
 \end{definition}
 That is, a Gr\"obner basis for $I$ is a finite set of generators for $I$ whose leading terms generate $\LT(I)$.
-We say that $G$ is a Gr\"obner basis if $G$ is a Gr\"obner basis for $\pid G = \pid{g_1, \ldots, g_m}$.
+We say $G$ is a Gr\"obner basis if $G$ is a Gr\"obner basis for $\pid G = \pid{g_1, \ldots, g_m}$.
 It is known that every polynomial ideal has a Gr\"obner basis (\S 2.8 of \cite{buchberger98}),
 and if generators of $I = \pid{f_1, \ldots, f_k}$ are given,
 an algorithm exists to produce a Gr\"obner basis $\{g_1, \ldots, g_m\}$ for $I$.
@@ -352,7 +360,7 @@ though this characterization requries that we first define reductions and $S$-po
   \label{def_reduced_polynomial}
   Let $R = K[x_1, \ldots, x_n]$ be a polynomial ring with a monomial order $\leq$.
   Let $f, h \in R$ be polynomials and let $G \subseteq R$ be a finite set of polynomials.
-  We say that
+  We say
   \begin{itemize}
     \item $f$ is \defn{reduced modulo $h$} if no term in $f$ is divisible by $\LT(h)$ ---
           that is, $h$ cannot be used to eliminate a term from $f$;
@@ -374,7 +382,7 @@ The remainder depends on the chosen monomial order $\leq$ on $R$, as well as an 
 by which we mean if we consider $G$ an ordered set, then running the division algorithm on different permutations of $G$
 may result in different remainders.
 The division algorithm is deterministic, therefore if we fix an ordering on $G$,
-we may speak of \emph{the} reduction of $f$ modulo $G$ with respect to that order.
+we may speak of \defn{\emph{the} reduction of $f$ modulo $G$} with respect to that order.
 
 \begin{definition}
   Let $f, g \in K[x_1, \ldots, x_n]$. The \defn{$S$-polynomial}\footnote{S for ``syzygy''.} of $f$ and $g$ is
@@ -425,7 +433,7 @@ no term in $g_i$ is divisible by the leading monomial of any other generator in 
 
 \begin{example}
   \label{ex_groebner_4}
-  Still using $R = K[x,y]$ with the $C_{3,4}$,
+  Still using $R = K[x,y]$ with the $C_{3,4}$ order,
   consider the ideal
   \[I = \pid{y^2 + xy + x^2, ~y^2 + xy, ~y^2}.\]
   The sets $\{x^2, xy + x^2, y^2 + xy + x^2\}$ and $\{x^2, xy, y^2\}$ are both Gr\"obner bases of $I$.
@@ -576,7 +584,7 @@ that will get use in later sections.
     where $g \in I$, $r \in R$, and $r$ is reduced modulo $G$.
 
     \item
-    For any polynomial $f \in R$, we have that $f \in I$ if and only if $r = 0$.
+    For any polynomial $f \in R$, $f \in I$ if and only if $r = 0$.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
@@ -630,7 +638,7 @@ $f \in I^2$ if and only if $f$ and its differential $df$ vanish modulo $I$.
 \label{sec_groebner_bases_in_coordinate_rings}
 
 While the theory of Gr\"obner bases always takes place in polynomial rings,
-the theory may be extended to the coordinate ring of a $C_{3,4}$ curve,
+the theory may be extended to the coordinate ring of a $C_{3,4}$ curve $C$,
 though the equivalence relation leads to a complication.
 Take, for example, the ring $K[x,y]$ for some field $K$ with the $C_{3,4}$ monomial order.
 Then $x^4 < y^3$ in $K[x,y]$.
@@ -641,27 +649,26 @@ How can we compare the monomials $y^3$ and $x^4$ in $K[C]$ if $y^3 \equiv -x^4 -
 Given that $y$ divides $x^4 + 1$ in $K[C]$, is $\pid{y, x^4 + 1}$ a reduced Gr\"obner basis in $K[C]$ or not?
 We must therefore make clear what we mean by a Gr\"obner basis in a coordinate ring.
 
-Let $R = K[x,y]$ be a bivariate polynomial ring with some fixed monomial order $\leq$.
-Let $f \in R$ be irreducible over $K$ and let $K[C] = R/\pid f$.
-Then the ideals of $R$ containing $f$ are in bijection with the ideals of $K[C]$
+Let $C$ be a $C_{3,4}$ curve given by a polynomial $F$.
+Then the ideals of $K[x,y]$ containing $F$ are in bijection with the ideals of $K[C]$
 (Theorem III.2.13 in \cite{hungerford}).
 Let $G = \pid{g_1, \ldots, g_m}$ be a finite subset of $K[C]$
 and let $I = \pid G$ be the $K[C]$-ideal generated by $G$.
-Let $\bar f \in R$ be the reduction of $f \in R$ modulo $G$, in the sense of Definition \ref{def_reduced_polynomial},
-and treating $G$ as a subset of $R$.
-We will say that $G$ is a Gr\"obner basis for $I$ if the set $G \cup \{ \bar f \}$ is a Gr\"obner basis in $K[x,y]$.
+Let $\bar f \in K[x,y]$ be the reduction of $f \in R$ modulo $G$,
+in the sense of Definition \ref{def_reduced_polynomial},
+and treating $G$ as a subset of $K[x,y]$.
+We will say that $G$ is a Gr\"obner basis for $I$
+if the set $G \cup \{ \bar f \}$ is a Gr\"obner basis in $K[x,y]$ with respect to the $C_{3,4}$ order.
 
-In each of the examples below,
-let $K = \bb F_{11}$,
-let $R = K[x,y]$ with the $C_{3,4}$ order,
-and let $f = y^3 + x^4 + 1$ and $K[C] = R/\pid f$.
+In each of the examples below, let $K = \bb F_{11}$,
+and let $C$ be the curve given by $F = y^3 + x^4 + 1 \in K[x,y]$.
 \begin{example}
   Consider the ideal $I = \pid{x^2 + x, xy} \subset K[C]$.
   The set $G = \{ x^2 + x, xy \}$ is \emph{not} a Gr\"obner basis for $I$.
   
-  The reduction of $f$ modulo its generators is
+  The reduction of $F$ modulo $G$ is
   \begin{align*}
-    \bar f  &= y^3 + x^4 + 1 \\
+    \bar F  &= y^3 + x^4 + 1 \\
             &\equiv y^3 - x^3 + 1 & \text{reduce modulo $x^2 + x$} \\
             &\equiv y^3 + x^2 + 1 & \text{reduce modulo $x^2 + x$} \\
             &\equiv y^3 - x + 1 & \text{reduce modulo $x^2 + x$}.
@@ -683,13 +690,13 @@ and let $f = y^3 + x^4 + 1$ and $K[C] = R/\pid f$.
 \end{example}
 \begin{example}
   Consider instead $I = \pid{y^2} \subset K[C]$.
-  The reduction of $f$ modulo $y^2$ is $\bar f = x^4 + 1$.
+  The reduction of $F$ modulo $y^2$ is $\bar F = x^4 + 1$.
   Lift $I$ to $I^* = \pid{y^2, x^4 + 1} \subset R$.
   There is only one $S$-polynomial to consider on the generators of $I^*$,
   \[ S(y^2, x^4 + 1) = (y^2) \frac{x^4y^2}{y^2} - (x^4 + 1)\frac{x^4y^2}{x^4} = y^2. \]
   This $S$-polynomial reduces to 0 modulo $\{y^2, x^4 + 1\}$,
   hence $\{y^2, x^4 + 1\}$ is a Gr\"obner basis in $K[x,y]$ and $\{y^2\}$ is a Gr\"obner basis in $K[C]$.
   
-  This example illustrates the need to compute the reduction $\bar f$ of $f$ modulo $G$,
+  This example illustrates the need to compute the reduction $\bar F$ of $F$ modulo $G$,
   since $\{y^2, x^4 + 1\}$ is a Gr\"obner basis in $K[x,y]$, but $\{y^2, y^3 + x^4 + 1\}$ is not.
 \end{example}

@@ -39,89 +39,85 @@ The \defn{affine plane over $K$}, denoted by $\bb A_K^2$, is the set
 If $L/K$ is an algebraic extension, then $\bb A_K^2 \subseteq \bb A_L^2$.
 The \defn{projective plane over $K$}, denoted by $\bb P_K^2$, is the set of lines in $K^3$ through the origin.
 This may be constructed as the set of points in $K^3$ other than the origin,
-modulo an equivalence relation where two points are equivalent if and only if they are colinear with the origin.
-That is,
+modulo an equivalence relation whereby two points are equivalent
+if and only if they are colinear with the origin. That is,
 \[ \bb P_K^2 = (K^3 - \{(0,0,0)\})/\sim \]
 where
-\[ (x_1, y_1, z_1) \sim (x_2, y_2, z_2) \iff \exists k \in K : (x_1, y_1, z_1) = (kx_2, ky_2, kz_2). \]
+\begin{equation}
+  \label{eq_projective_point_relation}
+  (x_1, y_1, z_1) \sim (x_2, y_2, z_2) \iff \exists k \in \bar K : (x_1, y_1, z_1) = (kx_2, ky_2, kz_2).
+\end{equation}
 The equivalence class of a point $(x, y, z)$ is denoted by $(x : y : z)$.
 If $L/K$ is an algebraic extension, then $\bb P_K^2 \subseteq \bb P_L^2$.
 
-An \defn{affine algebraic plane curve} over $K$ is a set of points
-\[ C_f : \{ (x_0, y_0) \in \bb A_{\bar K}^2 ~|~ f(x_0,y_0) = 0 \}, \]
-for some non-constant polynomial $f \in K[x,y]$.
-It is the set of points in the affine plane where some non-constant polynomial vanishes.
-Note that some of these points may have coordinates not in $K$, but in its algebraic closure.
-If $L/K$ is an algebraic extension, then denote $C_f(L) = C_f \cap \bb A_L^2$.
-Points in $C_f(L)$ are called \defn{$L$-rational.}
-Points in $C_f(K)$ are called \defn{rational} or $K$-rational.
+There is a bijection between $\bb A_L^2$ and the points in $\bb P_L^2$ whose third coordinates are non-zero.
+\[ \phi : \bb A_L^2 \to \bb P_L^2 - \{ (x:y:0) ~|~ x, y \in L \} \]
+\begin{align*}
+  \phi(x, y) &= (x : y : 1) \\
+  \phi\inv(x : y : z) &= \left( \frac x z, \frac y z \right)
+\end{align*}
+It is straightforward to show that $\phi\inv$ is well-defined.
+
+Let $f(x,y) \in K[x,y]$ be a polynomial.
+The \defn{homogenization} of $f$ is the homogeneous polynomial
+\[ F(X,Y,Z) = Z^{\deg f} f\left( \frac X Z, \frac Y Z \right) \in K[X,Y,Z]. \]
+The homogenization of $0 \in K[x,y]$ is $0 \in K[X,Y,Z]$.
+For any homogeneous polynomial $F(X,Y,Z) \in K[X,Y,Z]$,
+the \defn{dehomogenization} of $F$ is the polynomial
+\[ f(x,y) = F(x, y, 1). \]
+The polynomial $f$ might no longer be homogeneous.
+The homogenization and dehomogenization operations are mutual inverses.
 
 A \defn{projective algebraic plane curve} over $K$ is a set of points
-\[ C_f : \{ (x_0 : y_0 : z_0) ~|~ f(x_0, y_0, z_0) = 0 \}, \]
-for some homogeneous polynomial $f \in K[X, Y, Z]$.
-It is the set of points in the projective plane where some $f$ vanishes.
-\note{There is a problem with this definition, since the zero set of $Z \in K[X,Y,Z]$ is a plane, not a curve!}
-Note that if $f$ is zero at $(x_0, y_0, z_0)$,
-then $f$ is zero at every point in the equivalence class $(x_0 : y_0 : z_0)$,
-a consequence of $f$ being homogeneous.
-If $L \supseteq K$ is an algebraic extension, then analogously to the case for affine curves,
-denote $C_f(L) = C_f \cap \bb P_L^2$.
-Points in $C_f(L)$ are called \defn{$L$-rational.}
-Points in $C_f(K)$ are called \defn{rational} or $K$-rational.
+\[ C_F : \{ (x_0 : y_0 : z_0) \in \bb P_{\bar K}^2 ~|~ F(x_0, y_0, z_0) = 0 \}, \]
+for some homogeneous polynomial $F \in K[X, Y, Z]$.
+It is the set of points in $\bb P_{\bar K}^2$ at which $F$ is zero.
+Notice that this includes points in the algebraic closure of $K$.
+The \defn{affine model} of $C_F$ is
+\[ C_f : \{ (x, y) ~|~ f(x,y) = 0 \} \cup C_\infty, \]
+the set of points at which the dehomogenization $f$ of $F$ is zero,
+together with the set $C_\infty$ of \defn{points at infinity}.
+This set is $C_\infty = \{ (x:y:0) | F(X,Y,0) = 0 \}$.
+These are precisely the points that do not fall under the domain of $\phi\inv$.
+The points in $C_f$ are in bijection with the points in $C_F$.
+An \defn{affine algebraic plane curve} $C_f$ over $K$
+is the affine model of a projective algebraic plane curve $C_F$.
+The \defn{projective closure} of $C_f$ is $C_F$.
 
-Affine and projective curves are related.
-Given a polynomial $f \in K[x,y]$ defining an affine plane curve $C_f$,
-we may construct the homogenization $F$ of $f$,
-\[ F = Z^{\deg f} f\left( \frac X Z, \frac Y Z \right) \in K[X,Y,Z]. \]
-The \defn{projective closure} of $C_f$ is $\bar{C_f} := C_F$.
-\begin{example}
-  Let $f = y^2 + x^3 - x - 1 \in \bb Q[x,y]$.
-  The affine plane curve $C_f$ is an elliptic curve (see Equation \ref{eq_elliptic}).
-  Then $\deg f = 3$ and the projective closure $C_f$ is given by
-  \begin{align*}
-    F &= Z^3 f\left( \frac X Z, \frac y Z \right) \\
-      &= Z^3 \left( \frac Y Z \right)^2 + \left( \frac X Z \right)^3 - \left( \frac X Z \right) - 1 \\
-      &= ZY^2 + X^3 - XZ^2 - Z^3.
-  \end{align*}
-\end{example}
-Given a polynomial $F \in K[X,Y,Z]$ defining a projective plane curve $C_F$,
-let $f = F(x, y, 1) \in K[x,y]$.
-If $f$ is non-constant, then $C_f$ is an \defn{affine slice}
-\footnote{Setting $f = F(x, 1, y)$ or $f = F(1, x, y)$ yields a different affine slice.}
-of $C_F$.
-Homogenization and slicing at $Z = 1$ are mutual inverses.
-\begin{example}
-  Let $F = ZY^2 + X^3 - XZ^2 - Z^3 \in \bb Q[X,Y,Z]$.
-  Then the affine slice of $C_F$ at $z = 1$ is given by the polynomial
-  \begin{align*}
-    f &= F(x, y, 1) \\
-      &= 1 \cdot y^2 + x^3 - x \cdot 1^2 - 1^3 \\
-      &= y^2 + x^3 - x - 1.
-  \end{align*}
-\end{example}
+Because affine and projective algebraic plane curves are so closely related,
+essentially two representations of the same object,
+we shall refer to both simply as \defn{curves}.
+We will define curves by their affine model, i.e. by a polynomial $f \in K[x,y]$.
+When the defining polynomial is clear in context, we shall omit the subscript and write $C$ rather than $C_f$.
 
-A curve $C_f$ is \defn{irreducible} if $f$ is $\bar K$-irreducible,
-i.e. if $f$ cannot be written as a product $f = gh$ of lower-degree polynomials $g, h \in \bar K[x,y]$
-(or $g,h \in K[X,Y,Z]$ is $C_f$ is projective).
+Although we will define curves by their affine model,
+we will usually denote points on the curve by their projective coordinates, in the form $(x:y:z)$.
+By the equivalence relation on projective points,
+every point in $C$ can be written uniquely in one of the three reduced forms $(x:y:1)$, $(x:1:0)$ or $(1:0:0)$.
+Points of the form $(x:y:1)$ are \defn{finite points},
+while all other points with $z$-coordinate 0 are \defn{points at infinity}.
 
-If $P \in C_f$ is a point on $C_f$,
-then $P$ is called \defn{singular} if all formal partial derivatives of $f$ vanish at $P$.
-In this case, the tangent line to $C$ at $P$ does not exist.
-The curve $C_f$ is called \defn{singular} if it has a singular point.
-Otherwise $C_f$ is called \defn{non-singular} or \defn{smooth}.
-Some authors require that algebraic curves be irreducible and sometimes non-singular.
+If $L \supseteq K$ is an algebraic extension, 
+then the set $C(L)$ of $L$-rational points on $C$ is
+\[ C(L) = C \cap \bb P_L^2. \]
+These are the points on $C$ that are equivalent (via the relation in \ref{eq_projective_point_relation})
+to a point with coordinates all in $L$.
+Equivalently, these are the points on $C$ whose representations in reduced form have coordinates in $L$.
+If $C$ is defined over $K$, then the $K$-rational points are simply called \defn{rational}.
+
+A curve $C = C_f$ is \defn{irreducible} if $f$ is $\bar K$-irreducible,
+i.e. if $f$ cannot be written as a product $f = gh$ of lower-degree polynomials $g, h \in \bar K[x,y]$.
+If $P$ is a point on $C$,
+then $P$ is called \defn{singular} if all formal partial derivatives of the homogenization $F$ of $f$ vanish at $P$.
+In this case, the tangent line to $C$ at $P$ does not exist.\footnote{
+In this case, one might be interested in the Zariski tangent space instead.}
+The curve $C$ is called \defn{singular} if it has at least one singular point.
+Otherwise $C$ is called \defn{non-singular} or \defn{smooth}.
+Some authors require that algebraic curves be irreducible and sometimes smooth.
 Our definition of $C_{3,4}$ curves below will require these conditions.
 
-Because of the correspondence between affine and projective algebraic plane curves,
-we will often refer to them simply as curves.
-When we define a projective curve by a polynomial in $K[x,y]$,
-it is understood that it is the projective closure of that curve that is meant.
-Moreover, if $C_f$ is a curve,
-we will also overload the symbol $C$ to refer both to the defining polynomial of the curve
-and to the curve itself.
-
 Let $\sigma \in \Gal(\bar K/K)$ be an automorphism on $\bar K$ that fixes $K$.
-Then we may also have $\sigma$ act on $\bb A_{\bar K}^2$ and $\bb P_{\bar K}^2$ via
+Then $\sigma$ also acts on $\bb A_{\bar K}^2$ and $\bb P_{\bar K}^2$ via
 \begin{align}
   \label{eq_galois_action_on_point}
   \sigma((x_0, y_0)) &= (\sigma(x_0), \sigma(y_0)) \\
@@ -131,11 +127,9 @@ It is easily verified that the action on $\bb P_{\bar K}^2$ is well-defined.
 If $P \in \bb A_{\bar K}^2$ or $P \in \bb P_{\bar K}^2$,
 then define the \defn{orbit} of $P$ to be
 \[ \orb(P) := \{ \sigma(P) ~|~ \sigma \in \Gal(\bar K/K) \}. \]
-\note{(I don't know if I should take $\Gal(\bar K/K)$ or $\Gal(L/K)$ for $L$,
-the unique(?) Galois extension of minimal degree containing the coordinates of $P$.
-Does bumping up from $L$ to $\bar K$ increase the size of the orbit?)}
 
 \begin{lemma}
+  \label{lem_galois_action_on_polynomial}
   Let $f \in K[x,y]$ and $\sigma \in \Gal(\bar K/K)$.
   Let $P = (x_0, y_0)$ be a point in $\bar K \times \bar K$. Then
   \[ f(\sigma(x_0), \sigma(y_0)) = \sigma(f(x_0, y_0)). \]
@@ -191,8 +185,9 @@ The \defn{coordinate ring} of $C$, denoted by $K[C]$, is the quotient ring
 It is the ring of bivariate polynomials over $K$,
 modulo the principal ideal generated by the curve's defining polynomial.
 
-It is a well-known fact that, if $C$ is given by an irreducible polynomial, the coordinate ring is a Dedekind domain.
-\note{Many papers state this. I'd like to find a citation with a proof.}
+It is a well-known fact in algebraic geometry that,
+if $C$ is given by an irreducible polynomial,
+its coordinate ring is a Dedekind domain (see \S 8.2 of \cite{galbraith12} or Proposition 8.1 of \cite{neukirch99}).
 Therefore all non-zero ideals of $K[C]$ may be uniquely factored into a product of prime ideals.
 The coordinate ring has Krull dimension 1, meaning that every non-zero prime ideal is a maximal ideal
 (Theorem VIII.6.5 in \cite{hungerford}).
@@ -213,7 +208,7 @@ though one of the goals of Chapter \ref{chap_ideals} is to show that we can work
 %%%%%                 %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Local Rings}
+\subsection{Local Rings and Valuations}
 \label{sec_local_rings}
 
 Let $K[C]$ be the coordinate ring of an irreducible smooth curve $C$.
@@ -224,11 +219,11 @@ which is usually denoted by $\cal O_\frak p$ instead.
 This can be defined more explicitly by
 \[ \cal O_{\frak p} = \left\{ \frac f g \in K(C) ~|~ g \not \in \frak p \right\}. \]
 This ring is a local ring, meaning that it has a unique maximal ideal, denoted by $\frak m_{\frak p}$.
-More specifically, $\frak m_{\frak p}$ is 
+Specifically, $\frak m_{\frak p}$ is 
 \[ \frak m_{\frak p} = \frak p \cal O_{\frak p} =
    \left\{ \frac f g \in K(C) ~|~ f \in \frak p, ~g \not \in \frak p \right\}. \]
 
-Now let $P$ be a point on $C$. Then $P$ induces a prime ideal
+Now let $P$ be a finite point on $C$. Then $P$ induces a prime ideal
 $\frak p = \{ f \in K[C] ~|~ f(P) = 0 \}$.
 \begin{comment}
 \begin{proposition}
@@ -268,44 +263,75 @@ but also a discrete valuation ring, or DVR (Theorem VIII.6.10 in \cite{hungerfor
 For more on DVRs, see \cite{eisenbud95}.
 Rather than define here what discrete valuations and DVRs are in general,
 we briefly describe the valuation of a function at a prime ideal.
-
 Let $f \in K[C]$.
 The \defn{order} or \defn{valuation} of $f$ at $\frak p$, denoted $\nu_{\frak p}(f)$, is
-\[ \nu_{\frak p}(f) := \max\{ r \in \bb N ~|~ f \in \frak m_P^r \}. \]
-The order of 0 at $\frak p$ is defined as $\nu_{\frak p} = \infty$.
+\[ \nu_{\frak p}(f) := \max\{ r \in \bb N ~|~ f \in \frak m_P^r \}, \]
+if $f$ is not identically 0.
+The order of 0 at $\frak p$ is defined as $\nu_{\frak p}(0) = \infty$.
 Given two polynomials $f, g \in K[C]$, $\nu_{\frak p}$ satisfies the relation
 \[ \nu_{\frak p}(fg) = \nu_{\frak p}(f) + \nu_{\frak p}(g), \]
 as long as we define $\infty + \infty = \infty$ and $\infty + n = \infty$ for all $n \in \bb Z$.
 We can extend this to polynomials in $K(C)$.
 Let $f/g \in K(C)$ and define
 \[ \nu_{\frak p}\left(\frac f g\right) = \nu_{\frak p}(f) - \nu_{\frak p}(g). \]
+This map is well-defined,
+for if $\frac f g = \frac h k$, then
+\begin{align*}
+  fk &= gh \\
+  \nu_{\frak p}(fk) &= \nu_P(gh) \\
+  \nu_{\frak p}(f) + \nu_P(k) &= \nu_{\frak p}(g) + \nu_{\frak p}(h) \\
+  \nu_{\frak p}(f) - \nu_P(g) &= \nu_{\frak p}(h) - \nu_{\frak p}(k) \\
+  \nu_{\frak p}\left(\frac f g\right) &= \nu_{\frak p}\left(\frac h k\right).
+\end{align*}
 
-\begin{proposition}
-  This map is well-defined.
-\end{proposition}
-\begin{proof}
-  Suppose $\frac f g = \frac h k$. Then
-  \begin{align*}
-    fk &= gh \\
-    \nu_{\frak p}(fk) &= \nu_P(gh) \\
-    \nu_{\frak p}(f) + \nu_P(k) &= \nu_{\frak p}(g) + \nu_{\frak p}(h) \\
-    \nu_{\frak p}(f) - \nu_P(g) &= \nu_{\frak p}(h) - \nu_{\frak p}(k) \\
-    \nu_{\frak p}\left(\frac f g\right) &= \nu_{\frak p}\left(\frac h k\right).
-  \end{align*}
-\end{proof}
-
-Analogously for a point $P$ on a curve,
+Analogously for a finite point $P$ on a curve,
 we may define the order of $f/g \in K(C)$ at $P$
 by letting $\frak p$ be the prime induced by $P$ and invoking the definition above,
 i.e. $\nu_P := \nu_{\frak p}$, where $\frak p$ is the prime ideal induced by $P$.
 
-It is an important fact that the valuation of a function $f \in K[C]$ at a point $P$
-coincides with the order of the zero or pole of $f$ at $P$.
-If $\nu_P(f) = n > 0$, we say that $f$ has a zero of order $n$ at $P$.
-If $\nu_P(f) = n < 0$, we say that $f$ has a pole of order $n$ at $P$.
-It is worth mentioning as well that the $C_{3,4}$ order on monomials arranges monomials by the order of their poles.
+There are various ways in which we might go about defining the valuation at a point at infinity of a curve.
+We will defer defining the valuation there until the end of the chapter.
+When so doing, we will make use of the following:
+\begin{proposition}
+  \label{prop_valuation_min}
+  Let $\cal O_{\frak p}$ be a discrete valuation ring with valuation $\nu_{\frak p}$.
+  For all $f, g \in K(C)$,
+  \[ \nu_{\frak p}(f + g) \geq \min\{ \nu_{\frak p}(f) + \nu_{\frak p}(g) \}. \]
+  If $\nu_{\frak p}(f) \neq \nu_{\frak p}(g)$, then
+  \[ \nu_{\frak p}(f + g) = \min\{ \nu_{\frak p}(f) + \nu_{\frak p}(g) \}. \]
+\end{proposition}
+\begin{proof}
+  Lemma 1.1.2 in \cite{goldschmidt03}.
+\end{proof}
 
-A consequence of Corollary \ref{cor_orb} is that if $\sigma \in \Gal(\bar K/K)$ and $P$ is an affine point on $C$,
+It is an important fact that the valuation of a function $f \in K(C)$ at a point $P$
+agrees with the notion of the order of the zero or pole of $f$ at $P$.
+If $\nu_P(f) = n < 0$, we say that $f$ has a pole of order $n$ at $P$.
+If $\nu_P(f) = n > 0$, we say that $f$ has a zero of order $n$ at $P$.
+The function $f$ passes through $P$ if and only if $\nu_P(f) \geq 1$,
+and is tangent to $C$ at $P$ if and only if $\nu_P(f) \geq 2$.
+\begin{proposition}
+  Let $\cal O_{\frak p}$ be a discrete valuation ring with valuation $\nu_{\frak p}$.
+  \begin{enumerate}[label=(\roman*)]
+    \item
+      The maximal ideal of $\cal O_{\frak p}$ is a principal ideal,
+      $\frak m_{\frak p} = \pid u$ for some $u \in \cal O_{\frak p}$.
+    \item
+      For any non-zero $f \in K(C)$,
+      $\nu_{\frak p}(f) = n$ if and only if $f = su^n$ for some $s \in \cal O_{\frak p}^*$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  Lemmas 7.3.1 and 7.4.7 in \cite{galbraith12}.
+\end{proof}
+The generator $u$ of $\frak m_{\frak p}$ is called a \defn{uniformizer} or \defn{local parameter} at $\frak p$.
+Uniformizers are not unique.
+Any element $u \in \frak m_{\frak p} - \frak m_{\frak p}^2$,
+i.e. any element $u$ for which $\nu_{\frak p}(i) = 1$ is a uniformizer.
+For a point $P$, this means any function $u$ that passes through but is not tangent to $C$ at $P$ is a uniformizer.
+
+A consequence of Corollary \ref{cor_orb} from the previous section
+is that if $\sigma \in \Gal(\bar K/K)$ and $P$ is an affine point on $C$,
 then $P$ and $\sigma(P)$ induce the same prime ideal $\frak p$. Thus we have
 \begin{proposition}
   \label{prop_valuation_on_orbit}
@@ -313,9 +339,6 @@ then $P$ and $\sigma(P)$ induce the same prime ideal $\frak p$. Thus we have
   Then for all $\sigma \in \Gal(\bar K/K)$ and $f \in K(C)$,
   \[ \nu_P(f) = \nu_{\sigma(P)}(f) = \nu_{\frak p}(f). \]
 \end{proposition}
-
-\note{It would be nice to define $\nu_{P_\infty}$ at the point at infinite,
-but I don't have a definition of this.}
 
 
 
@@ -326,77 +349,92 @@ but I don't have a definition of this.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{$C_{3,4}$ Curves}
+\label{sec_c34_curves}
 
 A $C_{3,4}$ curve is a special case of a broader class of $C_{a,b}$ curves.
 The class of $C_{3,4}$ curves was first described by Miura \cite{miura97}.
-The following theorem is due to Miura \cite{miura97},
-and a translation in English was given by Matsumoto \cite{matsumoto98}.
-\begin{theorem}
-  Let $C$ be an affine plane curve over $K$ (not necessarily smooth or irreducible).
-  Let $0 < a < b$ be coprime positive integers.
-  The following are equivalent.
-  \begin{enumerate}[label=(\roman*)]
-    \item $C$ is irreducible,
-          has exactly one rational point $P_\infty$ at infinity,
-          $\nu_{P_\infty}(x) = -a$, and
-          $\nu_{P_\infty}(x) = -b$.
-          \note{(Although I have not defined $\nu$ at $P_\infty$ yet.)}
-    \item $C$ is defined by a polynomial
-          \begin{equation}
-            \label{eq_cab}
-            C = \sum_{\substack{0 \leq i \leq b \\ 0 \leq j \leq a \\ ai + bj \leq ab }}c_{i,j}x^iy^j
-          \end{equation}
-          in $K[x,y]$ with $c_{b,0}$ and $c_{0,a}$ non-zero.
-  \end{enumerate}
-\end{theorem}
-Here is a useful visualization of Equation \ref{eq_cab}.
-The monomials in $C$'s defining polynomial correspond to integer points
-in or on the boundary of the triangle with corners $(0, 0)$, $(0, a)$, and $(b, 0)$.
-\begin{comment}
+One definition is the following (an equivalent characterization will come at the end of this chapter).
+
 \begin{definition}
   \label{def_cab_curve}
   A \defn{$C_{a,b}$ curve} over a field $K$
-  is a projective algebraic plane curve given by an affine polynomial
-  \[ C = \sum_{\substack{0 \leq i \leq b \\ 0 \leq j \leq a \\ ai + bj \leq ab }}c_{i,j}x^iy^j \]
-  where
-  \begin{enumerate}[label=(\roman*)]
-    \item $c_{b,0}$ and $c_{0,a}$ are non-zero;
-    \item $C$ is irreducible over $\bar K$;
-    \item $C$ has no singular points, except possibly at infinity.
-  \end{enumerate}
+  is an algebraic projective plane curve $C$ over $K$
+  that is non-singular everywhere except possibly at its points\footnote{
+Although we will see shortly that there is only one point at infinity.}
+  at infinity, given by a polynomial $F \in K[x,y]$ of the form
+  \begin{equation}
+    \label{eq_cab}
+    F = \sum_{\substack{0 \leq i \leq b \\ 0 \leq j \leq a \\ ai + bj \leq ab }}c_{i,j}x^iy^j
+  \end{equation}
+  where $0 < a < b$ are coprime and $c_{b,0}$ and $c_{0,a}$ non-zero.
 \end{definition}
-\end{comment}
-\begin{definition}
-  \label{def_cab_curve}
-  A \defn{$C_{a,b}$ curve} over a field $K$ is a projective algebraic plane curve
-  given by a polynomial of the form \ref{eq_cab} with no singular points,
-  except possibly at the point $P_\infty$.
-\end{definition}
+Here is a useful visualization of Equation \ref{eq_cab}.
+The monomials in $C$'s defining polynomial $F$ correspond to integer points
+in or on the boundary of the triangle\footnote{
+This is the Newton polygon of $F$.}
+with corners $(0, 0)$, $(0, a)$, and $(b, 0)$.
 
-A few special cases are worth mentioning.
+\begin{proposition}
+  A $C_{a,b}$ curve only has one point at infinity.
+\end{proposition}
+\begin{proof}
+  It is easy to see $F$ has degree $b$
+  and that $c_{b,0}x^b$ is the only term in $F$ of degree $b$.
+  Let $F^*(X,Y,Z)$ be the homogenization of $F(x,y)$ and evaluate $F^*$ at $Z = 0$.
+  We get $F^*(X,Y,0) = c_{b,0}X^b$.
+  
+  Now suppose $(u:v:0)$ is a point at infinity on the curve.
+  Then $F^*(u,v,0) = c_{b,0}u^b = 0$, so $u = 0$ and $(u : v : 0) = (0 : v : 0) = (0 : 1 : 0)$.
+\end{proof}
+We will denote the unique point at infinity on a $C_{a,b}$ curve by $P_{\infty}$.
+
+A few special cases of $C_{1,b}$ curves are worth mentioning.
 When $a = 2$ and $b = 3$, we get an elliptic curve.
-When $a = 2$ and $b = 7$, we get a genus 2 split hyperelliptic curve.
+When $a = 2$ and $b = 7$, we get a genus 2 ramified hyperelliptic curve.
 See Equations \ref{eq_elliptic} and \ref{eq_genus_3_hyperelliptic}.
-More generally, for $g \geq 2$, when $a = 2$ and $b = 2g + 1$, we get a genus $g$ split hyperelliptic curve.
+More generally, for $g \geq 2$, when $a = 2$ and $b = 2g + 1$, we get a genus $g$ ramified hyperelliptic curve.
 More importantly in this thesis,
-in the special case where $a = 3$ and $b = 4$, we get a $C_{3,4}$ curve.
+when $a = 3$ and $b = 4$, we get a $C_{3,4}$ curve.
+
 \begin{definition}
   \label{def_c34_curve}
-  A \defn{$C_{3,4}$ curve} $C$ over a field $K$
-  is a smooth, irreducible, projective algebraic plane curve
-  given by an affine equation
-  \footnote{The subscripts on the coefficients of $C$ are numbered according to the $C_{3,4}$ monomial order.}
+  A \defn{$C_{3,4}$ curve} over a field $K$
+  is a smooth projective algebraic plane curve
+  given by an affine equation\footnote{
+  The subscripts on the coefficients of $C$ are numbered according to the $C_{3,4}$ monomial order,
+  Definition \ref{def_cab_order}.}
   \[ C = c_{10}y^3 + c_9x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0, \]
   where $c_{9}$ and $c_{10}$ are non-zero.
 \end{definition}
 
 Definition \ref{def_c34_curve} may appear to be slightly more restrictive than Definition \ref{def_cab_curve} ---
 Definition \ref{def_c34_curve} does not allow for the point at infinity to be singular.
-We show below that $P_\infty$ on a $C_{3,4}$ is never singular.
+In fact, the point $P_\infty$ on a $C_{3,4}$ is never singular.
 
-Before proceeding, we will make some simplifying assumptions on the curve equation.
+\begin{proposition}
+  Let $C$ be a $C_{3,4}$ curve over a field $K$.
+  The point $P_\infty$ is non-singular.
+\end{proposition}
+\begin{proof}
+  To show that $C$ is non-singular at $P_\infty$,
+  we show that one of the formal partial derivatives of $C$ is non-zero at $P_\infty$.
+  Since $P_\infty$ is not a finite point,
+  this requires that we work with the homogenization of $C$'s defining polynomial,
+  \begin{align*}
+    \bar C &= c_{10}Y^3Z + c_9X^4 + c_8XY^2Z + c_7X^2YZ + c_6X^3Z + c_5Y^2Z^2 \\ 
+           &+ c_4XYZ^2 + c_3X^2Z^2 + c_2YZ^3 + c_1XZ^3 + c_0Z^4.
+  \end{align*}
+  The formal partial derivative of $\bar C$ with respect to $Z$ is
+  \begin{align*}
+    \bar C_Z &= c_{10}Y^3 + c_8XY^2 + c_7X^2Y + c_6X^3 + 2c_5Y^2Z \\
+             &+ 2c_4XYZ + 2c_3X^2Z + 3c_2YZ^2 + 3c_1XZ^2 + 4c_0Z^3.
+  \end{align*}
+  Evaluated at $P_\infty$, $\bar C_Z(0 : 1 : 0) = c_{10} \neq 0$.
+\end{proof}
+
+We will make some simplifying assumptions on the curve equation.
 Since $c_{10}$ is non-zero, we may assume that $c_{10} = 1$,
-as multiplying the defining polynomial by $c_{10}\inv$ does not change the set on which the polynomial vanishes.
+as multiplying the defining polynomial by $c_{10}\inv$ does not change the set on which $F$ vanishes.
 We may also assume that $c_9 = 1$,
 otherwise we may perform the invertible change of variables $x \mapsto x / \sqrt[4]{c_{9}}$.
 This, however, may require we work over an algebraic extension of $K$ where $c_{4,0}$ has a quartic root.
@@ -433,52 +471,53 @@ Then this gives $C$ in \defn{short form}
   C(X,Y) = Y^3 + X^4 + d_7X^2Y + d_4XY + d_3X^2 + d_2Y + d_1X + d_0.
 \end{equation}
 
-%Now let us turn our attention to the points at infinity on a $C_{3,4}$ curve $C$.
-%We first answer the question of how many points there are at infinity on $C$.
-Now we address the point at infinity on a $C_{3,4}$ curve.
-\begin{comment}
+We now address the valuation at $P_\infty$ on a $C_{3,4}$ curve.
+We define $\nu_{P_\infty}$ in terms of a uniformizer.
+Following \S 7.3 of \cite{galbraith12}, a uniformizer of $\frak m_{P_\infty}$ is $\frac x y$.
+Thus $\nu_{P_\infty}\left(\frac x y\right) = 1$.
+From this, we can deduce the pole orders of $x$ and $y$ at $P_\infty$.
 \begin{proposition}
-  Let $C$ be a $C_{3,4}$ curve over a field $K$.
-  Then $C$ has only a single point at infinity, $(0 : 1 : 0)$.
+  Let $P_\infty$ be the point at infinity of a $C_{3,4}$ curve $C$ over $K$.
+  The pole orders of $x,y\in K[C]$ are
+  \[ \nu_{P_\infty}(x) = -3 ~\text{ and }~ \nu_{P_\infty}(y) = -4. \]
 \end{proposition}
-We have made no assumptions on the characteristic of $K$,
-so we may not assume any coefficients of $C$ are zero.
 \begin{proof}
-  Consider the homogeneous polynomial $\bar C$ defining the projective closure of $C$,
+  First, we note that $\nu_{P_\infty}\left(\frac x y\right) = 1$ implies $\nu_{P_\infty}(x) = \nu_{P_\infty}(y) + 1$.
+  Next,
   \begin{align*}
-    \bar C &= Y^3Z + X^4 + c_8XY^2Z + c_7X^2YZ + c_6X^3Z + c_5Y^2Z^2 \\ 
-           &+ c_4XYZ^2 + c_3X^2Z^2 + c_2YZ^3 + c_1XZ^3 + c_0Z^4.
+    3\nu_{P_\infty}(y)
+      &= \nu_{P_\infty}(y^3) \\
+      &= \nu_{P_\infty}(-x^4 - c_8xy^2 - c_7x^2y - \ldots - c_0) \\
+      &= \min\{\nu_{P_\infty}(-x^4), \nu_{P_\infty}(- c_8xy^2), \nu_{P_\infty}(-c_7x^2y), \ldots, \nu_{P_\infty}(-c_0)\}
+        & \text{Prop. \ref{prop_valuation_min}} \\
+      &= \min\{\nu_{P_\infty}(x^4), \nu_{P_\infty}(xy^2), \nu_{P_\infty}(x^2y), \ldots, \nu_{P_\infty}(1)\} \\
+      &= \min\{\nu_{P_\infty}(x^4), \nu_{P_\infty}(xy^2), \nu_{P_\infty}(x^2y)\}
   \end{align*}
-  At $Z = 0$, we have $\bar C(X,Y,0) = X^4$.
-  If $\bar C(X,Y,0) = 0$, then $X = 0$.
-  Therefore any solution to $\bar C$ with $Z = 0$ is of the form $(0, Y, 0)$ for some $Y$,
-  while every point $(0, Y, 0) \in K^3$ is a solution to $C$.
-  In $\bb P_{\bar K}^2$, $(0 : 0 : 0)$ is not a point, and every other $(0 : Y : 0)$ is equivalent to $(0 : 1 : 0)$.
-  Therefore, there is only a single point at infinity, $(0 : 1 : 0)$, on $C$.
+  The minimum of these three is $\nu_{P_\infty}(x^4)$, for assuming otherwise leads to a contradiction.
+  For example, if $3\nu_{P_\infty}(y) = \nu_{P_\infty}(xy^2)$, then $\nu_{P_\infty}(y) = \nu_{P_\infty}(x)$,
+  which contradicts $\nu_{P_\infty}(x) = \nu_{P_\infty}(y) + 1$. So
+  \[ 3\nu_{P_\infty}(y) = \nu_{P_\infty}(x^4) = 4\nu_{P_\infty}(x)
+     = 4(\nu_{P_\infty}(y) + 1), \]
+  which gives $\nu_{P_\infty}(y) = -4$, and
+  \[ \nu_{P_\infty}(x) = \nu_{P_\infty}(y) + 1 = -4 + 1 = -3. \]
 \end{proof}
-Denote the unique point at infinity on a $C_{3,4}$ curve by $P_\infty$.
-\end{comment}
-\begin{proposition}
-  Let $C$ be a $C_{3,4}$ curve over a field $K$.
-  The point $P_\infty$ is non-singular.
-\end{proposition}
+
+In general, for a $C_{a,b}$ curve, $\nu_{P_\infty}(x) = -a$ and $\nu_{P_\infty}(y) = -b$.
+In fact, this is another characterization of $C_{a,b}$ curves.
+\begin{theorem}
+  Let $C$ be an affine plane curve over $K$ (not necessarily smooth or irreducible).
+  Let $0 < a < b$ be coprime positive integers.
+  The following are equivalent.
+  \begin{enumerate}[label=(\roman*)]
+    \item $C$ is a $C_{a,b}$ curve.
+    \item $C$ is irreducible, has exactly one rational point $P_\infty$ at infinity,
+          $\nu_{P_\infty}(x) = -a$, and
+          $\nu_{P_\infty}(y) = -b$.
+  \end{enumerate}
+\end{theorem}
 \begin{proof}
-  We have made no assumptions on the characteristic of $K$,
-  therefore we assume that $C$ is given by a polynomial of the form \ref{eq_c34}.
-  To show that $C$ is non-singular at $P_\infty$,
-  we show that one of the formal partial derivatives of $C$ is non-zero.
-  Since $P_\infty$ is not an affine point,
-  this requires that we work with the homogenization of $C$'s defining polynomial,
-  \begin{align*}
-    \bar C &= Y^3Z + X^4 + c_8XY^2Z + c_7X^2YZ + c_6X^3Z + c_5Y^2Z^2 \\ 
-           &+ c_4XYZ^2 + c_3X^2Z^2 + c_2YZ^3 + c_1XZ^3 + c_0Z^4.
-  \end{align*}
-  The formal partial derivative of $\bar C$ with respect to $Z$ is
-  \begin{align*}
-    \bar C_Z &= Y^3 + c_8XY^2 + c_7X^2Y + c_6X^3 + 2c_5Y^2Z \\
-             &+ 2c_4XYZ + 2c_3X^2Z + 3c_2YZ^2 + 3c_1XZ^2 + 4c_0Z^3.
-  \end{align*}
-  Evaluated at $P_\infty$, $\bar C_Z(0 : 1 : 0) = 1$.
+  Originally proved by Miura in \cite{miura97}.
+  An English translation of the proof is provided by Matsumoto in \cite{matsumoto98}.
 \end{proof}
 
 

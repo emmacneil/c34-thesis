@@ -46,7 +46,7 @@ The \defn{degree} of a divisor $D$, denoted by $\deg(D)$, is the sum of its orde
   \[ \deg(D) = \sum_{P \in C(\bar K)} \ord_P(D). \]
 For example, $\deg(P + 3Q - 2R) = 1 + 3 - 2 = 2$.
 
-The \defn{support} of a divisor, denoted $\supp(D)$ is the set of points with $n_P \neq 0$,
+The \defn{support} of a divisor, denoted $\supp(D)$, is the set of points $P$ with $\ord_P(D) \neq 0$,
 \[ \supp(D) := \{ P \in C(\bar K) ~|~ \ord_P(D) \neq 0 \}. \]
 
 It is easily verified that the map $\deg$ and the family of maps $\ord_P$ have the additive properties
@@ -54,10 +54,10 @@ It is easily verified that the map $\deg$ and the family of maps $\ord_P$ have t
   \[ \deg(A + B) = \deg(A) + \deg(B). \]
 In fact, $\ord_P$ and $\deg$ are group homomorphisms $\Div(C) \to \bb Z$.
 
-We are able to put a partial order on divisors.
-For two divisors $D = \sum n_P P$ and $D' = \sum m_P P$,
+We are able to put a partial order $\preceq$ on divisors.
+For two divisors $D,D' \in \Div(C)$,
 we order them
-  \[ D \preceq D' \iff \forall P \in C(\bar K) : n_P \leq m_P. \]
+  \[ D \preceq D' \iff \forall P \in C(\bar K) : \ord_P(D) \leq \ord_P(D'). \]
 The divisor $D$ precedes $D'$ if it has lesser order than $D'$ at every point.
 This partial order is compatible with addition, in the sense that for any divisors $A, B, D$,
   \[ A \preceq B \implies A + D \preceq B + D. \]
@@ -112,8 +112,9 @@ Divisors defined over $K$ therefore form a subgroup $\Div_K(C) \subset \Div(C)$.
   If $D$ is any divisor consisting only of points with coordinates in $L$, then $\sigma(D) = D$ and $D$ is defined over $L$.
 \end{example}
 \begin{example}
+  \label{ex_not_defined_over_k}
   Let $K = \bb F_2$ and let $L = K(\alpha)$ be an algebraic extension with $\alpha^2 + \alpha = 1$.
-  Let $C$ be the $C_{3,4}$ curve $y^3 + x^4 + x + 1$ over $K$.
+  Let $C$ be the $C_{3,4}$ curve over $K$ defined by the polynomial $F = y^3 + x^4 + x + 1$.
   Let $P$ be the point $(\alpha : 1 : 1)$ on $C$ and let $D$ be the divisor $D = P$.
   There is an automorphism $\sigma \in \Gal(\bar K/K)$ that maps $\alpha \mapsto \alpha + 1$, and
     \[ \sigma(D) = \sigma(P) = (\sigma(\alpha) : \sigma(1) : \sigma(1)) = (\alpha + 1 : 1 : 1) \neq D. \]
@@ -124,21 +125,14 @@ Divisors defined over $K$ therefore form a subgroup $\Div_K(C) \subset \Div(C)$.
   Let $K$, $L$, $C$, and $P$ be as in the previous example.
   Let $Q = (\alpha + 1 : 1 : 1)$, which is also a point on $C$.
   Let $D$ be the divisor $D = P + Q$.
-  Every automorphism $\sigma$ in $\Gal(\bar K/K)$ maps either $\alpha$ to itself or to $\alpha + 1$.
-  In the former case,
-  \begin{align*}
-    \sigma(D) &= \sigma(P) + \sigma(Q) \\
-              &= (\sigma(\alpha) : \sigma(1) : \sigma(1)) + (\sigma(\alpha + 1) : \sigma(1) : \sigma(1)) \\
-              &= (\alpha : 1 : 1) + (\alpha + 1 : 1 : 1) \\
-              &= P + Q = D.
-  \end{align*}
-  In the latter case,
-  \begin{align*}
-    \sigma(D) &= \sigma(P) + \sigma(Q) \\
-              &= (\sigma(\alpha) : \sigma(1) : \sigma(1)) + (\sigma(\alpha + 1) : \sigma(1) : \sigma(1)) \\
-              &= (\alpha + 1 : 1 : 1) + (\alpha : 1 : 1) \\
-              &= Q + P = D.
-  \end{align*}
+  Every automorphism $\sigma$ in $\Gal(\bar K/K)$ maps $\alpha$ to itself or to $\alpha + 1$.
+  Consequently, either
+  \begin{itemize}
+    \item $\sigma(P) = P$ and $\sigma(Q) = Q$, or
+    \item $\sigma(P) = Q$ and $\sigma(Q) = P$.
+  \end{itemize}
+  In either case
+  \[ \sigma(D) = \sigma(P) + \sigma(Q) = P + Q = D, \]
   So $D$ is defined over $K$.
 \end{example}
 
@@ -149,6 +143,9 @@ These are the divisors defined over $K$ of degree zero.
 If $f \in K(C)$ is a rational function on $C$,
 define the \defn{divisor of $f$} as
 \[ \div(f) = \sum_{P \in C(\bar K)} \nu_P(f) P. \]
+Recall that $\nu_P(f)$ was defined in Section \ref{sec_local_rings} for finite points $P$,
+and at the end of Section \ref{sec_c34_curves} for $P_\infty$.
+The divisor $\div(f)$ is the sum of the zeros of $f$ along $C$ minus its poles, counting multiplicity.
 If $D = \div(f)$ for some rational function $C$,
 then $D$ is called a \defn{principal divisor}.
 \begin{proposition}
@@ -175,7 +172,11 @@ so that principal divisors form a subgroup $\Princ(C) \subset \Div_K^0(C)$.
 Finally, we have described the subsets
 \[ \Princ(D) \subset \Div_K^0(C) \subset \Div^0(C) \subset \Div(C). \]
 
-The \defn{divisor class group} of $C$ is the quotient group
+The \defn{divisor class group}\footnote{
+Technically, the group of degree 0 divisor classes defined over $K$.
+In some contexts, one may not demand that divisors by of degree 0 or defined over $K$,
+construct analogous quotient groups, and refer to it as the divisor class group.}
+of $C$ is the quotient group
 \[ \Cl(C) = \frac {\Div_K^0(C)} {\Princ(C)}. \]
 In the literature, the divisor class group is usually called the \defn{Jacobian}, $\Jac(C)$, of $C$,
 e.g. \cite{arita05-2}, \cite{basiri04}, \cite{flon08}, \cite{harasawa00}, \cite{salem07}.
@@ -196,13 +197,18 @@ This line is given by the polynomial $f = x - x_0$ and intersects $C$ at three p
 not necessarily distinct, but counting multiplicity.
 Then $\div f = P + Q + R - 3P_\infty$, and in the divisor class group, $\div f \equiv 0$.
 Let $D' = D + n \div f$.
-Then $D' \equiv D$ in the divisor class group and $\ord_P(D') \succeq 0$.
+Then $D' \equiv D$ in the divisor class group and $\ord_P(D') \geq 0$.
 
-Every divisor may therefore be written in the form
-  \[ D = P_1 + \ldots + P_n - nP_\infty \]
-where the points $P_i$ are not necessarily distinct.
-In other words, $D$ can be written in the form
-  \[ D = D_+ - D_\infty \]
+Every divisor class therefore has a representative\footnote{
+It may have many representatives of this form.
+Reduced divisors, introduced in Chapter \ref{chap_representation},
+are meant to be minimal unique representative of this form.}
+of the form
+  \[ D = P_1 + \ldots + P_n - nP_\infty, \]
+where the points $P_i$'s are finite points, but not necessarily distinct.
+In other words, in the divisor class group,
+every divisor $D$ may be written in the form (i.e. is equivalent to a divisor of the form)
+  \[ D \equiv D_+ - D_\infty \]
 where $D_+$ is an effective divisor and $D_\infty = \deg(D_+)P_\infty$ (also effective).
 \begin{comment}
 Unless otherwise specified, we will assume that a divisor $D$ is of this form.
@@ -229,7 +235,7 @@ since there are no two distinct degree zero divisors with $A \preceq B$.
 If $D$ is a degree zero divisor,
 then we can separate out the point at infinity and write $D = D_{\text{aff}} - D_\infty$,
 where $P_\infty \not\in \supp(D_{\text{aff}})$ and $D_\infty = (\deg D_{\text{aff}})P_\infty$.
-The $D_\infty$ part is uniquely determined by the $D_{\text{aff}}$ part.
+The divisor $D_\infty$ is uniquely determined by the $D_{\text{aff}}$.
 This leads to a more useful partial order on degree zero divisors.
 For $A, B \in \Div_K^0(C)$, define the partial order $\leq$ by
   \[ A \leq B \iff A_{\text{aff}} \preceq B_{\text{aff}}. \]
@@ -239,8 +245,11 @@ The set $\Div_K^{\geq 0}(C)$ forms a monoid under addition,
 and $(\Div_K^{\geq 0}(C), \leq)$ forms a lattice with a minimum element, 0.
 
 With this partial order, we may define prime divisors in a manner that echoes
-the definition of prime ideals\footnote{$\frak{ab} \subseteq \frak p \implies \frak a \subseteq \frak p \text{ or } \frak b \subseteq \frak p$.}
-and Euclid's Lemma.\!\footnote{$p | ab \implies p | a \text{ or } p | b$.}
+the definition of prime ideals\footnote{
+A proper $R$-ideal $\frak p$ is prime if for all $R$-ideals $\frak a, \frak b$,
+$\frak{ab} \subseteq \frak p \implies \frak a \subseteq \frak p \text{ or } \frak b \subseteq \frak p$.}
+and Euclid's Lemma.\!\footnote{
+An integer $p > 1$ is prime if for all $a,b \in \bb Z$, $p | ab \implies p | a \text{ or } p | b$.}
 \begin{definition}
   A divisor $D \in \Div_K^{\geq 0}(C)$ is \defn{prime} if $D > 0$ and for all $A, B \in \Div_K^{\geq 0}(C)$,
   \[ D = A + B \implies D \leq A \text{ or } D \leq B. \]
@@ -263,7 +272,8 @@ If $P \in C(\bar K)$ is a finite point, define
     \item[(i) $\implies$ (ii):]
       Suppose $D$ is prime.
       Then $D > 0$, so let $P$ be a finite point in $\supp(D)$.
-      Since $D$ is defined over $K$, $[P] \leq D$, so $D = [P] + D'$ for some $D'$.
+      Since $D$ is defined over $K$, every point in the orbit of $P$ is also in $\supp D$.
+      So $[P] \leq D$, and $D = [P] + D'$ for some divisor $D' \in \Div_K^{\geq 0}(C)$.
       Since $D$ is prime, either $D \leq [P]$ or $D \leq D'$.
       Suppose $D \leq D'$.
       Then $D + [P] \leq D' + [P] = D$, hence $[P] \leq 0$, which is impossible.
@@ -272,8 +282,8 @@ If $P \in C(\bar K)$ is a finite point, define
       
     \item[(ii) $\implies$ (i):]
       Suppose $D = [P]$ for some finite point $P$.
-      Let $A, B \in \Div_K^0(C)$ be effective divisors such that $D = A + B$.
-      Then either $P \in \supp A$ or $P \in \supp B$.
+      Let $A, B \in \Div_K^{\geq 0}(C)$ be effective divisors such that $D = A + B$.
+      Then $P \in \supp A$ or $P \in \supp B$.
       Suppose, without loss of generality, that $P \in \supp A$.
       Since $A$ is defined over $K$, every other point in $\orb P$ is in $\supp A$, hence $[P] \leq A$.
       Since $D = [P]$, $D \leq A$.
