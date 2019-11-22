@@ -1,0 +1,114 @@
+\section{Reduced Divisors}
+\label{appendix_reduced_divisors}
+
+\begin{lemma}
+  Let $D$ be a divisor with ideal $I_D$.
+  Fix $b \in \bb N$.
+  There is a minimal non-zero monic polynomial in the set $\{ f \in I_D ~|~ y^b \text{ divides } \LT(f)\}$.
+\end{lemma}
+This polynomial is minimal in the sense that, if $g$ is any other polynomial such that $y^b|\LT(g)$,
+then $\LT(f)|\LT(g)$.
+This polynomial $f$ is not necessarily unique.
+\begin{proof}
+  Follows from a monomial order being a well-order.
+\end{proof}
+
+\begin{lemma}
+  Let $D$ be a divisor with ideal $I_D$.
+  There exist polynomials $f, g, h$ such that $I_D = \pid{f, g, h}$,
+  $\LT(f) = x^c$,
+  $\LT(g) = x^by$,
+  $\LT(h) = x^ay^2$,
+  $f$, $g$, and $h$ are minimal in the sense of the previous lemma,
+  and $a \leq b \leq c$.
+\end{lemma}
+\begin{proof}
+  Everything but the relation $a \leq b \leq c$ is immediate from the previous lemma.
+  To prove this relation, suppose $b < a$.
+  Then $y^2$ divides $\LT(gy)$ and $\LT(gy)$ divides $\LT(h)$, but $\LT(h)$ does not divide $\LT(gy)$,
+  so $h$ was not minimal. Hence $a \leq b$.
+  The same argument can be used to show $b \leq c$.
+\end{proof}
+
+\begin{lemma}
+  Let $D$ be a divisor with ideal $I_D$.
+  Let $I_D = \pid{f, g, h}$ as in the previous lemma.
+  Then $\pid{f, g, h}$ is a Gr\"obner basis for $I_D$.
+\end{lemma}
+\begin{proof}
+  We must show that for any $r \in I_D$, $\LT(r) \in \LT(I_D)$.
+  
+  Let $r \in I_D$. Then $\LT(r) = x^my^n$ for some $0 \leq n \leq 2$.
+  However, by the minimality criterion by which $f$, $g$, and $h$ were chosen,
+  one of $\LT(f)$, $\LT(g)$, or $\LT(h)$ divides $\LT(r)$, hence $\LT(r) \in \LT(I_D)$.
+\end{proof}
+
+\begin{lemma}
+  Let $D$ be a divisor with ideal $I_D$.
+  Let $I_D = \pid{f, g, h}$ as in the previous lemma.
+  Then $a + b + c = \deg D$.
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+  \deg D &= \dim \frac {K[C]}{I_D} = \dim \frac {K[C]}{\pid{f,g,h}}
+          = \dim \frac {K[C]}{\pid{x^c, x^by, x^ay^2}} \\
+         &= a + b + c.
+  \end{align*}
+  \note{This equality comes from the fact that the number of solutions to $f = g = h = C$,
+        and therefore the number of points in $D$,
+        is determined by the form of the Gr\"obner basis, i.e. its leading monomials.
+        Buchberger's books might be a source for this, and this fact should go in
+        the chapter on Gr\"obner bases.}
+\end{proof}
+
+\begin{theorem}
+  \label{thm_min_poly_degree}
+  Let $D$ be a divisor with ideal $I_D$.
+  Let $f$ be minimal in $I_D$. Then
+  \[ -\nu_{P_\infty}(f) - \deg D \leq 3. \]
+\end{theorem}
+\begin{proof}
+  Let $I_D = \pid{f, g, h}$ as in the previous lemma.
+  The minimal polynomial of $I_D$ is either $f$, $g$, or $h$.
+  Consider each case separately.
+  \begin{description}
+    \item[$f$ is minimal in $I_D$:]
+      Then $\nu_{P_\infty}(f)$ is less than both $\nu_{P_\infty}(g)$ and $\nu_{P_\infty}(h)$.
+      So $3c \leq 3b + 4$ and $3c \leq 3a + 8$, which implies
+      $c - b \leq 1$ and $c - a \leq 2$. Then
+      \begin{align*}
+        -\nu_{P_\infty}(f) - \deg D
+          &= 3c - (a + b + c) \\
+          &= (c - a) + (c - b) \\
+          &\leq 2 + 1 = 3.
+      \end{align*}
+      
+    \item[$g$ is minimal in $I_D$:]
+      Then $3b + 4 < 3c$ and $3b + 4 < 3a + 8$,
+      which implies $b - c \leq -2$ and $b - a \leq 1$, so
+      \begin{align*}
+        -\nu_{P_\infty}(f) - \deg D
+          &= 3b + 4 - (a + b + c) \\
+          &= 4 + (b - a) + (b - c) \\
+          &\leq 4 + 1 - 2 = 3.
+      \end{align*}
+
+    \item[$h$ is minimal in $I_D$:]
+      Then $3a + 8 < 3c$ and $3a + 8 < 3b + 4$,
+      which implies $a - c \leq -3$ and $a - b \leq -2$, so
+      \begin{align*}
+        -\nu_{P_\infty}(f) - \deg D
+          &= 3a + 8 - (a + b + c) \\
+          &= 8 + (a - b) + (a - c) \\
+          &\leq 8 - 2 - 3 = 3.
+      \end{align*}
+  \end{description}
+\end{proof}
+
+\begin{theorem}
+  \label{thm_reduced_divisor_degree}
+  Every reduced divisor on $C$ has degree at most 3.
+\end{theorem}
+\begin{proof}
+  Theorem \ref{thm_min_poly_degree} and Equation \ref{eq_flip_degree}.
+\end{proof}

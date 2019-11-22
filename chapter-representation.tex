@@ -87,7 +87,8 @@ Divisors are listed by degree (D), then by type (T).
 
 So, for example, divisors of degree 2 come in two types: type 21 and type 22.
 If $D$ is a type 21 divisor,
-then the unique reduced Gr\"obner basis of $I_D$ is of the form $\pid{y + f_1x + f_0, x^2 + g_1x + g_0}$.
+then the unique reduced Gr\"obner basis of $I_D$ is of the form $\pid{y + f_1x + f_0, x^2 + g_1x + g_0}$,
+where $f_0$, $f_1$, $g_0$, and $g_1$ lie in the base field $K$ over which the curve is defined.
 If $D$ is instead a type 22 divisor,
 then the unique reduced Gr\"obner basis of $I_D$ is of the form $\pid{x + f_0, y^2 + g_2y + g_0}$.
 
@@ -141,38 +142,35 @@ We have the following equivalences of operations.
     $\bar A$ & $f : I_A$
   \end{tabular}
 \end{center}
-where $f$ is ``minimal'' in $I_A$.
+where $f$ is the minimum polynomial\footnote{As in Definition \ref{def_minimum_polynomial}.} in $I_A$.
 This last operation we define now.
-
-If $D$ is a divisor and $I_D$ its ideal,
-then there is a unique monic polynomial that is minimal with respect to the monomial order on $K[C]$.
-When $I_D$'s unique reduced Gr\"obner basis is known,
-this minimal element is merely the first of the Gr\"obner basis generators.
-
-Let $f$ be the minimal element of $I_D$.
-By Corollary \ref{cor_integral_ideal_inverse}, $f : I_D \equiv I_D\inv$.
-Now define the \defn{flip of $D$} to be
+\begin{definition}
+  Let $D$ be a divisor, with corresponding ideal $I_D$ in the ideal class group.
+  Let $f$ be the minimum polynomial of $I_D$.
+  The \defn{flip of $D$} is the divisor
   \[ \bar D := \div(f : I_D). \]
-Then $\bar D \equiv -D$.
+\end{definition}
+By Proposition \ref{prop_integral_ideal_inverse}, $f : I_D \equiv I_D\inv$ in the ideal class group,
+so $\bar D \equiv -D$ in the divisor class group.
 
-Of course, one may choose some non-minimal $g \in I_D$ and compute $\div(g : I_D)$ to get some other
-divisor equivalent to $-D$.
-Once we have defined what a reduced divisor is, we can show that, if $f$ is chosen to be minimal in $I_D$,
-then $\bar D$ is reduced.
+Of course, one may choose some non-minimum polynomial $g \in I_D$ and compute $\div(g : I_D)$ to get some other
+divisor, which is also equivalent to $-D$ by Proposition \ref{prop_integral_ideal_inverse}.
+Once we have defined what a reduced divisor is, we can show that,
+if $f$ is chosen to be the minimum polynomial in $I_D$, then $\bar D$ is reduced.
 
 Geometrically, to flip a divisor $D$ is to find the polynomial $f$ of least degree interpolating the points of $D$,
 then taking the zeroes of $f$ along $C$ that are not in $D$, properly accounting for multiplicity.
 \begin{example}
   See Figure \ref{fig_divisor_flip}.
-  The three black points form a degree 3, type 31 divisor. 
-  The minimal interpolating polynomial $f$ interpolating these points is a parabola,
-  $f = x^2 + f_2y + f_1x + f_0$.
+  The three black points form a degree 3, type 31 divisor $D$. 
+  The minimum polynomial $f = x^2 + f_2y + f_1x + f_0 \in I_D$
+  is a parabola which interpolates these points.
   This parabola intersects $C$ at six points -- the points of $D$ plus three other points.
   The flip $\bar D$ consists of the three white points not in $D$.
 \end{example}
 
 \begin{figure}[ht!]
-  \caption{A degree 3 divisor and its flip. \note{(Still fighting with {\tt gnuplot} to make this pretty.)}}
+  \caption{A degree 3 divisor and its flip.}
   \label{fig_divisor_flip}
   \begin{center}
     \includegraphics{gnuplot/flip.pdf}
@@ -206,7 +204,7 @@ then taking the zeroes of $f$ along $C$ that are not in $D$, properly accounting
 \end{proposition}
 \begin{proof}
   \begin{enumerate}[label=(\roman*)]
-    \item This is simply Corollary \ref{cor_integral_ideal_inverse} translated into the language of divisors.
+    \item This is simply Proposition \ref{prop_integral_ideal_inverse} translated into the language of divisors.
     \item Immediate by part (i).
     \item
       ($\implies$)
@@ -214,8 +212,8 @@ then taking the zeroes of $f$ along $C$ that are not in $D$, properly accounting
       Then in the ideal class group, $I_A \equiv I_B$,
       so that there are polynomials $f, g \in K[C]$ such that $gI_A = fI_B$.
       Without loss of generality, we may assume $f$ and $g$ are monic.
-      Let $a$ and $b$ be the minimal polynomials \note{with respect to which definition} in $I_A$ and $I_B$, respectively.
-      Then the minimum polynomials \note{with respect to which definition} in $gI_A$ and $fI_B$ are $ga$ and $fb$, respectively.
+      Let $a$ and $b$ be the minimal polynomials in $I_A$ and $I_B$, respectively.
+      Then the minimum polynomials in $gI_A$ and $fI_B$ are $ga$ and $fb$, respectively.
       Since $gI_A = fI_B$, we have $ga = fb$.
       
       Suppose $h \in a : I_A$. Then
@@ -263,7 +261,7 @@ which we will make use of many times later in this chapter.
 \begin{proposition}
   \label{prop_aI_B_is_bI_A}
   Let $I_A$ and $I_B$ be ideals with $I_A \equiv I_B$.
-  Let $a$ and $b$ be minimal in $I_A$ and $I_B$, respectively.
+  Let $a$ and $b$ be the minimum polynomials in $I_A$ and $I_B$, respectively.
   Then $aI_B = bI_A$.
 \end{proposition}
 \begin{proof}
@@ -281,20 +279,21 @@ If $D$ is a divisor, then the degree and type of $\bar D$ is determined by the t
 We may use the formula
 \begin{equation}
   \label{eq_flip_degree}
-  \deg \bar D = \deg \div f - \deg D,
+  \deg \bar D = \deg (\div f) - \deg D,
 \end{equation}
-where $f$ is the minimal polynomial in $I_D$. The degree of $\div f$ is determined by $\LM(f)$,
+where $f$ is the minimum polynomial in $I_D$. The degree of $\div f$ is determined by $\LM(f)$,
 which is determined in turn by the type of $D$.
 \begin{example}
   Suppose $D$ is a type 51 divisor.
-  The minimal polynomial $f$ of $I_D$ is
+  The minimum polynomial $f$ of $I_D$ is
   \[ f = y^2 + f_4xy + f_3x^2 + f_2y + f_1x + f_0. \]
   Then
   \begin{align*}
-    \deg \bar D &= \deg \div f - \deg D \\
+    \deg \bar D &= \deg (\div f) - \deg D \\
                 &= -\nu_{P_\infty}(f) - \deg D \\
                 &= -\nu_{P_\infty}(y^2) - \deg D \\
-                &= 8 - 5 = 3.
+                &= 8 - 5 = 3
+                  & \text{By Prop. \ref{prop_pole_order_x_y}, $-\nu_{P_\infty}(y^2) = 8$.}
   \end{align*}
 \end{example}
 
@@ -325,7 +324,7 @@ After classifying reduced divisors, we will be able to do the same for divisors 
 
 \begin{example}
   Let $D$ be a type 11 divisor.
-  Then the minimal polynomial of $I_D$ is $f = x + f_0$ for some $f_0 \in K$.
+  Then the minimum polynomial of $I_D$ is $f = x + f_0$ for some $f_0 \in K$.
   By equation \ref{eq_flip_degree}, $\deg(\bar D) = 2$, so $\bar D$ is of type 21 or 22.
   Since $f \in f : I_D = I_{\bar D}$, $\bar D$ must be of type 22 ---
   were $\bar D$ of type 21, its reduced Gr\"obner basis would have the form $\pid{y + \ldots, x^2 + \ldots}$,
@@ -352,129 +351,18 @@ First, we must show that all reduced divisors are of degree 3 or less.
 It is a well-known fact that reduced divisors on an algebraic curve are of degree $g$ or less,
 where $g$ is the genus of the curve, 3 in the $C_{3,4}$ curve case.
 This fact is a consequence of the Riemann-Roch Theorem,
-however in this thesis, I have defined reduced divisors in a non-standard way,
-and I wish not to bring Riemann-Roch theory into this thesis.
-The next several lemmas build up to proving the claim using more elementary methods
-and the theory of Gr\"obner bases.
-\note{If the lemmas distract from the flow of the thesis, move this to an appendix?}
-
-\begin{lemma}
-  Let $D$ be a divisor with ideal $I_D$.
-  Fix $b \in \bb N$.
-  There is a minimal non-zero monic polynomial in the set $\{ f \in I_D ~|~ y^b \text{ divides } \LT(f)\}$.
-\end{lemma}
-This polynomial is minimal in the sense that, if $g$ is any other polynomial such that $y^b|\LT(g)$,
-then $\LT(f)|\LT(g)$.
-This polynomial $f$ is not necessarily unique.
-\begin{proof}
-  Follows from a monomial order being a well-order.
-\end{proof}
-
-\begin{lemma}
-  Let $D$ be a divisor with ideal $I_D$.
-  There exist polynomials $f, g, h$ such that $I_D = \pid{f, g, h}$,
-  $\LT(f) = x^c$,
-  $\LT(g) = x^by$,
-  $\LT(h) = x^ay^2$,
-  $f$, $g$, and $h$ are minimal in the sense of the previous lemma,
-  and $a \leq b \leq c$.
-\end{lemma}
-\begin{proof}
-  Everything but the relation $a \leq b \leq c$ is immediate from the previous lemma.
-  To prove this relation, suppose $b < a$.
-  Then $y^2$ divides $\LT(gy)$ and $\LT(gy)$ divides $\LT(h)$, but $\LT(h)$ does not divide $\LT(gy)$,
-  so $h$ was not minimal. Hence $a \leq b$.
-  The same argument can be used to show $b \leq c$.
-\end{proof}
-
-\begin{lemma}
-  Let $D$ be a divisor with ideal $I_D$.
-  Let $I_D = \pid{f, g, h}$ as in the previous lemma.
-  Then $\pid{f, g, h}$ is a Gr\"obner basis for $I_D$.
-\end{lemma}
-\begin{proof}
-  We must show that for any $r \in I_D$, $\LT(r) \in \LT(I_D)$.
-  
-  Let $r \in I_D$. Then $\LT(r) = x^my^n$ for some $0 \leq n \leq 2$.
-  However, by the minimality criterion by which $f$, $g$, and $h$ were chosen,
-  one of $\LT(f)$, $\LT(g)$, or $\LT(h)$ divides $\LT(r)$, hence $\LT(r) \in \LT(I_D)$.
-\end{proof}
-
-\begin{lemma}
-  Let $D$ be a divisor with ideal $I_D$.
-  Let $I_D = \pid{f, g, h}$ as in the previous lemma.
-  Then $a + b + c = \deg D$.
-\end{lemma}
-\begin{proof}
-  \begin{align*}
-  \deg D &= \dim \frac {K[C]}{I_D} = \dim \frac {K[C]}{\pid{f,g,h}}
-          = \dim \frac {K[C]}{\pid{x^c, x^by, x^ay^2}} \\
-         &= a + b + c.
-  \end{align*}
-  \note{This equality comes from the fact that the number of solutions to $f = g = h = C$,
-        and therefore the number of points in $D$,
-        is determined by the form of the Gr\"obner basis, i.e. its leading monomials.
-        Buchberger's books might be a source for this, and this fact should go in
-        the chapter on Gr\"obner bases.}
-\end{proof}
-
-\begin{theorem}
-  \label{thm_min_poly_degree}
-  Let $D$ be a divisor with ideal $I_D$.
-  Let $f$ be minimal in $I_D$. Then
-  \[ -\nu_{P_\infty}(f) - \deg D \leq 3. \]
-\end{theorem}
-\begin{proof}
-  Let $I_D = \pid{f, g, h}$ as in the previous lemma.
-  The minimal polynomial of $I_D$ is either $f$, $g$, or $h$.
-  Consider each case separately.
-  \begin{description}
-    \item[$f$ is minimal in $I_D$:]
-      Then $\nu_{P_\infty}(f)$ is less than both $\nu_{P_\infty}(g)$ and $\nu_{P_\infty}(h)$.
-      So $3c \leq 3b + 4$ and $3c \leq 3a + 8$, which implies
-      $c - b \leq 1$ and $c - a \leq 2$. Then
-      \begin{align*}
-        -\nu_{P_\infty}(f) - \deg D
-          &= 3c - (a + b + c) \\
-          &= (c - a) + (c - b) \\
-          &\leq 2 + 1 = 3.
-      \end{align*}
-      
-    \item[$g$ is minimal in $I_D$:]
-      Then $3b + 4 < 3c$ and $3b + 4 < 3a + 8$,
-      which implies $b - c \leq -2$ and $b - a \leq 1$, so
-      \begin{align*}
-        -\nu_{P_\infty}(f) - \deg D
-          &= 3b + 4 - (a + b + c) \\
-          &= 4 + (b - a) + (b - c) \\
-          &\leq 4 + 1 - 2 = 3.
-      \end{align*}
-
-    \item[$h$ is minimal in $I_D$:]
-      Then $3a + 8 < 3c$ and $3a + 8 < 3b + 4$,
-      which implies $a - c \leq -3$ and $a - b \leq -2$, so
-      \begin{align*}
-        -\nu_{P_\infty}(f) - \deg D
-          &= 3a + 8 - (a + b + c) \\
-          &= 8 + (a - b) + (a - c) \\
-          &\leq 8 - 2 - 3 = 3.
-      \end{align*}
-  \end{description}
-\end{proof}
-
-\begin{theorem}
-  Every reduced divisor on $C$ has degree at most 3.
-\end{theorem}
-\begin{proof}
-  Theorem \ref{thm_min_poly_degree} and Equation \ref{eq_flip_degree}.
-\end{proof}
+however in this thesis, reduced divisors have been defined in a non-standard way.
+Rather than a diversion into Riemann-Roch theory,
+we relegate to Appendix \ref{appendix_reduced_divisors}
+a proof that reduced divisors have degree 3 or less using the theory of Gr\"obner bases.
 
 \begin{theorem}
   \label{thm_reduced_divisor_types}
   A divisor is reduced if and only if it is of type 0, 11, 21, 22, or 31.
 \end{theorem}
 \begin{proof}
-  A reduced divisor has degree 3 or less, therefore it must be of type 0, 11, 21, 22, 31, 32, or 33.
+  By Theorem \ref{thm_reduced_divisor_degree},
+  a reduced divisor has degree 3 or less, therefore it must be of type 0, 11, 21, 22, 31, 32, or 33.
   On examination of the above table, if $D$ is of type 32 or 33, then $\bar{\bar D}$ is of a different type.
   Hence $D \neq \bar{\bar D}$ and $D$ is not reduced.
   
@@ -550,7 +438,7 @@ and fill in Table \ref{tab_small_flip_type} for all remaining divisor types.
 \subsection{Typical Divisors}
 
 While some publications on $C_{3,4}$ curve divisor arithmetic have described algorithms for adding general divisors
-(see \cite{arita05-2} and \cite{harasawa00}),
+\cite{arita05-2, harasawa00},
 the most efficient algorithms have been from those publications that have focused only on ``typical'' divisors
 \cite{salem07, kmakdisi18, flon08}.
 These divisors are typical in the sense that, as $q \to \infty$,
@@ -562,6 +450,7 @@ In \cite{kmakdisi18}, Khuri-Makdisi defines semi-typical and typical divisors of
 and in Proposition 2.12 of the same article gives a characterization of degree 3
 semi-typical and typical divisors on $C_{3,4}$ curves.
 We adopt the same definitions here, as they apply to the $C_{3,4}$ case.
+
 \begin{definition}
   \label{def_semitypical_divisor}
   A divisor $D$ is called \defn{semi-typical} if $I_D = \pid{f, g, h}$ where
@@ -572,22 +461,27 @@ We adopt the same definitions here, as they apply to the $C_{3,4}$ case.
     \item $-\nu_{P_\infty}(h) = \deg D + 5$.
   \end{enumerate}
 \end{definition}
+
 Divisors of types 31, 41, 51, and 61 are semi-typical.
 There exist also semi-typical divisors of degrees 7 and greater.
+
 \begin{definition}
   \label{def_typical_divisor}
   A divisor $D$ is called \defn{typical} if $D$ is semi-typical and $I_D = \pid{f, g}$.
 \end{definition}
+
 That is, while $\{f, g\}$ alone are not a Gr\"obner basis for $I_D$,
 they are still enough to generate $I_D$ if $D$ is typical.
 
 This definition of typicality differs from other authors' definitions.
 Of note is this definition due to Flon et al.
+
 \begin{definition}[Flon et al \cite{flon08}]
   \label{def_typical_divisor_flon}
-  A degree 3 divisor is \defn{typical} if it is the sum of three non-colinear points
+  A degree 3 divisor is \defn{typical} if it is the sum of three non-collinear points
   with pairwise distinct $x$-coordinates.
 \end{definition}
+
 This definition more restrictive than Definition \ref{def_typical_divisor}.
 This definition does not apply to divisors of degree other than 3.
 In the degree 3 case, Definition \ref{def_typical_divisor} allows for points to appear with multiplicity
@@ -600,12 +494,13 @@ A reduced divisor may be of type 0, 11, 21, 22, or 31,
 but a reduced \emph{typical} divisor may only be of type 31.
 However, not all type 31 divisors are typical (though they are all semi-typical).
 Here we give a characterization of typical type 31 divisors.
+
 \begin{theorem}[Khuri-Makdisi \cite{kmakdisi18}]
   \label{thm_typical_type_31_divisors}
-  Let $D$ be a type 31 divisor
-  (therefore having minimal polynomial $x^2 + f_2y + f_1x + f_0 \in I_D$).
+  Let $D$ be a type 31 divisor, with minimum polynomial $x^2 + f_2y + f_1x + f_0 \in I_D$.
   Then $D$ is typical if and only if $f_2 \neq 0$.
 \end{theorem}
+
 \begin{proof}
   ($\implies$)
   Suppose $f_2 = 0$.
@@ -616,8 +511,8 @@ Here we give a characterization of typical type 31 divisors.
     h &= y^2 + h_2y + h_1x + h_0.
   \end{align*}
   The polynomial $f$ factors into $(x - x_0)(x - x_1)$ for some $x_0, x_1 \in \bar K$.
-  The divisor $D$ is the sum of three points, say $D = P + Q + R$, and by the pigeonhole principle,
-  at least two of these points fall on the same vertical line, $x - x_0$ or $x - x_1$.
+  The divisor $D$ is the sum of three points, say $D = P + Q + R$.
+  By the pigeonhole principle, at least two of these points fall on the same vertical line, $x - x_0$ or $x - x_1$.
   Without loss of generality, suppose $P$ and $Q$ fall on $x - x_0$.
   
   Geometrically, $g$ is a hyperbola through $P$, $Q$ and $R$.
@@ -662,7 +557,7 @@ In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preser
 \begin{proof}
   ($\implies$)
   Suppose $D$ is semi-typical.
-  Let $f$ be the minimal polynomial in $I_D$.
+  Let $f$ be the minimum polynomial in $I_D$.
   Then $-\nu_{P_\infty}(f) = \deg D + 3$.
   By Equation \ref{eq_flip_degree}, $\deg \bar D = 3$.
   Since $\bar D$ is reduced and of degree 3, $\bar D$ is of type 31, hence semi-typical.
@@ -672,9 +567,9 @@ In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preser
   Then $\bar D$ is of type 31.
   So, too, is $\bar{\bar D}$ of type 31, and $\bar{\bar D} \equiv D$.
   Let $I_{\bar {\bar D}} = \pid{u,v,w}$.
-  Then $u$ is minimal in $I_{\bar{\bar D}}$,
+  Then $u$ is the minimum polynomial in $I_{\bar{\bar D}}$,
   $-\nu_{P_\infty}(u) = 6$, $-\nu_{P_\infty}(v) = 7$, and $-\nu_{P_\infty}(w) = 8$.
-  Now let $f$ be minimal in $I_D$.
+  Now let $f$ be the minimum polynomial in $I_D$.
   By Equation \ref{eq_flip_degree}, $-\nu_{P_\infty}(f) = \deg D + 3$.
   By Proposition \ref{prop_aI_B_is_bI_A},
   \[ fI_{\bar{\bar D}} = uI_D, \]
@@ -735,11 +630,11 @@ In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preser
   By Theorem \ref{thm_reduced_divisor_types} and Definition \ref{def_typical_divisor},
   $\bar{\bar D}$ is of type 31.
   Referring to Table \ref{tab_divisor_types},
-  the minimal polynomial of $I_{\bar{\bar D}}$ is $f = x^2 + f_2y + f_1x + f_0$,
+  the minimum polynomial of $I_{\bar{\bar D}}$ is $f = x^2 + f_2y + f_1x + f_0$,
   and by Theorem \ref{thm_typical_type_31_divisors}, $f_2 \neq 0$.
   The flip $\bar{\bar{\bar D}}$ of $\bar{\bar D}$ is also of type 31 (Table \ref{tab_small_flip_type}),
   and since $f \in f : I_{\bar{\bar D}} = I_{\bar{\bar{\bar D}}}$,
-  $I_{\bar{\bar{\bar D}}}$ shares the same minimal polynomial $f$ with $f_2 \neq 0$.
+  $I_{\bar{\bar{\bar D}}}$ shares the same minimum polynomial $f$ with $f_2 \neq 0$.
   Hence by Theorem \ref{thm_typical_type_31_divisors}, $\bar{\bar{\bar D}}$ is also typical.
   Since $\bar D$ is reduced (Proposition \ref{prop_flip_properties}),
   $\bar{\bar{\bar D}} = \bar D$ and the result follows.
@@ -749,8 +644,8 @@ In \cite{kmakdisi18}, it is shown that typicality and semi-typicality are preser
   Then $\bar{\bar D}$ is atypical.
   
   If $\bar{\bar D}$ is of type 31, then by Theorem \ref{thm_typical_type_31_divisors},
-  the minimal polynomial of $I_{\bar{\bar D}}$ is $f = x^2 + f_1x + f_0$.
-  As in the previous part of this proof, $\bar D$ is also of type 31 with the same minimal polynomial $f$,
+  the minimum polynomial of $I_{\bar{\bar D}}$ is $f = x^2 + f_1x + f_0$.
+  As in the previous part of this proof, $\bar D$ is also of type 31 with the same minimum polynomial $f$,
   hence $\bar D$ is atypical by Theorem \ref{thm_typical_type_31_divisors}.
   
   If $\bar{\bar D}$ is not of type 31, then $\bar D$ is of degree less than 3 (see Table \ref{tab_flip_degree})
@@ -796,8 +691,8 @@ That is, $h \in \pid{f,g}$, so there exist polynomials $r, s \in K[C]$ and a con
   
   If $t = -f_2 \neq 0$, this gives $h$ in terms of $f$ and $g$.
   Conversely, if $h \in \pid{f,g}$, then $f$ and $g$ generate $I_D$, but are not a Gr\"obner basis.
-  Following Buchberger's Algorithm \note{(was this algorithm included in Chapter 3?)}
-  produces $h$ by reducing $S(f,g)$ modulo $\{f,g\}$, but this implies $t_0 \neq 0$ above.
+  Following Buchberger's Algorithm produces $h$
+  by reducing $S(f,g)$ modulo $\{f,g\}$, but this implies $t_0 \neq 0$ above.
 \end{proof}
 \begin{lemma}
   \label{lem_fgh_is_fg_61}
@@ -881,7 +776,7 @@ Here, we ascribe some geometric meaning to each divisor type of degree 3 or less
   If $D$ is of type 11, then $I_D = \pid{x - x_0, y - y_0}$, and $D = P$ where $P$ is the point $(x_0, y_0)$.
   Since $x - x_0$ and $y - y_0$ have $K$-rational coefficients, $P$ is a $K$-rational point.
   If $C$ is defined over a finite field $\bb F_q$,
-  by the Hasse-Weil Bound, there are approximately $q$ type 11 divisors on $C$.
+  by the Hasse-Weil Bound (Theorem \ref{thm_hasse_weil}), there are approximately $q$ type 11 divisors on $C$.
 
 \subsubsection{Type 21}
   Either $D = P + Q$ for distinct points $P \neq Q$, or $D = 2P$.
@@ -929,19 +824,22 @@ Here, we ascribe some geometric meaning to each divisor type of degree 3 or less
   $g$ is the hyperbola $xy + g_2y + g_1x + g_0$,
   and $h$ is the horizontally-opening parabola $y^2 + h_2y + h_1x + h_0$.
   
-  Either $D$ is the sum of three, two, or one distinct points.
+  Either $D$ is the sum of three distinct points,
+  the sum of a double point with a second distinct point,
+  or a triple points.
   
-  If $D = P + Q + R$ is the sum of three distinct points, then these points are non-colinear.
-  If $D = 2P + Q$ is the sum of two distinct points, then the tangent line at $P$ does not pass through $Q$.
+  If $D = P + Q + R$ is the sum of three distinct points, then these points are non-collinear.
+  If $D = 2P + Q$ is the sum of a double point with a second distinct point,
+  then the tangent line at $P$ does not pass through $Q$.
   If $D = 3P$ is a triple point, then the $P$ is not an inflection point.
 
 \subsubsection{Type 32}
   If $D$ is of type 32, then $I_D = \pid{f, g}$, where $f$ is the non-vertical line $y + f_1x + f_0$
   and $g$ is the univariate polynomial $x^3 + g_3x^2 + g_1x + g_0$.
-  Thus all points in $D$ must be colinear, falling on the line $f$.
+  Thus all points in $D$ must be collinear, falling on the line $f$.
   
   If $D = P + Q + R$ is the sum of three distinct points, then their $x$-coordinates are the roots of $g$.
-  If $D = 2P + Q$ is the sum of two points, then the tangent line at $P$ is $f$, which also passes through $Q$,
+  If $D = 2P + Q$ for distinct $P$ and $Q$, then the tangent line at $P$ is $f$, which also passes through $Q$,
   and the $x$-coordinate of $P$ is a double root of $g$.
   If $D = 3P$ is a triple point, then $P$ is an inflection point, $f$ is the tangent line at $P$, and $g$ has a triple root,
   the $x$-coordinate of $P$.
@@ -950,7 +848,7 @@ Here, we ascribe some geometric meaning to each divisor type of degree 3 or less
   If $D$ is of type 32, then $I_D = \pid{f}$ is a principal ideal and $f$ is the vertical line $x + f_0$.
   The points in $D$ necessarily have the same $x$-coordinate, $-f_0$.
   If $D = P + Q + R$ is the sum of three distinct points, then these points have pairwise distinct $y$-coordinates.
-  If $D = 2P + Q$, then $P$ and $Q$ have distinct $y$-coordinates and $f$ is the tangent line at $P$, which passes also through $Q$.
+  If $D = 2P + Q$, for distinct $P$ and $Q$, then $P$ and $Q$ have distinct $y$-coordinates and $f$ is the tangent line at $P$, which passes also through $Q$.
   If $D = 3P$ is a triple point, then $P$ is an inflection point and $f$ is the tangent line at $P$.
 
 

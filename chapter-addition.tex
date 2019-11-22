@@ -10,6 +10,7 @@
 We present in this chapter a general algorithm for adding reduced divisors
 in the divisor class group of a $C_{3,4}$ curve $C$.
 Given two reduced divisors $D$ and $D'$, we wish to find a divisor $D'' \equiv D + D'$.
+More accurately, we wish to find a reduced Gr\"obner basis for an ideal $I_{D''} \equiv I_{D}I_{D'}$.
 The divisor $D''$ produced by this algorithm will usually not be reduced.
 We will see in Chapter \ref{chap_reduction} how to reduce $D''$,
 and in Chapter \ref{chap_typical_case} how to combine addition and reduction into a single add-reduce operation.
@@ -45,17 +46,17 @@ These vector spaces will be defined properly below.
 The sum $D + D'$ is also identified with the vector space $W_{D + D'}^{x^2y}$
 and is related to $W_D^{x^2y}$ and $W_{D'}^{x^2y}$ via
 \[ W_{D + D'}^{x^2y} = W_D^{x^2y} \cap W_{D'}^{x^2y}. \]
-The intersection of vector spaces is computed by instead computing the kernel of the quotient
+The intersection of vector spaces is computed by computing the kernel of the quotient
 \begin{center}
 \begin{tikzcd}
-  W_{D + D'}^{x^2y} \arrow[hook]{r}{\ker M} &
-  W_D^{x^2y} \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} &
+  W_{D + D'}^{x^2y} \arrow[hook]{r}{\ker M_{\text{add}}} &
+  W_D^{x^2y} \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M_{\text{add}}} &
   W^{x^2y} \arrow[two heads]{r}{\pi} &
   \frac {W^{x^2y}} {W_{D'}^{x^2y}}
 \end{tikzcd},
 \end{center}
 where $\iota$ and $\pi$ indicate the canonical inclusion and quotient maps,
-and $M = \pi \circ \iota$ is their composition.
+and $M_{\text{add}} = \pi \circ \iota$ is their composition.
 
 In this chapter, we will generalize this algorithm to cover all cases of divisor addition
 by making three key observations.
@@ -67,20 +68,25 @@ by making three key observations.
         $D + D'$ is atypical.
 \end{enumerate}
 The generalization of Abu Salem and Khuri-Makdisi's addition therefore requires
-selecting an appropriate bounding monomial $m$ and computing the kernel and image of $M$ in
+selecting an appropriate bounding monomial $m$ and computing the kernel and image of $M_{\text{add}}$ in
 \begin{center}
 \begin{tikzcd}
-  W_L^m \arrow[hook]{r}{\ker M} &
-  W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} &
+  W_L^m \arrow[hook]{r}{\ker M_{\text{add}}} &
+  W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M_{\text{add}}} &
   W^m \arrow[two heads]{r}{\pi} &
-  \frac {W^m} {W_{D'}^m} \arrow[two heads]{r}{\im M} &
+  \frac {W^m} {W_{D'}^m} \arrow[two heads]{r}{\im M_{\text{add}}} &
   \frac {W_G^m} {W_{D'}^m}
 \end{tikzcd}.
 \end{center}
 In the sections to follow, we explain the steps in detail.
 We will define the space $W_D^m$ and how it relates to $D$ and $I_D$.
 We will see how to compute $W_L^m$ and $W_G^m$.
-By using the relation $D + D' = L + G$ and the fact that, typically, $G = 0$,
+By using the relation
+\begin{equation}
+  \label{eq_lcm_plus_gcd}
+  D + D' = L + G
+\end{equation}
+and the fact that, typically, $G = 0$,
 we give an algorithm for general divisor addition.
 The atypical case where $G \neq 0$ is handled recursively,
 so we must also demonstrate that this algorithm terminates.
@@ -95,12 +101,7 @@ so we must also demonstrate that this algorithm terminates.
 
 \subsection{The Vector Space $W_D^m$}
 
-\note{Note to self that I need to define (in section \ref{sec_groebner_bases_in_coordinate_rings})
-monomials in $K[C]$ and $\LM(f)$ for $f \in K[C]$.
-This amounts to treating polys in $K[C]$ as polys in $K[x,y]$ with no $y^3$ term.}
-
-For any divisor $D$, the ideal $I_D$ has structure as an infinite-dimensional $K$-vector space.
-This vector space, we denote by $W_D$.
+For any divisor $D$, the ideal $I_D$ has structure as an infinite-dimensional $K$-vector space, $W_D$.
 Any $K$-basis for $W_D$ also generates $I_D$ as an ideal.
 However, the infinitely large basis for $W_D$ is more information than we need.
 We may restrict to a finite subspace without losing any information.
@@ -127,17 +128,19 @@ and
   Let $G = \{g_1, \ldots, g_k\}$ be a reduced Gr\"obner basis for $I_D$.
   Let $m = \LM(g_k) > \dots > \LM(g_1)$.
   Let $B$ be a $K$-basis for $W_D^m$.
-  Then $I = \pid B$.
+  Then $I_D = \pid B$.
 \end{proposition}
 \begin{proof}
   Certainly $\pid B \subseteq I_D$, since $B \subseteq W_D^m \subseteq I_D$.
   To show $I_D \subseteq \pid B$, it suffices to show $G \subseteq \pid B$, whence $I_D = \pid G \subseteq \pid B$.
   
-  Suppose $g_i \in G$.
+  Let $g_i \in G$.
   Then $\LM(g_i) \leq m$, so $g_i \in W_D^m$.
   Therefore $g_i$ is a $K$-linear combination of elements of $B$,
   implying that $g_i \in \pid B$.
 \end{proof}
+
+An echelon basis for $W_D^m$ is a basis $B$ where no two distinct $b, b' \in B$ have the same leading monomial.
 
 \begin{proposition}
   Let $I_D$, $G$, and $m$ be as in Proposition \ref{prop_vector_space_basis_generates_I}.
@@ -155,11 +158,12 @@ and
   If $B$ is a reduced echelon basis for $W_D^m$,
   then there is a subset of $B$ that is a reduced Gr\"obner basis for $I_D$.
 \end{corollary}
-By an echelon basis for $W_D^m$,
-we mean a basis $B$ where no two distinct $b, b' \in B$ have the same leading monomial.
 \begin{proof}
   Take the set
-  \[ S = \{ b \in B ~|~ \nexists b' \in B-\{b\} : \LM(b') | \LM(b) \}. \]
+  \begin{equation}
+    \label{eq_reduced_basis}
+    S = \{ b \in B ~|~ \nexists b' \in B-\{b\} : \LM(b') | \LM(b) \}.
+  \end{equation}
   For any $s \in S$, by construction, $\LM(s)$ is not divisible by the leading term of any other $s' \in S$.
   Moreover, no term in $s$ is divible by the leading term of any other $s'$
   by virtue of $B$ being a reduced echelon basis.
@@ -172,7 +176,8 @@ In particular, $m$ must be at least as large as
 the largest leading monomial appearing in the reduced Gr\"obner basis for $I_D$.
 
 The space $W_D^m$ is simply a Riemann-Roch space under a different notation.\footnote{Namely, $W_D^m = \cal L(-D - \nu_{P_\infty}(m)P_\infty)$.}
-It is a well-known fact in algebraic geometry that Riemann-Roch spaces are finite-dimensional.
+It is a well-known fact in algebraic geometry that Riemann-Roch spaces are finite-dimensional
+(Proposition 1.4.9 in \cite{stichtenoth09}).
 We give the dimensions explicitly:
 
 \begin{theorem}
@@ -202,7 +207,7 @@ we will choose $m$ to be the largest monomial found among all reduced Gr\"obner 
 \end{comment}
 \begin{proof}
   The dimension of $W^m$ is the number of monomials in $K[C]$ less than or equal to $m$.
-  For readability, define by $f(i,j) = \dim W^{x^iy^j}$.
+  For readability, define $f(i,j) = \dim W^{x^iy^j}$.
   Recalling the $C_{3,4}$ order on monomials in $K[C]$,
     \[ 1 < x < y < x^2 < xy < y^2 < x^3 < x^2y < xy^2 < x^4 < x^3y < x^2y^2 < \dots, \]
   it is clear that
@@ -216,7 +221,7 @@ we will choose $m$ to be the largest monomial found among all reduced Gr\"obner 
   Putting these all together.
   \begin{align*}
     f(i,j)
-      &= f(i, 3k + \ell) & j = 3k + \ell, 0 \leq \ell \leq 2 \\
+      &= f(i, 3k + \ell) \\
       &= f(4k + i, \ell) \\
       &= \ell + f(4k + i + \ell, 0) \\
       &= \ell + f(2 + 4k + i + \ell - 2, 0) \\
@@ -226,7 +231,7 @@ we will choose $m$ to be the largest monomial found among all reduced Gr\"obner 
   \end{align*}
   
   For the second claim, let $B$ be a reduced echelon basis for $W_D^m$. Then
-  \[ \begin{cases} \mu \leq m \\ \mu \in \LT(I_D) \end{cases} \iff \exists b \in B ~:~ \LT(b) = \mu. \]
+  \[ \mu \leq m \text{ and } \mu \in \LT(I_D) \iff \exists b \in B ~:~ \LT(b) = \mu. \]
   To see this, suppose $\mu \leq m$ and $\mu \in \LT(I_D)$.
   Then there is a monic $f \in I_D$ such that $\LT(f) = \mu$.
   Then $f \in W_D^m$, so $f$ is a $K$-linear combination on $B$,
@@ -241,8 +246,7 @@ we will choose $m$ to be the largest monomial found among all reduced Gr\"obner 
       &= \# \{ \mu \in \cal M ~:~ \mu \leq m \} - \# \{ \mu \in \cal M ~:~ \mu \leq m, ~\mu \not\in \LT(I_D) \} \\
       &= \dim W^m - \deg D.
   \end{align*}
-  \note{The last equality is a consequence of Corollary \ref{cor_dim_R_mod_I}.
-  I need to make the relationship between that corollary and the degree of a divisor clear in Chapter 7.}
+  The last equality holds by Corollary \ref{cor_dim_R_mod_I}.
 \end{proof}
 
 
@@ -257,7 +261,7 @@ we will choose $m$ to be the largest monomial found among all reduced Gr\"obner 
 
 Let $L = \lcm(D, D')$ and $G = \gcd(D, D')$.
 Just as $I_L = I_D \cap I_{D'}$ and $I_G = I_D + I_{D'}$,
-so too is it that $W_L^m = W_D^m \cap W_{D'}^m$ and $W_G^m = W_D^m + W_{D'}^m$
+so too are $W_L^m = W_D^m \cap W_{D'}^m$ and $W_G^m = W_D^m + W_{D'}^m$
 (without restriction on the size of $m$).
 We now address the question of how to compute $W_L^m$ and $W_G^m$.
 
@@ -278,68 +282,55 @@ Strictly speaking, it gives us a quotient of $W_G^m$,
 but we will see later that we have enough information to get $W_G^m$ itself.
 
 \begin{theorem}
-  Let $D$ and $D'$ be divisors, let $m$ be a monomial, and let $M$ be the composed map.
+  Let $D$ and $D'$ be divisors, let $m$ be a monomial, and let $M_{\text{add}}$ be the composed map
   \begin{center}
     \begin{tikzcd}
-      W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} & W^m \arrow[two heads]{r}{\pi} & \frac {W^m} {W_{D'}^m}
-    \end{tikzcd}
+      W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M_{\text{add}}} & W^m \arrow[two heads]{r}{\pi} & \frac {W^m} {W_{D'}^m}
+    \end{tikzcd}.
   \end{center}
   where $\iota$ is the canonical inclusion map and $\pi$ is the canonical quotient map.
-  Then $\ker M = W_L^m$ and $\im M = W_G^m / W_{D'}^m$.
+  Then $\ker M_{\text{add}} = W_L^m$ and $\im M_{\text{add}} = W_G^m / W_{D'}^m$,
   \begin{center}
     \begin{tikzcd}
-      W_L^m \arrow[hook]{r}{\ker M} & 
-      W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} & 
+      W_L^m \arrow[hook]{r}{\ker M_{\text{add}}} & 
+      W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M_{\text{add}}} & 
       W^m \arrow[two heads]{r}{\pi} & 
-      \frac {W^m} {W_{D'}^m} \arrow[two heads]{r}{\im M} & 
+      \frac {W^m} {W_{D'}^m} \arrow[two heads]{r}{\im M_{\text{add}}} & 
       \frac {W_G^m} {W_{D'}^m}
-    \end{tikzcd}
+    \end{tikzcd}.
   \end{center}
 \end{theorem}
 \begin{proof}
-  The kernel of $M$ consists precisely of those elements in $W_D^m$ that vanish modulo $W_{D'}^m$.
+  The kernel of $M_{\text{add}}$ consists precisely of those elements in $W_D^m$ that vanish modulo $W_{D'}^m$.
   An element vanishes modulo $W_{D'}^m$ if and only if it is a member of $W_{D'}^m$, so that
-  \[ \ker M = W_D^m \cap W_{D'}^m = W_L^m. \]
+  \[ \ker M_{\text{add}} = W_D^m \cap W_{D'}^m = W_L^m. \]
 
-  As for the image, it is enough to show that $\im M$ is isomorphic to and contained in $W_G^m / W_{D'}^m$.
+  As for the image, it is enough to show that $\im M_{\text{add}}$ is isomorphic to and contained in $W_G^m / W_{D'}^m$.
   By the first and second isomorphism theorems for vector spaces
   (see Theorems IV.1.7 and IV.1.9 in \cite{hungerford}, or many other algebra and linear algebra texts),
-  \[ \im M \overset{\text{(1st)}}{\cong} \frac {W_D^m} {W_L^m}
+  \[ \im M_{\text{add}} \overset{\text{(1st)}}{\cong} \frac {W_D^m} {W_L^m}
            = \frac {W_D^m} {W_D^m \cap W_{D'}^m}
            \overset{\text{(2nd)}}{\cong} \frac {W_D^m + W_{D'}^m} {W_{D'}^m}
            = \frac {W_G^m} {W_{D'}^m}. \]
   Let $f \in W_D^m$.
-  Then $M(f) = [f] \in \frac {W^m} {W_{D'}^m}$.
+  Then $M_{\text{add}}(f) = [f] \in \frac {W^m} {W_{D'}^m}$.
   However $f$ is also in $W_D^m + W_{D'}^m = W_G^m$,
   therefore $[f]$ is also in $\frac {W_G^m} {W_{D'}^m}$.
 \end{proof}
-
-\begin{comment}
-Since $D'$ is assumed to be reduced and therefore one of only a few possible types,
-we can write $\im M$ even more explicitly.
-\[
-  \im M = \begin{cases}
-    W_G^1 & \type(D') = 11 \\
-    W_G^x & \type(D') = 21 \\
-    W_G^y \cap \Span\{ 1, y \} & \type(D') = 22 \\
-    W_G^y & \type(D') = 31
-  \end{cases}.
-\]
-\end{comment}
 
 \begin{proposition}
   \label{prop_deg_L_G}
   The dimensions of $W_L^m$ and $W_G^{m'}$ are
   \begin{enumerate}[label=(\roman*)]
-    \item $\dim W_L^m    = \nullity M$;
-    \item $\dim \frac {W_G^m} {W_{D'}^m} = \rank M$.
+    \item $\dim W_L^m    = \nullity M_{\text{add}}$;
+    \item $\dim \frac {W_G^m} {W_{D'}^m} = \rank M_{\text{add}}$.
   \end{enumerate}
   For a sufficiently large monomial $m$,
   \begin{enumerate}[label=(\roman*)]
     \setcounter{enumi}{2}
-    \item $\deg L = \deg D  + \rank M$;
-    \item $\deg G = \deg D' - \rank M$;
-    \item $D + D' = L \iff G = 0 \iff \rank M = \deg D'$.
+    \item $\deg L = \deg D  + \rank M_{\text{add}}$;
+    \item $\deg G = \deg D' - \rank M_{\text{add}}$;
+    \item $D + D' = L \iff G = 0 \iff \rank M_{\text{add}} = \deg D'$.
   \end{enumerate}
 \end{proposition}
 \begin{proof}
@@ -347,29 +338,20 @@ we can write $\im M$ even more explicitly.
   For part (iii),
   \begin{align*}
     \deg L
-      &= \dim W^m - \dim W_L^m & \text{theorem \ref{thm_dim_W}} \\
-      &= \dim W^m - \nullity M & \text{part (i)} \\
-      &= \dim W^m - \dim W_D^m + \rank M & \text{rank-nullity} \\
-      &= \deg D + \rank M & \text{theorem \ref{thm_dim_W}}.
+      &= \dim W^m - \dim W_L^m & \text{Theorem \ref{thm_dim_W}} \\
+      &= \dim W^m - \nullity M_{\text{add}} & \text{part (i)} \\
+      &= \dim W^m - \dim W_D^m + \rank M_{\text{add}} & \text{rank-nullity} \\
+      &= \deg D + \rank M_{\text{add}} & \text{Theorem \ref{thm_dim_W}}.
   \end{align*}
   For part (iv),
   \begin{align*}
     \deg G
       &= \deg G + \deg L - \deg L \\
       &= \deg D' + \deg D - \deg L & L + G = D + D' \\
-      &= \deg D' - \rank M & \text{part (iii)}.
+      &= \deg D' - \rank M_{\text{add}} & \text{part (iii)}.
   \end{align*}
-  Finally, for part (v), it is clear that $D + D' = L \iff G = 0$ by equation \ref{eq_lcm_plus_gcd}.
-  Suppose $D + D' = L$. Then
-  \begin{align*}
-    D + D' &= L \\
-    \deg D + \deg D' &= \deg L \\
-    \deg D + \deg D' &= \deg D + \rank M & \text{part (iii)} \\
-    \deg D' &= \rank M.
-  \end{align*}
-  Conversely, suppose $\deg D' = \rank M$.
-  Then by part (iv), $\deg G = 0$.
-  Since $G$ is an effective divisor, $G = 0$.
+  Finally, for part (v), it is clear that $D + D' = L \iff G = 0$ by equation \ref{eq_lcm_plus_gcd},
+  and by part (iv), $G = 0 \iff \rank M_{\text{add}} = \deg D'$ .
 \end{proof}
 
 In the following subsections, we work out some extended examples of computing $L$ and $G$.
@@ -385,8 +367,8 @@ In the following subsections, we work out some extended examples of computing $L
 \subsection{The Addition Algorithm}
 
 We are now able to compute $L = \lcm(D, D')$ and $G = \gcd(D, D')$.
-The goal of this chapter was to compute a divisor $D''$ equivalent to $D + D'$.
-By Proposition \ref{prop_deg_L_G}, if $M$ has full rank, then $D'' = L$.
+The goal of this chapter is to compute a divisor $D''$ equivalent to $D + D'$.
+By Proposition \ref{prop_deg_L_G}, if $M_{\text{add}}$ has full rank, then $D'' = L$.
 This occurs if and only if $D$ and $D'$ are disjoint ($G = 0$).
 
 When $D$ and $D'$ are non-disjoint,
@@ -402,7 +384,7 @@ the smaller of the two divisors in the next iteration
 is strictly smaller than in the previous iteration,
 forcing our algorithm to eventually terminate.
 
-We begin with a proposition characterizing the case $\rank M = 0$.
+We begin with a proposition characterizing the case $\rank M_{\text{add}} = 0$.
 \begin{proposition}
   \label{prop_rank_M}
   The following are equivalent:
@@ -410,7 +392,7 @@ We begin with a proposition characterizing the case $\rank M = 0$.
     \item $L = D$;
     \item $G = D'$;
     \item $D' \leq D$;
-    \item $\rank M = 0$.
+    \item $\rank M_{\text{add}} = 0$.
   \end{enumerate}
 \end{proposition}
 \begin{proof}
@@ -421,23 +403,23 @@ We begin with a proposition characterizing the case $\rank M = 0$.
       $D' \leq L$ and $L = D$, hence $D' \leq D$.
     \item[(iii) $\implies$ (iv):]
       If $D' \leq D$, then $I_D \subseteq I_{D'}$ and $W_D^m \subseteq W_{D'}^m$.
-      Every element in $W_D^m$ vanishes under $M$,
-      $\nullity M = \dim W_D^m$ and $\rank M = 0$.
+      Every element in $W_D^m$ vanishes under $M_{\text{add}}$,
+      $\nullity M_{\text{add}} = \dim W_D^m$ and $\rank M_{\text{add}} = 0$.
     \item[(iv) $\implies$ (i):]
-      Suppose $\rank M = 0$.
-      By proposition \ref{prop_deg_L_G}, $\deg L = \deg D$.
+      Suppose $\rank M_{\text{add}} = 0$.
+      By Proposition \ref{prop_deg_L_G}, $\deg L = \deg D$.
       Since $D \leq L$ and $D$ and $L$ have the same degree, $L = D$.
   \end{description}
 \end{proof}
 \begin{corollary}
-  \[ G < D' \iff \rank M > 0. \]
+  \[ G < D' \iff \rank M_{\text{add}} > 0. \]
 \end{corollary}
 
 We may now identify three cases:
 \begin{enumerate}[label=(\roman*)]
-  \item $\rank M = \deg D'$;
-  \item $0 < \rank M < \deg D'$; or
-  \item $\rank M = 0$.
+  \item $\rank M_{\text{add}} = \deg D'$;
+  \item $0 < \rank M_{\text{add}} < \deg D'$; or
+  \item $\rank M_{\text{add}} = 0$.
 \end{enumerate}
 In the first case, we return $L$ and our algorithm terminates.
 In the second case, we recursively compute $\bar{\bar L} + G$;
@@ -445,7 +427,7 @@ the degree of $G$ is strictly smaller than the degree of $D'$.
 In the third case, $\bar{\bar L} = D$ and $G = D'$, so recursively adding $\bar{\bar L} + G$ leads to an infinite loop.
 We must treat this case separately.
 
-By Proposition \ref{prop_rank_M}, if $\rank M = 0$, then $D' \leq D$.
+By Proposition \ref{prop_rank_M}, if $\rank M_{\text{add}} = 0$, then $D' \leq D$.
 Since we are assuming $D' \neq D$, we have $D' < D$.
 Since $D$ is reduced and of degree at most 3, $\deg D'$ is either 1 or 2.
 We consider each of these cases separately, beginning with the latter.
@@ -456,21 +438,36 @@ Once we have, we compute
 Now $\deg A < \deg D'$, so our algorithm is one step closer towards termination.
 Finding $A$ amounts to finding $x_0, y_0 \in K$ such that
   \[ I_D = I_{D'}\pid{x + x_0, y + y_0}. \]
-\note{If necessary, formulas for this can be placed in appendix.}
+To do this, we note that $I_{D'} = \pid{f',g'}$ has a Gr\"obner basis of two elements.
+To find $x_0, y_0$, we note that $f'(x + x_0)$ and $f'(y + y_0)$ must be in $I_D$.
+So reducing $f'(x + x_0)$ and $f'(y + y_0)$ modulo $f, g, h$ must give 0.
+This gives us a simple system of linear equations to solve for $x_0$ and $y_0$.
+Formulae solving this system are available at \cite{github}.
 
 If $D'$ is of degree 1, then $D = nD' + A$ for some $A$ disjoint from $D'$ (possibly $A = 0$)
 and some $1 \leq n \leq 3$.
-We must find $D''$ and $n$ and compute
+We must find $A$ and $n$ and compute
   \[ D + D' = \bar{\bar{(n + 1)D'}} + A. \]
-\note{If necessary, formulas for this can be placed in appendix.}
+To find $A$ and $n$, one repeats the process from the previous case.
+Find a divisor $A$ of degree $\deg D - \deg D'$ such that $D = D' + A$
+by reducing $f'(x + x_0)$ and $f'(y + y_0)$ modulo $I_D$ and solving a system of linear equations.
+It is then easy to check\footnote{
+$D$ consists of one point. Check if the generators of $I_A$ are zero at that point.}
+if $D' \leq A$.
+If not, $n = 1$ and we have the divisor $A$ we need.
+Otherwise, increment $n$ and repeat the process by finding $A'$ such that $A = D' + A'$, and so on.
+
 Now $A$ is disjoint\footnote
 {Except for an exceptional case where $(n + 1)D'$ is type 32 or 33,
 in which case $\bar{\bar{(n + 1)D'}}$ is degree 0 or 1.
 In this case, the algorithm will still terminate.}
 from $\bar{\bar{(n + 1)D'}}$, so that the algorithm will terminate in the next recursive step.
 Computing $(n + 1)D'$ requires us to be able to double, triple, or quadruple a point.
-Doubling is the topic of the next chapter and quadrupling is accomplished by doubling twice.
-\note{Explicit formulas for tripling may also to be given in appendix. Or next chapter?}
+Doubling is the topic of Chapter \ref{chap_doubling} and quadrupling is accomplished by doubling twice.
+In Chapter \ref{chap_doubling}, two doubling algorithms are presented.
+When the addition algorithm is required to double, it uses Algorithm \ref{alg_doubling_fast},
+which provably terminates.
+Formulae for tripling a point are available at \cite{github}.
 
 \begin{comment}
 Having now shown that we can compute $D + D'$ in a way that will terminate,
@@ -628,29 +625,31 @@ argue these reductions are zero, and conclude
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 We summarize the addition algorithm in Algorithm \ref{alg_addition}.
+By ``return $L$'', we mean return a reduced Gr\"obner basis for $I_L$,
+which is the subset of the reduced echelon basis for $\ker M_{\text{add}}$ satisfying Equation \ref{eq_reduced_basis}.
 
 \begin{algorithm}
   \label{alg_addition}
   \caption{Divisor Addition}
-  {\bf Input:} Two reduced divisors $D$ and $D'$ represented by their ideals $I_D$ and $I_{D'}$
-  satisfying $D \neq D'$ and $\deg D \geq \deg D'$ \\
+  {\bf Input:} Two reduced divisors $D$ and $D'$ satisfying $D \neq D'$ and $\deg D \geq \deg D'$,
+  represented by the reduced Gr\"obner bases of their ideals $I_D$ and $I_{D'}$ \\
   {\bf Output:} A divisor $D''$ equivalent to $D + D'$, represented by its ideal $I_{D''}$
   \begin{algorithmic}[1]
     \If {$D' = 0$}
       \State \Return $D$ \label{alg_addition:return_0}
     \EndIf
-    \State Compute $M : W_D^m \to W_{D'}^m$
-    \State Compute $M_{\text{rref}}$ and $\rank M$
-    \If {$\rank M = \deg D'$}
+    \State Compute $M_{\text{add}} : W_D^m \to W_{D'}^m$
+    \State Compute $\rref(M_{\text{add}})$ and $\rank M_{\text{add}}$ and $\ker M_{\text{add}}$
+    \If {$\rank M_{\text{add}} = \deg D'$}
       \State Compute $L = \lcm(D, D')$
       \State \Return $L$ \label{alg_addition:return_1}
     \EndIf
-    \If {$\rank M > 0$}
+    \If {$\rank M_{\text{add}} > 0$}
       \State Compute $L = \lcm(D, D')$
       \State Compute $G = \gcd(D, D')$
       \State \Return $\bar{\bar L} + G$ \label{alg_addition:return_2}
     \EndIf
-    \If {$\rank M = 0$}
+    \If {$\rank M_{\text{add}} = 0$}
       \If {$\deg D' = 2$}
         \State Compute $A$ such that $D = A + D'$
         \State \Return $\bar{\bar{2D'}} + A$ \label{alg_addition:return_3}
@@ -698,9 +697,9 @@ These are the topics of the next two chapters.
 %%%%%                      %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Example -- Computing $\ker M$}
+\subsection{Example -- Computing $\ker M_{\text{add}}$}
 
-Let $C : y^3 + x^4 + 1$ be a $C_{3,4}$ curve over $\bb F_{11}$.
+Let $C$ be the $C_{3,4}$ curve over $\bb F_{11}$ defined by the polynomial $y^3 + x^4 + 1$.
 Let $D$ and $D'$ be type 31 divisors with
 \begin{align*}
   D  &= \pid{f, g, h}     & D' &= \pid{f', g', h'} \\
@@ -718,13 +717,13 @@ where $\alpha \in \bb F_{11^2}$ is a root of $x^2 + 7x + 2$.
 The sum $D + D'$ is a degree 6 divisor. Referring to Table \ref{tab_divisor_types},
 we see that no generator of any reduced Gr\"obner basis of a degree 6 divisor has a monomial larger than $x^4$.
 Therefore $W^{x^4}$ will be a sufficiently large space in which to perform our computations.
-We proceed by computing the matrix $M$ in
+We proceed by computing the matrix $M_{\text{add}}$ in
 \begin{center}
   \begin{tikzcd}
-    W_L^{x^4} \arrow[hook]{r}{\ker M} & 
-    W_D^{x^4} \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} & 
+    W_L^{x^4} \arrow[hook]{r}{\ker M_{\text{add}}} & 
+    W_D^{x^4} \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M_{\text{add}}} & 
     W^{x^4} \arrow[two heads]{r}{\pi} & 
-    \frac {W^{x^4}} {W_{D'}^{x^4}} \arrow[two heads]{r}{\im M} &
+    \frac {W^{x^4}} {W_{D'}^{x^4}} \arrow[two heads]{r}{\im M_{\text{add}}} &
     \frac {W_G^{x^4}} {W_{D'}^{x^4}} \\ &
     K^7 \arrow[hook]{r} \arrow[no head]{u}{\rotatebox{90}{$\simeq$}} &
     K^{10} \arrow[two heads]{r} \arrow[no head]{u}{\rotatebox{90}{$\simeq$}} &
@@ -732,7 +731,7 @@ We proceed by computing the matrix $M$ in
   \end{tikzcd},
 \end{center}
 where the bottom row serves to show the dimensions of these spaces.
-The dimensions of $\ker M$ and $\im M$ are not yet known until we do some more calculations.
+The dimensions of $\ker M_{\text{add}}$ and $\im M_{\text{add}}$ are not yet known until we do some more calculations.
 
 The spaces $W_D^{x^4}$ and $W_{D'}^{x^4}$ are 7-dimensional, spanned by the polynomials
 \begin{align*}
@@ -740,20 +739,20 @@ The spaces $W_D^{x^4}$ and $W_{D'}^{x^4}$ are 7-dimensional, spanned by the poly
   W_{D'}^{x^4} &= \Span\{ f', g', h', xf', xg', xh', x^2f' \}.
 \end{align*}
 We reduce the basis of $W_D^{x^4}$ modulo $W_{D'}^{x^4}$ to get the matrix
-\[ M = \begin{pmatrix}
+\[ M_{\text{add}} = \begin{pmatrix}
   7 & 0 & 9 & 2 & 10 & 5 & 2 \\
   4 & 8 & 3 & 10 & 2 & 8 & 6 \\
   8 & 8 & 5 & 2 & 0 & 1 & 7
 \end{pmatrix}, \]
 where, e.g., the reduction of $f$ is $\bar f = 8y + 4x + 7$,
 the reduction of $g$ is $\bar g = 8y + 8x$, etc.
-This matrix $M$ has the reduced row echelon form
+This matrix $M_{\text{add}}$ has the reduced row echelon form
 and kernel
-\[ M_{\text{rref}} = \begin{pmatrix}
+\[ \rref(M_{\text{add}}) = \begin{pmatrix}
   1 & 0 & 6 & 0 & 6 & 9 & 2 \\
   0 & 1 & 7 & 0 & 9 & 8 & 10 \\
   0 & 0 & 0 & 1 & 6 & 4 & 5
-\end{pmatrix} ~~~ \ker M =
+\end{pmatrix} ~~~ \ker M_{\text{add}} =
 \begin{pmatrix}
   -6 & -6 & -9 & -2 \\
   -7 & -9 & -8 & -10 \\
@@ -765,7 +764,7 @@ and kernel
 \end{pmatrix}. \]
 The kernel is 4-dimensional, spanned by the vectors
 \begin{align*}
-  \ker M
+  \ker M_{\text{add}}
     &= \Span \left\{ \begin{array}{l}
                h -  7g - 6f, \\
         xg - 6xf -  9g - 6f, \\
@@ -787,9 +786,9 @@ alone form a reduced Gr\"obner basis,
   \[ I_L = \pid{ y^2 + 4xy + 5x^2 + 5y + x - 2, ~x^2y + 5x^3 - 3xy - 2x^2 - 3y - 4x - 1}.\]
 
 \begin{remark}
-In this example, we computed the kernel of $M$ to get four polynomials, though two were unneeded.
-Consequently, two columns of the matrix $M$ were unneeded.
-An efficient implementation of divisor arithmetic will avoid computing unnecessary columns of $M$
+In this example, we computed the kernel of $M_{\text{add}}$ to get four polynomials, though two were not needed.
+Consequently, two columns of the matrix $M_{\text{add}}$ were not needed.
+An efficient implementation of divisor arithmetic will avoid computing unnecessary columns of $M_{\text{add}}$
 by computing them only as they become necessary.
 \end{remark}
 
@@ -898,9 +897,9 @@ is reduced to adding a degree 3 divisor $\bar{\bar L}$ with a degree 1 divisor $
 %%%%%                                  %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Example -- Computing $\im M$}
+\subsection{Example -- Computing $\im M_{\text{add}}$}
 
-Consider again the curve $C : y^3 + x^4 + 1$ over $\bb F_{11}$.
+Consider again the $C_{3,4}$ curve $C$ defined by the polynomial $y^3 + x^4 + 1$ over $\bb F_{11}$.
 Let $D$ and $D'$ be type 31 divisors with
 \begin{align*}
   D  &= \pid{f, g, h}      & D' &= \pid{f', g', h'}  \\
@@ -915,19 +914,19 @@ These divisors are non-disjoint, with
 \end{align*}
 
 As in the previous example, we reduce the basis of $W_{D}^{x^4}$ modulo the basis for $W_{D'}^{x^4}$ to get the matrix
-\[ M = \begin{pmatrix}
+\[ M_{\text{add}} = \begin{pmatrix}
    4 & 6 & 4 & 2 & 3 & 2 & 1 \\
   10 & 4 & 2 & 5 & 2 & 5 & 8 \\
    4 & 6 & 4 & 2 & 3 & 2 & 1
 \end{pmatrix}. \]
 This matrix has the reduced row echelon form
-\[ M = \begin{pmatrix}
+\[ \rref(M_{\text{add}}) = \begin{pmatrix}
   1 & 7 & 1 & 6 & 9 & 6 & 3 \\
   0 & 0 & 0 & 0 & 0 & 0 & 0 \\
   0 & 0 & 0 & 0 & 0 & 0 & 0
 \end{pmatrix}. \]
-We can see the $M$ does not have full rank.
-In this case, $\rank M = 1$.
+We can see the $M_{\text{add}}$ does not have full rank.
+In this case, $\rank M_{\text{add}} = 1$.
 By Proposition \ref{prop_deg_L_G},
 $\deg L = 4$, and $G$ is non-zero with $\deg G = 2$.
 We have a non-trivial image to compute.
@@ -961,12 +960,12 @@ we have a reduced Gr\"obner basis for $I_L$,
       x^3 - 5x^2 -  y - 2x - 1
   \end{array}\right\rangle. \]
 \end{comment}
-The image of $M$ is determined by its pivot columns.
+The image of $M_{\text{add}}$ is determined by its pivot columns.
 In this case, there is only one pivot column --- the first.
-The image of $M$ is therefore given by the column basis
-\[ \im M = \Span \begin{pmatrix} 4 \\ 10 \\ 4 \end{pmatrix}
+The image of $M_{\text{add}}$ is therefore given by the column basis
+\[ \im M_{\text{add}} = \Span \begin{pmatrix} 4 \\ 10 \\ 4 \end{pmatrix}
          = \Span \begin{pmatrix} 1 \\ -3 \\ 1 \end{pmatrix}. \]
-That is, $\im M = \frac {W_G^m}{W_{D'}^m}$ is spanned by the polynomial $u = y - 3x + 1$.
+That is, $\im M_{\text{add}} = \frac {W_G^m}{W_{D'}^m}$ is spanned by the polynomial $u = y - 3x + 1$.
 Since $G$ has degree 2 and contains a polynomial with leading monomial $y$,
 $G$ must be of type 21 and we must find its other generator $v$ with leading monomial $x^2$.
 Since $I_D \subseteq I_G$, $f$ must be an element of $I_G$, and we may reduce $f$ modulo $u$ to obtain $v$.

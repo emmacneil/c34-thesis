@@ -420,6 +420,17 @@ Using Buchberger's Criterion and in light of Example \ref{ex_groebner_2b},
 one may now see why $\{x^2 + y, xy\}$ was not a Gr\"obner basis in Example \ref{ex_groebner_2}.
 However, $\{x^2 + y, xy, y^2\}$ \emph{is} a Gr\"obner basis.
 
+\begin{definition}
+  \label{def_minimum_polynomial}
+  Let $R = K[x_1, \ldots, x_n]$ be a polynomial ring with a monomial order $\leq$.
+  Let $I$ be an ideal of $R$ and let $G$ be a Gr\"obner basis of $I$.
+  The \defn{minimum polynomial} of $I$ (with respect to $\leq$)
+  is the element of $G$ with the smallest leading monomial (with respect to $\leq$).
+\end{definition}
+Recall that every ideal $I$ has a Gr\"obner basis, hence every ideal has a minimum polynomial.
+The minimum polynomial of $I$ is unique.
+Were there two distinct minimum polynomials, their $S$-polynomial would violate Buchberger's Criterion.
+
 It was mentioned in the introduction to this chapter
 that reduced Gr\"obner bases allow for unique representations of ideals.
 We define reduced Gr\"obner bases now.

@@ -1,0 +1,168 @@
+\section{The Colon Ideal}
+\label{appendix_colon_ideal}
+
+Let $\frak a$ and $\frak b$ be \emph{integral} ideals of a commutative ring with identity $R$.
+The \defn{ideal quotient} of $\frak a$ by $\frak b$, also called the \defn{colon ideal}, is
+\[ \frak a : \frak b = \{ r \in R ~|~ r \frak b \subseteq \frak a \}. \]
+When the ideal quotient involves a principal ideal $\pid a$, we may write $a : \frak a$ and $\frak a : a$,
+rather than $\pid a : \frak a$ and $\frak a : \pid a$.
+
+The following proposition sums up several useful, well-known properties of the colon ideal.
+\begin{proposition}
+  \label{prop_colon_ideal}
+  Let $R$ be a commutative ring with identity.
+  Let $\frak a$, $\frak b$, and $\frak c$ be $R$-ideals. Then
+  \begin{enumerate}[label=(\roman*)]
+    \item $\frak a : \frak b$ is an $R$-ideal;
+    \item $\frak a \subseteq \frak a : \frak b$;
+    \item $\frak a : R = \frak a$;
+    \item $R : \frak a = R$;
+    \item $\frak a \frak b \subseteq \frak c \iff \frak a \subseteq \frak c : \frak b$;
+    \item $\frak a : \frak b = R \iff \frak b \subseteq \frak a$;
+    \item $\frak a : (\frak b + \frak c) = (\frak a : \frak b) \cap (\frak a : \frak c)$;
+    \item $(\frak a \cap \frak b) : \frak c = (\frak a : \frak c) \cap (\frak b : \frak c)$;
+    \item $(\frak a : \frak b) : \frak c = \frak a : \frak b \frak c$.
+  \end{enumerate}
+\end{proposition}
+
+These properties are given as propositions in \cite{cox07},
+though the statements are given for a multivariate polynomial ring over a field, $K[x_1, \ldots, x_n]$
+rather than for an arbitrary commutative ring with identity,
+and most of the proofs are left as exercises.
+Proofs, in slightly greater generality, are given here.
+
+\begin{proof}
+  \begin{enumerate}[label=(\roman*)]
+    \item Let $a, b \in \frak a : \frak b$.
+          Then $a \frak b, b \frak b \subseteq \frak a$.
+          Then $(a + b)\frak b = a\frak b + b\frak b \subseteq \frak a$
+          (since $a\frak b + b\frak b$ is the join of $a\frak b$ and $b\frak b$ in the lattice of $R$-ideals).
+          So $a + b \in \frak a : \frak b$.
+          
+          Let $a \in \frak a : \frak b$, $r \in R$.
+          Then $a \frak b \subseteq \frak a$ and $ra \frak b \subseteq a \frak b$,
+          so $ra \frak b \subseteq \frak a$ and $ra \in \frak a : \frak b$.
+
+    \item
+      We have
+      \begin{align*}
+             & \frak a \subseteq \frak a : b \\
+        \iff & \forall a \in \frak a : a \frak b \subseteq \frak a \\
+        \iff & \forall a \in \frak a : \forall b \in \frak b : ab \in \frak a.
+      \end{align*}
+      The last statement is true since ideals are closed under multiplication by $R$.
+      
+    \item
+      By part (ii), we have $\frak a \subseteq \frak a : R$.
+      Suppose $a \in \frak a : R$.
+      Then $aR \subseteq \frak a$.
+      In particular, $a = a \cdot 1_R \in \frak a$,
+      so $\frak a : R \subseteq \frak a$.
+      
+    \item
+      By definition, $R : \frak a \subseteq R$.
+      By part (ii), $R \subseteq R : \frak a$.
+      
+    \item
+      ($\implies$) Let $a \in \frak a$. Then $a \frak b \subseteq \frak a \frak b$,
+      and by hypothesis, $\frak a \frak b \subseteq \frak c$,
+      so $a \frak b \subseteq \frak c$,
+      and $a \in \frak c : \frak b$.
+      
+      ($\impliedby$) Let $a \in \frak a$.
+      By hypothersis, $a \in \frak c : \frak b$, so $a \frak b \subseteq \frak c$.
+      Since the choice of $a$ was arbitrary, this means $\frak a \frak b \subseteq \frak c$.
+      
+    \item
+      ($\implies$) Suppose $\frak a : \frak b = R$.
+      Then $\frak b = 1_R \frak b \subseteq \frak a$.
+      
+      ($\impliedby$) Suppose $b \subseteq \frak a$.
+      For all $r \in R$, $r \frak b \subseteq \frak b$.
+      So $r \frak b \subseteq \frak a$ and $\frak a : \frak b = R$.
+      
+    \item
+      Let $r \in R$. We have
+      \begin{align*}
+           & r(\frak b + \frak c) \subseteq \frak a \\
+      \iff & r \frak b + r \frak c \subseteq \frak a \\
+      \iff & r \frak b \subseteq \frak a \text{ and } r \frak c \subseteq \frak a.
+      \end{align*}
+      So
+      \begin{align*}
+        \frak a : (\frak b + \frak c)
+          &= \{ r \in R ~|~ r(\frak b + \frak c) \subseteq \frak a \} \\
+          &= \{ r \in R ~|~ r \frak b \subseteq \frak a \text{ and } r \frak c \subseteq \frak a \} \\
+          &= \{ r \in R ~|~ r \frak b \subseteq \frak a \} \cap \{ r \in R ~|~ r \frak c \subseteq \frak a \} \\
+          &= (\frak a : \frak b) \cap (\frak a : \frak c).
+      \end{align*}
+    
+    \item
+      Similarly to part (vii),
+      \begin{align*}
+        (\frak a \cap \frak b) : \frak c
+          &= \{ r \in R ~|~ r \frak c \subseteq \frak a \cap \frak b \} \\
+          &= \{ r \in R ~|~ r \frak c \subseteq \frak a \text{ and } r \frak c \subseteq \frak b \} \\
+          &= \{ r \in R ~|~ r \frak c \subseteq \frak a \} \cap \{ r \in R ~|~ r \frak c \subseteq \frak b \} \\
+          &= (\frak a : \frak c) \cap (\frak b : \frak c).
+      \end{align*}
+    
+    \item
+      Let $r \in R$. We have
+      \begin{align*}
+           & r \frak c \subseteq \frak a : \frak b \\
+      \iff & r \frak b \frak c \subseteq \frak a & \text{by (v)} \\
+      \iff & r \in \frak a : \frak b \frak c,
+      \end{align*}
+      so
+      \begin{align*}
+        (\frak a : \frak b) : \frak c
+          &= \{ r \in R ~|~ r \frak c \subseteq \frak a : \frak b \} \\
+          &= \{ r \in R ~|~ r \in \frak a : \frak b \frak c \} \\
+          &= \frak a : \frak b \frak c.
+      \end{align*}
+  \end{enumerate}
+\end{proof}
+
+The following proposition and its corollary illustrate why this ideal is called the ideal quotient.
+In a Dedekind domain, we have $\frak a \frak b : \frak b = \frac {\frak a \frak b}{\frak b} = \frak a$.
+
+\begin{proposition}
+  \label{prop_colon_by_prime}
+  Let $R$ be a Dedekind domain.
+  Let $\frak a$ be a non-zero ideal and $\frak p$ a non-zero prime ideal of $R$. Then
+  \[ \frak a \frak p : \frak p = \frak a. \]
+\end{proposition}
+\begin{proof}
+  Clearly, $\frak a \frak p \subseteq \frak a \frak p$.
+  Using Proposition \ref{prop_colon_ideal}.(v),
+  this gives $\frak a \subseteq \frak a \frak p : \frak p$.
+  
+  Suppose $\alpha \in \frak a \frak p : \frak p$.
+  Then $(\alpha)\frak p \subseteq \frak a \frak p$
+  and there exists a non-zero ideal $\frak b$ such that $(\alpha)\frak p = \frak a \frak b \frak p$.
+  %By \note{Conrad\footnote{{\tt https://kconrad.math.uconn.edu/blurbs/gradnumthy/idealfactor.pdf}} Corollary 3.3}, $(\alpha) = \frak a \frak b$,
+  By Corollary 3.3 in \cite{conrad}, $(\alpha) = \frak a \frak b$,
+  so $(\alpha) \subseteq \frak a$ and $\alpha \in \frak a$.
+\end{proof}
+
+\begin{corollary}
+  \label{cor_ab_colon_b_is_a}
+  Let $R$ be a Dedekind domain.
+  Let $\frak a$ and $\frak b$ be non-zero ideals of $R$. Then
+  \[ \frak a \frak b : \frak b = \frak a. \]
+\end{corollary}
+\begin{proof}
+  Let $\frak b$ factor into $\frak p_1 \cdots \frak p_n$, where the $\frak p_i$'s are not necessarily distinct.
+  Then
+  \begin{align*}
+    \frak a \frak b : \frak b
+      &= (\frak a \frak p_1 \frak p_2 \dots \frak p_n) : (\frak p_1 \frak p_2 \dots \frak p_n) \\
+      &= (((\frak a \frak p_1 \frak p_2 \dots \frak p_n : \frak p_1) : \frak p_2) : \dots) : \frak p_n
+        & \text{by Prop \ref{prop_colon_ideal}.ix} \\
+      &= ((\frak a \frak p_2 \dots \frak p_n : \frak p_2) : \dots) : \frak p_n
+        & \text{by Prop \ref{prop_colon_by_prime}} \\
+      &= \dots & \text{induction} \\
+      &= \frak a.
+  \end{align*}
+\end{proof}
