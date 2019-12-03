@@ -271,16 +271,31 @@ All of these goals are attained in this thesis.
 When restricting the resulting formulae to the typical case
 (specifically, adding/doubling disjoint typical divisors on a curve in short form over a field of characteristic greater than 3)
 and comparing to prior work, we also obtain an improvement in efficiency over the previous state-of-the-art.
-This is summarized in Table \ref{tab_op_count_intro}.
-\note{Copy table from AMMCS slides}
+This is summarized in Table \ref{tab_op_count_intro},
+where I, M, S, A refer to the number of inversions, multiplications, squares, and additions in a finite field
+required to evaluate the formulae.
+The trade-off between inversions and multiplications is discussed in Chapter \ref{chap_typical_case}.
 Besides the typical case,
 this thesis produces explicit formulae for all possible cases arising from adding and doubling divisors.
-These formulae are found in Appendix \ref{appendix_formulae}.
+These formulae are found in Chapter \ref{chap_typical_case}.
 No other publication has explicit formulae covering all cases,
 making this contribution all the more significant.
 
-\begin{table}
+\begin{table}[h]
+  \caption{Comparison of operation counts in prior work}
   \label{tab_op_count_intro}
+  \begin{center}
+    \begin{tabular}{l|rrrr|rrrr}
+      & \multicolumn{4}{|c}{Add} & \multicolumn{4}{|c}{Double} \\
+      \hline
+      & I & M & S & A & I & M & S & A \\
+      \hline
+      Arita         & 5 & 204 & -- &  -- & 5 & 284 & -- &  -- \\
+      Flon et al    & 2 & 148 & 15 &  -- & 2 & 165 & 20 &  -- \\
+      Makdisi/Salem & 2 &  98 &  1 & 132 & 2 & 110 &  3 & 155 \\
+      MacNeil       & 1 & 111 &  3 &  99 & 1 & 135 &  3 & 116 
+    \end{tabular}
+  \end{center}
 \end{table}
 
 By improving upon the typical case and completing the picture for the atypical cases,
@@ -312,26 +327,27 @@ and comparing the results to Sage's own provided ideal arithmetic.
 We begin by reviewing some background material necessary for understanding this thesis.
 Familiarity with common algebraic structures ---
 including monoids, groups, rings, fields, modules, and vector spaces --- is assumed.
-In chapter 2, we review Gr\"obner bases,
-which are central to Arita's representation of divisors,
-which we have adopted here.
-In chapter 3, we review differentials, which arise when doubling divisors.
+In Chapter \ref{chap_curves}, we define curves generally and $C_{3,4}$ curves specifically,
+as well as related objects, such as a curve's coordinate ring.
+In Chapter \ref{chap_groebner}, we review Gr\"obner bases,
+which are central to Arita's representation of divisors, which we have adopted here.
+In Chapter \ref{chap_differentials}, we review differentials, which arise when doubling divisors.
 
-Next, we delve into theory more specific to $C_{3,4}$ curves.
-In chapter 4, we introduce algebraic curves and define $C_{3,4}$ curves,
-as well as some related objects such as the coordinate ring and function field.
-In chapter 5, we introduce divisors on curves and give some basic properties of the divisor class group.
-In chapter 6, we introduce the ideal class group and exhibit an isomorphism between the divisor class group and the ideal class group.
-We use this isomorphism in chapter 7 to represent divisors by ideals, in turn represented by Gr\"obner bases.
+Beginning with Chapter \ref{chap_divisors}, we work with divisors.
+In Chapter \ref{chap_divisors}, we introduce divisors on curves and give some basic properties of the divisor class group.
+In Chapter \ref{chap_ideals}, we introduce the ideal class group and exhibit an isomorphism between the divisor class group and the ideal class group.
+We use this isomorphism in Chapter \ref{chap_representation} to represent divisors by ideals,
+in turn represented by Gr\"obner bases.
 We then define what it means for a divisor to be reduced or typical
 and prove several properties of these divisors.
 
-Beginning with chapter 8, we present algorithms to operate in the divisor class group of a $C_{3,4}$ curve.
-Chapters 8, 9, and 10 describe algorithms for adding, doubling, and reducing divisor classes, respectively.
-In chapter 11, we combine addition and reduction into a single add-reduce operation
+Beginning with Chapter \ref{chap_addition}, we present algorithms to operate in the divisor class group of a $C_{3,4}$ curve.
+Chapters \ref{chap_addition}, \ref{chap_doubling}, and \ref{chap_reduction}
+describe algorithms for adding, doubling, and reducing divisors, respectively.
+In Chapter \ref{chap_typical_case}, we combine addition and reduction into a single add-reduce operation
 as well as doubling and reduction into single double-reduce operation.
-Combining these operations saves an inversion and several multiplications and additions,
-giving an improvement over the current state-of-the-art in $C_{3,4}$ curve arithmetic.
+Combining these operations saves an inversion and several additions at the cost of some multiplications.
+We argue that this tradeoff is worthwhile and gives an improvement over the current state-of-the-art in $C_{3,4}$ curve arithmetic.
 
-The results and contributions of this thesis are summarized in the concluding chapter 12.
+The results and contributions of this thesis are summarized in the concluding Chapter \ref{chap_conclusion}.
 

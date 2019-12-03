@@ -17,13 +17,14 @@ We will use the letters $f,g,h$ for elements of a Gr\"obner basis of the reduced
 
 Arita and Abu Salem/Khuri-Makdisi recognized that
 flipping a divisor twice would reduce it (though Arita did not use the term ``flipping''),
-and that flipping in the divisor class group was analogous to computing quotient ideals in the ideal class group.
+and that flipping in the divisor class group is analogous to computing quotient ideals in the ideal class group.
 
 In \cite{arita05-2}, Arita reduces divisors by flipping twice.
-Given $D$, one computes $\bar D$ followed by $\bar{\bar D}$ in two discrete steps.
+Given $D$, one computes $\bar D$ followed by $\bar{\bar D}$ in two separate steps.
 Each flip operation requires one inversion in the finite field, and several multiplications.
 For instance, if $D$ is a type 61 divisor,
-it costs 1I+54M to compute $\bar D$ and 1I+16M to compute $\bar{\bar D}$.
+it costs 1I+54M (1 finite field inversion and 54 finite field multiplications)
+to compute $\bar D$ and 1I+16M to compute $\bar{\bar D}$.
 
 In \cite{salem07}, Abu Salem and Khuri-Makdisi recognize that the field inversions performed
 when computing $\bar D$ and $\bar{\bar D}$ are in fact the same values.
@@ -35,9 +36,10 @@ They are able to compute $\bar D$ in 1I+31M and $\bar{\bar D}$ in 0I+7M, a total
 
 In \cite{kmakdisi18}, Khuri-Makdisi gives an improvement over the cost of reducing in \cite{salem07}
 by viewing reduction in a single step rather than as two flip operations.
-The cost of reduction is reduced to 1I+19M, which is, remarkably, cheaper than even a single flip operation.
+The cost of reduction is decreased to 1I+19M, which is, remarkably, cheaper than even a single flip operation.
 In this chapter, we will show that the reduction method presented in \cite{kmakdisi18}
-may be applied to divisors of all types.
+may be applied to divisors of all types, with one small exception ---
+the same exception encounter in Chapter \ref{chap_doubling}.
 
 In Chapter \ref{chap_doubling}, we had to fall back on slower methods
 to double type 31 divisors with $\pid{f,g} \neq \pid{f,g,h} \neq \pid{f,h}$.
@@ -45,11 +47,14 @@ Type 31, 41, 51, and 61 divisors with the same property $\pid{u,v} \neq \pid{u,v
 present an obstacle for us again here (though see Section \ref{sec_future_work}, Future Work)
 and we will reduce those divisors via two discrete flip steps.
 
-We will present in Section \ref{sec_flipping}, first a method to compute the flip of a divisor,
-which may be viewed as a generalization of the method in \cite{salem07} to include atypical divisors.
+We will first present in Section \ref{sec_flipping} a method to compute the flip of a divisor,
+which is a generalization of the method in \cite{salem07} to include atypical divisors.
 Afterwards, in Section \ref{sec_reduction}, we will see how to reduce a divisor in a single reduction operation,
 a generalization of \cite{kmakdisi18} to include almost all atypical divisors.
 
+This chapter makes frequent use of colon ideals.
+The reader is reminded that notation and basic properties
+of the colon ideal are given in Appendix \ref{appendix_colon_ideal}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,8 +66,8 @@ a generalization of \cite{kmakdisi18} to include almost all atypical divisors.
 \subsection{Flipping}
 \label{sec_flipping}
 
-When flipping a divisor $D$, we have three cases to consider;
-The reduced Gr\"obner basis of $I_D$ consists of 1, 2, or 3 elements.
+When flipping a divisor $D$, we have three cases to consider:
+the reduced Gr\"obner basis of $I_D$ consists of 1, 2, or 3 elements.
 
 In the first case, suppose the reduced Gr\"obner basis of $I_D$ consists of 1 element.
 That is $I_D = \pid u$ is principal.
@@ -80,7 +85,6 @@ To compute $I_{\bar D}$ is to find polynomials $p$ for which $pv \in \pid u$.
 As was the case for addition and doubling, we will restrict our search space
 by choosing a bounding monomial $m$.
 We know \emph{a priori} what the type of $\bar{\bar D}$ is (Table \ref{tab_large_flip_type}),
-\note{(Something is wrong with this reference. It is the wrong table number and wrong page, but the Latex code looks right?)}
 so we let $m$ be the largest monomial appearing the reduced Gr\"obner basis of an ideal of that type.
 We then look for polynomials $p \in W^m$ for which $pv$ vanishes modulo $u$.
 Those polynomials arise as the kernel of the map $\bar M$ in 
@@ -91,13 +95,11 @@ Those polynomials arise as the kernel of the map $\bar M$ in
   W^{m_2} \arrow[two heads]{r}{\pi} &
   \frac {W^{m_2}} {uW^{m_1}}
 \end{tikzcd}, \]
-where $m_1$ and $m_2$ are chosen such that
+where $v\cdot$ is the multiplication by $v$ map and $m_1$ and $m_2$ are chosen such that
 \begin{equation}
   \label{eq_flip_monomial_choice}
-  -\nu_{P_\infty}(m_2) -\nu_{P_\infty}(m\LM(v)) = -\nu_{P_\infty}(m_1\LM(u)).
+  -\nu_{P_\infty}(m_2) = -\nu_{P_\infty}(m\LM(v)) = -\nu_{P_\infty}(m_1\LM(u)).
 \end{equation}
-Essentially, we are taking $m_2 = m\LM(v)$ and $m_1 = m_2/\LM(u)$,
-though replacing $x^4$ with $y^3$ or vice versa as necessary.
 
 Now suppose that $\pid{u,v,w}$ is a Gr\"obner basis for $I_D$.
 Typically, the first two polynomials alone are enough to generate $I_D$.
@@ -116,14 +118,13 @@ Then $\bar D = \lcm(A,B)$.
 We may compute each of $A$ and $B$ individually using method outlined above,
 then compute their least common multiple using methods from Chapter \ref{chap_addition}.
 \[ \begin{tikzcd}
-  && W_A^m \arrow[hook]{r}{\ker\bar M} &
+  & W_A^m \arrow[hook]{r}{\ker\bar M} &
   W^m \arrow{r}{v \cdot} \arrow[bend left]{rrr}{\bar{M_A}} &
   vW^m \arrow{r}{\iota} &
   W^{m_2} \arrow[two heads]{r}{\pi} &
   \frac {W^{m_2}} {uW^{m_1}} \\
-  W_{\bar D}^m \arrow[equal]{r} &
-  W_A^m \cap W_B^m \arrow[hook]{ru} \arrow[hook]{rd} & \\
-  && W_B^m \arrow[hook]{r}{\ker\bar M} &
+  W_{\bar D}^m = W_A^m \cap W_B^m \arrow[hook]{ru} \arrow[hook]{rd} & \\
+  & W_B^m \arrow[hook]{r}{\ker\bar M} &
   W^m \arrow{r}{w \cdot} \arrow[bend right]{rrr}{\bar{M_B}} &
   wW^m \arrow{r}{\iota} &
   W^{m_4} \arrow[two heads]{r}{\pi} &
@@ -148,8 +149,8 @@ The improvement lies entirely in the reduction step.
 Let $D$ be a typical degree 6 divisor, with ideal $I_D = \pid{u,v,w}$.
 Since $D$ is typical, the first two polynomials alone are enough to generate $I_D$,
 so $I_D = \pid{u,v}$.
-In prior work, \cite{salem07}, $D$ was reduced by flipping twice, computing $\bar D$ and then $\bar{\bar D}$.
-In \cite{kmakdisi18}, it is observed that is is more work than is necessary.
+In prior work \cite{salem07}, $D$ was reduced by flipping twice, computing $\bar D$ and then $\bar{\bar D}$.
+In \cite{kmakdisi18}, it is observed that this is more work than is necessary.
 It is known \emph{a priori} that $\bar{\bar D}$ is a typical degree 3 divisor.
 The minimum polynomial $f \in I_{\bar{\bar D}}$ is therefore known to be of the form $f = x^2 + f_2y + f_1x + f_0$.
 It is shown in the appendix of \cite{kmakdisi18} that to compute $\bar{\bar D}$,
@@ -207,16 +208,9 @@ First, we will establish a lemma that relates generators of $u : v$ and $v : u$.
   Let $I_{\bar D} = \pid{f, r}$, where $f$ is the minimum polynomial in $I_{\bar D}$.
   Then there is a polynomial $g$ such that $fv \equiv gu \pmod F$ and $I_{\bar{\bar D}} = \pid{f,g}$.
 \end{theorem}
-\begin{remark}
-  It is required that $u$ and $f$ be the minimum polynomials in their respective ideals.
-  Recall that the definition of $D$ is $\bar D = \div u - D$
-  (or in the ideal class group, $I_{\bar D} = u : I_D$)
-  where $u$ is the minimum polynomial.
-  If $u$ is not the minimum, then $I_{\bar D} \neq u : v$.
-\end{remark}
 \begin{proof}
   By Lemma \ref{lem_reverse_colon},
-  There are polynomials $g, s \in K[C]$ such that $fv \equiv gu$, $rv \equiv su$, and $\pid{g,s} = v : u$.
+  there are polynomials $g, s \in K[C]$ such that $fv \equiv gu$, $rv \equiv su$, and $\pid{g,s} = v : u$.
   The polynomial $g$ is the minimum polynomial in $\pid{g,s}$,
   otherwise $f$ would not be the minimum in $u : v$.
   
@@ -230,13 +224,20 @@ First, we will establish a lemma that relates generators of $u : v$ and $v : u$.
   
   Let $t \in I_{\bar{\bar D}}$.
   Then $t \in f : r$ and $t \in g : s$, therefore $rt \in \pid f$ and $st \in \pid g$,
-  and $\pid{rt, st} \subseteq \pid{f,g}$.
+  so $\pid{rt, st} \subseteq \pid{f,g}$.
   By Equation \ref{eq_fgrs_is_1},
   \[ \pid t = \pid{ft,gt,rt,st} = \pid{ft,gt} + \pid{rt,st}. \]
   Now $\pid{ft,gt}$ and $\pid{rt,st}$ are both contained in $\pid{f, g}$,
-  while their sum $\pid{ft,gt} + \pid{rt,st} = \pid t$ is the smallest ideal containing them,
-  hence $\pid t \subseteq \pid{f,g}$ and $t \in \pid{f,g}$.
+  while their sum $\pid{ft,gt} + \pid{rt,st} = \pid t$ is the smallest ideal containing them.
+  Therefore $\pid t \subseteq \pid{f,g}$ and we conclude $t \in \pid{f,g}$.
 \end{proof}
+\begin{remark}
+  It is required that $u$ and $f$ be the minimum polynomials in their respective ideals.
+  Recall that the definition of $D$ is $\bar D = \div u - D$
+  (or in the ideal class group, $I_{\bar D} = u : I_D$)
+  where $u$ is the minimum polynomial.
+  If $u$ is not the minimum, then $I_{\bar D} \neq u : v$.
+\end{remark}
 
 In Section \ref{sec_reduction_example}, we will see how Theorem \ref{thm_fast_reduction} is applied.
 It can be used to quickly reduce divisors of all types, except for atypical divisors of types 31, 41, 51, and 61
@@ -264,13 +265,14 @@ Let $D$ be the type 61 divisor given by the ideal $I_D = \pid{u,v,w}$, where
   w &= xy^2 -  4y^2 - 9xy -  5x^2 -  3y - 5x + 11.
 \end{align*}
 In this particular example, we have $\pid{u,v} \neq \pid{u,v,w} \neq \pid{u,w}$.
-(See Section \ref{sec_types_31_41_51_61}.)
+(See Lemmas \ref{lem_fgh_is_fg_61} and \ref{lem_fgh_is_fh_61}.)
 Therefore we compute $I_{\bar D} = (u : v) \cap (u : w)$.
 Let $A = \div(u : v)$ and $B = \div(u : w)$.
 We will compute $A$ and $B$.
 
-We know that $\bar D$ is a type 31 divisor,
-so no monomial in the reduced Gr\"obner basis of $I_{\bar D}$ is larger than $m = y^2$.
+We know from Table \ref{tab_large_flip_type} that $\bar D$ is a type 31 divisor.
+From Table \ref{tab_divisor_types},
+we also know that no monomial in the reduced Gr\"obner basis of $I_{\bar D}$ is larger than $m = y^2$.
 The monomial $x^6$ is chosen as $x^6$ has the same pole order as $m\LM(v) = x^2y^3$.
 The other monomial $x^3$ is chosen as $x^3\cdot\LM(u) = x^6$.
 (See Equation \ref{eq_flip_monomial_choice}.)
@@ -289,7 +291,7 @@ We will need bases for $W^{y^2}$ and $uW^{x^3}$
   uW^{x^3} &= \Span_K\{ u, xu, yu, x^2u, xyu, y^2u, x^3u \}.
 \end{align*}
 We must compute the image of the monomial basis of $W^{y^2}$ under the map $M_{\text{flip}}$,
-so we must multiply each monomial by $v$ and reduce modulo $u$.
+so we must multiply each monomial in the basis of $W^{y^2}$ by $v$ and reduce modulo $u$.
 In the matrix below, we encode all the coefficients of $u, xu, \ldots, x^3u$ and $v, xv, \ldots, y^2v$.
 All $y^3$ terms are reduced modulo $F$.
 \[ \left( \begin{array}{r|rrrrrrr|rrrrrr}
@@ -383,7 +385,7 @@ To find $B$, we follow the same process, computing the kernel of $M_{\text{flip}
   \frac {W^{x^5y}} {uW^{x^2y}}
 \end{tikzcd}. \]
 We find that $W_B^{y^2}$ is spanned by
-  \[ W_B^{y^2} = \Span_K \{ y + 12x - 8, x^2 + 13x - 14, xy - 9x + 13, y^2 - 13x - 3. \} \]
+  \[ W_B^{y^2} = \Span_K \{ y + 12x - 8, x^2 + 13x - 14, xy - 9x + 13, y^2 - 13x - 3 \} \]
 and $B$ is the type 21 divisor given by
   \[I_A = \pid{y + 12x - 8, x^2 + 13x - 14}.\]
   
@@ -427,7 +429,7 @@ Let $D$ be that type 61 divisor, given by the ideal $I_D = \pid{u,v,w}$, where
   w &= xy^2 -  5y^2 +  9xy +  7x^2 + 3y + 10x +  5.
 \end{align*}
 In that example, we could have saved some effort by not computing $w$ at all, for we will not need it in this example.
-This divisor $D$ is typical (see Section \ref{sec_types_31_41_51_61}), so that $I_D = \pid{u,v}$.
+By Lemma \ref{lem_fgh_is_fg_61}, this divisor is typical, so that $I_D = \pid{u,v}$.
 We may ignore $w$ and compute $\bar{\bar D}$ by applying Theorem \ref{thm_fast_reduction}.
 
 By Theorem \ref{thm_fast_reduction},
@@ -443,7 +445,7 @@ We will have to reduce it later.
 
 Now we use the relation $fv \equiv gu \pmod F$ to solve for the coefficients of $f$ and $g$.
 We observe that the polynomial $fv - gu$ (as a member of $K[x,y]$) contains the terms
-$(-13f_2 - 7g_2)y^3$ and $7xy^3$.
+$(-13f_2 + 7g_2)y^3$ and $7xy^3$.
 Thus we equate coefficients in 
 \[ fv - gu - (7x - 13f_2 + 7g_2)F = 0 \]
 to get a system of linear equations
@@ -465,3 +467,5 @@ For that we need the third polynomial
   h &= \frac {(y + 15)f - (x + 1)g} {-14} \\
     &= y^2 + 15y + 9x + 9.
 \end{align*}
+Note that $y + 15$, $x + 1$ and $14$ are the solutions $r$, $s$, and $t$, respectively,
+from Lemma \ref{lem_fgh_is_fg_31}.

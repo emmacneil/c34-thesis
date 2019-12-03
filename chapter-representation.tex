@@ -39,6 +39,7 @@ along with a 20th type representing the divisor 0.
 Divisors are listed by degree (D), then by type (T).
 
 \begin{table}[hb!]
+\caption{Classification of divisors into types}
 \label{tab_divisor_types}
 \begin{center}
 \begin{tabular}{l|l|l||l|l|l}
@@ -82,7 +83,6 @@ Divisors are listed by degree (D), then by type (T).
       & $y + f_1x + f_0$
 \end{tabular}
 \end{center}
-\caption{Classification of divisors into types}
 \end{table}
 
 So, for example, divisors of degree 2 come in two types: type 21 and type 22.
@@ -300,6 +300,7 @@ which is determined in turn by the type of $D$.
 By applying Equation \ref{eq_flip_degree},
 we can compute the degree of $\bar D$ for $D$ of any divisor type.
 \begin{table}[hb!]
+\caption{Divisor types and the degrees of their flips}
 \label{tab_flip_degree}
 \begin{center}
   \begin{tabular}{r|cccccccccc}
@@ -314,7 +315,6 @@ we can compute the degree of $\bar D$ for $D$ of any divisor type.
     $\deg \bar D$ & 0  & 3  & 2  & 2  & 1  & 3  & 2  & 2  & 1  & 0
   \end{tabular}
 \end{center}
-\caption{Divisor types and the degrees of their flips}
 \end{table}
 
 We can do even better.
@@ -334,6 +334,7 @@ After classifying reduced divisors, we will be able to do the same for divisors 
 Applying this reasoning to each divisor type of degree 3 or less,
 we can fill the table
 \begin{table}[h]
+\caption{(Small) Divisor types and the type of their flips}
 \label{tab_small_flip_type}
 \begin{center}
   \begin{tabular}{r|cccccccccc}
@@ -343,7 +344,6 @@ we can fill the table
     $\type(\bar {\bar D})$ & 0 & 11 & 21 & 22 & 31 & 22 & 0
   \end{tabular}
 \end{center}
-\caption{(Small) Divisor types and the type of their flips}
 \end{table}
 
 We will make use of this table to argue that all reduced divisors are of type 0, 11, 21, 22, or 31.
@@ -410,7 +410,8 @@ and fill in Table \ref{tab_small_flip_type} for all remaining divisor types.
   $\bar D$ cannot be of type 21 and must therefore be of type 22.
 \end{example}
 
-\begin{table}[h]
+\begin{table}[h!]
+\caption{Divisor types and the type of their flips}
 \label{tab_large_flip_type}
 \begin{center}
   \begin{tabular}{r|cccccccccc}
@@ -425,7 +426,6 @@ and fill in Table \ref{tab_small_flip_type} for all remaining divisor types.
     $\type(\bar {\bar D})$ &  0 & 31 & 11 & 21 & 22 & 31 & 11 & 21 & 22 &  0 \\
   \end{tabular}
 \end{center}
-\caption{Divisor types and the type of their flips}
 \end{table}
 
 
