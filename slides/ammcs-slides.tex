@@ -8,7 +8,7 @@
 % of all the themes, uncomment each in turn to see what they look like.
 
 %\usetheme{default}
-\usetheme{AnnArbor}
+%\usetheme{AnnArbor}
 %\usetheme{Antibes}
 %\usetheme{Bergen}
 %\usetheme{Berkeley}
@@ -24,7 +24,7 @@
 %\usetheme{Ilmenau}
 %\usetheme{JuanLesPins}
 %\usetheme{Luebeck}
-%\usetheme{Madrid}
+\usetheme{Madrid}
 %\usetheme{Malmoe}
 %\usetheme{Marburg}
 %\usetheme{Montpellier}
@@ -117,7 +117,7 @@ University of Calgary \\ % Your institution for the title page
 \medskip
 \textit{macneil.evan@ucalgary.ca} % Your email address
 }
-\date{August 19, 2019} % Date, can be changed to a custom date
+\date{December 12, 2019} % Date, can be changed to a custom date
 
 \begin{document}
 
@@ -143,18 +143,18 @@ University of Calgary \\ % Your institution for the title page
 \begin{frame}
 \frametitle{What is a $C_{3,4}$ Curve?}
 \defn{$C_{3,4}$ curve}: a non-singular algebraic plane curve over a (perfect) field $K$ defined by a polynomial
-	\[ C : y^3 + x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0 = 0. \]
+	\[ F = y^3 + x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0. \]
 There is a single projective point $(0 : 1 : 0)$ ``at infinity''.\\
-A vertical line $x + a = 0$ intersects $C$ at three affine points.\footnote{Counting multiplicity} \\
-A non-vertical line $y + ax + b = 0$ intersects at four affine points. \\
+Any vertical line $x + a = 0$ intersects $C$ at three affine points.\footnote{Counting multiplicity} \\
+Any non-vertical line $y + ax + b = 0$ intersects at four affine points. \\
 \vspace{10pt}
 Short form in $\Char K \neq 2,3$:
-  \[ C : y^3 + x^4 + c_7x^2y + c_4xy + c_3x^2 + c_2y + c_1x + c_0. \]
+  \[ F = y^3 + x^4 + c_7x^2y + c_4xy + c_3x^2 + c_2y + c_1x + c_0. \]
 \end{frame}
 
 %------------------------------------------------
 
-\begin{comment}
+%\begin{comment}
 \begin{frame}
 \frametitle{Some $C_{3,4}$ Curves over $\bb R$}
   \begin{center} \includegraphics[height=7.6cm]{curve1.png} \end{center}
@@ -171,7 +171,7 @@ Short form in $\Char K \neq 2,3$:
 \frametitle{Some $C_{3,4}$ Curves over $\bb R$}
   \begin{center} \includegraphics[height=7.6cm]{curve4.png} \end{center}
 \end{frame}
-\end{comment}
+%\end{comment}
 
 %------------------------------------------------
 
@@ -195,11 +195,11 @@ Short form in $\Char K \neq 2,3$:
   \[ \div f = \{ \text{zeros of $f$ on $C$} \} - \{ \text{poles of $f$ on $C$} \}.\]
   If $D = \div f$ for some $f$, $D$ is called \defn{principal}.\\
   Principal divisors lead to an equivalence relation
-  \[ D \equiv D' \iff D - D' = \div f \text{ for some $f \in K(x,y)/C$}.\]
+  \[ D \equiv D' \iff D - D' = \div f \text{ for some $f \in K(x,y)/F$}.\]
   Every divisor is equivalent to one of the form
   \[ D = P_1 + \dots + P_n - nP_\infty \]
   and can be represented by an ideal
-  \[ I_D = \{ f \in K[x,y]/C ~:~ f(P_i) = 0 \}. \]
+  \[ I_D = \{ f \in K[x,y]/F ~:~ f(P_i) = 0 \}. \]
 \end{frame}
 
 %------------------------------------------------
@@ -222,15 +222,14 @@ Short form in $\Char K \neq 2,3$:
 \begin{frame}
 \frametitle{Why?}
   \begin{itemize}
-    \item Genus 3 curves are either hyperelliptic or $C_{3,4}$
-    \item Fast genus 3 divisor arithmetic exists for ``generic'' divisors
-    \item Suitable for cryptographic research
-    \item Unsuitable for number theoretic applications
+    \item Part of an ongoing project at UofC to fully describe divisor arithmetic on genus 3 curves
+    \item Testing generalizations of elliptic curve conjectures to genus 3
     \begin{itemize}
-      \item $L$-series computations
-      \item Testing Sato-Tate-related conjectures
+      \item Sato-Tate Conjecture
+      \item Birch and Swinnerton-Dyer Conjecture
+      \item and more ...
     \end{itemize}
-    \item Part of ongoing project at UofC to fully describe divisor arithmetic in genus 3
+    \item $L$-series computations
   \end{itemize}
 \end{frame}
 
@@ -244,7 +243,7 @@ Short form in $\Char K \neq 2,3$:
     \item Inputs: any two reduced divisors
     \item Non-disjoint case: handled randomly, recursively, might not terminate on some silly curves
     \item Slow, computes redundant or unnecessary values
-    \item Classification of divisors of degree $\leq 6$ into 20 forms
+    \item Classification of divisors of degree $\leq 6$ into 20 types
   \end{itemize}
 \end{frame}
 
@@ -274,7 +273,7 @@ Short form in $\Char K \neq 2,3$:
 
 \begin{frame}
 \frametitle{Operations}
-  \[ \text{Divisor class group of $C$} \simeq \text{Ideal class group of $K[x,y]/C$}\]
+  \[ \text{Divisor class group of $C$} \simeq \text{Ideal class group of $K[x,y]/F$}\]
   \[ D \longleftrightarrow I_D \]
   Represent a divisor $D$ by the unique reduced Gr\"obner basis (RGB) of $I_D$. \\
   %A \defn{typical} reduced divisor has the form
@@ -299,7 +298,7 @@ Short form in $\Char K \neq 2,3$:
 
 %------------------------------------------------
 
-\begin{comment}
+%\begin{comment}
 \begin{frame}
 \frametitle{$D$}
   \begin{center} \includegraphics[height=7.6cm]{d1.png} \end{center}
@@ -332,7 +331,7 @@ Short form in $\Char K \neq 2,3$:
 \frametitle{$\bar D \simeq f : I_D$}
   \begin{center} \includegraphics[height=7.6cm]{flip_d1.png} \end{center}
 \end{frame}
-\end{comment}
+%\end{comment}
 
 %------------------------------------------------
 
@@ -390,7 +389,7 @@ Short form in $\Char K \neq 2,3$:
       W_D^m \arrow[hook]{r}{\iota} \arrow[bend left]{rr}{M} & 
       W_0^m \arrow[two heads]{r}{\pi} & 
       \frac {W_0^m} {W_{D'}^m} \arrow[two heads]{r}{\im M} & 
-      W_G^{m'}
+      \frac {W_G^m} {W_{D'}^m}
     \end{tikzcd}
   \end{center}
   $M$ is reduction of $W_D^m$ modulo $W_{D'}^m$.\\
@@ -552,22 +551,22 @@ Short form in $\Char K \neq 2,3$:
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Doubling}
+\frametitle{Framework for Doubling}
   \begin{center}
     \begin{tikzcd}
-      W_{D'}^m \arrow[hook]{r}{\ker M} & 
+      W_{D_1}^m \arrow[hook]{r}{\ker M} & 
       W_D^m \arrow{r}{d} \arrow[bend left]{rr}{M} & 
       W_0^{m'} \arrow[two heads]{r}{\pi} & 
       \frac {W_0^{m'}} {W_D^{m'}} \arrow[two heads]{r}{\im M} & 
-      W_{D''}^{m''}
+      \frac {W_{D_0}^{m'}} {W_D^{m'}}
     \end{tikzcd}
   \end{center}
   $d$ sends a polynomial to its differential
-  \[ d : f \mapsto df = f_xdx + f_ydy \equiv \phi \cdot \omega \pmod{dC} \]
-  $D'$ is such that $D < D' \leq 2D$. \\
-  $D''$ is such that $0 \leq D'' < D$. \\
-  In general $2D = D' + D''$. \\
-  Typically, $D' = 2D$ and $D'' = 0$.
+  \[ d : f \mapsto df = f_xdx + f_ydy \equiv \phi \cdot \omega \pmod{dF} \]
+  $D_1$ is such that $D < D_1 \leq 2D$. \\
+  $D_0$ is such that $0 \leq D_0 < D$. \\
+  In general $2D = D_0 + D_1$. \\
+  Typically, $D_1 = 2D$ and $D_0 = 0$.
 \end{frame}
 
 %------------------------------------------------
@@ -581,10 +580,10 @@ Short form in $\Char K \neq 2,3$:
       f'' &= x^2 + f_2y + f_1x + f_0 \\
       g'' &= xy + g_3x^2 + g_2y + g_1x + g_0
     \end{align*}
-    such that $f''v \equiv g''u \pmod C$ and
+    such that $f''v \equiv g''u \pmod F$ and
     \[ I_{\bar{\bar{D + D'}}} = \pid{f'', g'' \text{ mod } f''}. \]
   \end{theorem}
-  This holds in greater generality...
+  This can be generalized to all divisor types.
 \end{frame}
 
 %------------------------------------------------
@@ -668,10 +667,9 @@ Short form in $\Char K \neq 2,3$:
       Arita         & 5 & 204 &  -- & 5 & 284 & -- \\
       Flon et al    & 2 & 163 &  -- & 2 & 185 &  -- \\
       Makdisi/Salem & 2 &  98 & 132 & 2 & 110 & 155 \\
-      MacNeil       & 1 & 124 & 94  & 1 & 137 & 115 
+      MacNeil       & 1 & 114 &  99 & 1 & 138 & 116 
     \end{tabular}
   \end{center}
-  Expected to save more multiplications before publication.
 \end{frame}
 
 %------------------------------------------------
@@ -691,7 +689,7 @@ Short form in $\Char K \neq 2,3$:
 %------------------------------------------------
 
 \begin{frame}
-\frametitle{Hire Me}
+\frametitle{Thank You}
   \begin{center}
     Sage code hosted at \\
     {\tt github.com/emmacneil/c34-curves} \\
