@@ -150,7 +150,7 @@ University of Calgary \\ % Your institution for the title page
 \begin{frame}
 \frametitle{What I Did}
   \begin{itemize}
-    \item Goal of thesis is to produce explicit fast formulae describing $C_{3,4}$ curve arithmetic
+    \item Goal of thesis is to produce fast explicit formulae describing $C_{3,4}$ curve arithmetic
     \item Formulae existed already for adding any two reduced divisors\footcite{arita05-2}
     \item Faster formulae existed, specialized to ``typical'' case\footcite{salem07,kamal18}
     \item I have improved upon both sets of formulae
@@ -211,63 +211,6 @@ Short form in $\Char K \neq 2,3$:
 %------------------------------------------------
 
 \begin{comment}
-\begin{frame}
-\frametitle{What is a Divisor Class?}
-  A \defn{divisor} of $C$ is a formal sum of points in $C(\bar K)$,
-  \[ D = \sum_{P \in C(\bar K)} n_P P. \]
-  Divisors form an Abelian group $\Div(C)$.\\
-  \vspace{10pt}
-  There is a chain of subgroups
-  \[ \Princ(C) \subset \Div_K^0(C) \subset \Div^0(C) \subset \Div(C).\]
-  The \defn{divisor class group} of $C$ is
-  \[ \Cl_K^0(C) = \frac{\Div_K^0(C)}{\Princ(C)}.\]
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{What is a Divisor Class?}
-  The \defn{divisor of a rational function} $f$ is
-  \[ \div f = \{ \text{zeros of $f$ on $C$} \} - \{ \text{poles of $f$ on $C$} \}.\]
-  If $D = \div f$ for some $f$, $D$ is called \defn{principal}.\\
-  Principal divisors lead to an equivalence relation
-  \[ D \equiv D' \iff D - D' = \div f \text{ for some $f \in K(x,y)/F$}.\]
-  Every divisor is equivalent to one of the form
-  \[ D = P_1 + \dots + P_n - nP_\infty \]
-  and can be represented by an ideal
-  \[ I_D = \{ f \in K[x,y]/F ~:~ f(P_i) = 0 \}. \]
-\end{frame}
-\end{comment}
-
-%------------------------------------------------
-
-\begin{comment}
-\begin{frame}
-\frametitle{Divisors}
-  \begin{itemize}
-    \item Divisors are a formal sum of points in $C(\bar K)$
-    \item A (degree 0) divisor $D$ corresponds uniquely to an ideal $I_D$
-    \item represent $D$ by the reduced Gr\"obner basis of $I_D = \pid{f,g,h}$
-  \end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{The Goal}
-  \begin{center}
-    A divisor class $[D]$ has a unique ``reduced'' representative,
-    \[ D = P_1 + \ldots + P_n, ~~ n \leq 3. \]
-  \end{center}
-  \vspace{10pt}
-  \begin{center}
-    Given two reduced divisors,\\
-    find explicit formulas describing their reduced sum.
-  \end{center}
-\end{frame}
-
-%------------------------------------------------
-
 \begin{frame}
 \frametitle{Previous Work}
   Arita (2005) \footcite{arita05-2}
@@ -385,7 +328,6 @@ Short form in $\Char K \neq 2,3$:
 
 %------------------------------------------------
 
-\begin{comment}
 \begin{frame}
 \frametitle{Reducing to Linear Algebra}
   $I_D$ has structure as a (infinite-dimensional) $K$-vector space, $W_D$.
@@ -397,7 +339,6 @@ Short form in $\Char K \neq 2,3$:
   For sufficiently large $m$,
   \[ \text{$I_D$'s reduced Gr\"obner basis} \subseteq \text{$W_D^m$'s reduced echelon basis}. \]
 \end{frame}
-\end{comment}
 
 %------------------------------------------------
 
@@ -414,7 +355,7 @@ Short form in $\Char K \neq 2,3$:
     \end{tikzcd}
   \end{center}
 
-  \[ \ker M = W_D^m \cap W_{D'}^m = W_{D + D'}^m \]
+  \[ W_{D + D'}^m = W_D^m \cap W_{D'}^m = \ker M \]
   
   \vspace{10pt}
   $M$ is reduction of $W_D^m$ modulo $W_{D'}^m$.\\
@@ -480,49 +421,6 @@ Short form in $\Char K \neq 2,3$:
 
 %------------------------------------------------
 
-\begin{comment}
-\begin{frame}
-\frametitle{Reduction Example}
-  \[ C : y^3 + x^4 + 1 \text{ over $\bb F_{11}$}\]
-  \begin{align*}
-    I_L &= \pid{ \begin{array}{l} 
-          y^2 + 4xy + 5x^2 + 5y + x - 2,\\
-          x^2y + 5x^3 - 3xy - 2x^2 - 3y - 4x - 1
-          \end{array} } \\
-        &= \pid{u, v}
-  \end{align*}
-  Generators for $\bar{\bar L}$ are known to have leading monomials $y, x^2$. Let
-  \begin{align*}
-    f'' &= y + f_1x + f_0 \\
-    g'' &= x^2 + g_2y + g_1x + g_0
-  \end{align*}
-  and solve
-  \[ f''v - g''u - g_2C = 0. \]
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Reduction Example}
-  Equating coefficients gives a system of equations
-  \begin{align*}
-    f_1 &= - 1 \\
-    g_2 &= - 5f_1 + 5 = - 1 \\
-    g_1 &= - 4g_2 - 3 = 1 \\
-    f_0 &= 3f_1 + 4g_1 + 5g_2 + 7 = 3 \\
-    g_0 &= - 5g_2 - 3 = 2
-  \end{align*}
-  and
-  \begin{align*}
-    I_{\bar{\bar L}}
-      &= \pid{y - x + 3, ~x^2 - y + x + 2} \\
-      &= \pid{y - x + 3, ~x^2 + 5}.
-  \end{align*}
-\end{frame}
-\end{comment}
-
-%------------------------------------------------
-
 \begin{frame}
 \frametitle{Improvements over Prior Work}
   Assuming $\Char K > 3$, typical case
@@ -547,10 +445,11 @@ Short form in $\Char K \neq 2,3$:
 \begin{frame}
 \frametitle{Methodology}
   \begin{itemize}
-    \item When computing $\pid{u, v, w}$, typically \[ \pid{u,v,w} = \pid{u,v} \] and $w$ is not needed
+    \item Representing a divisor by three polynomials $I_D = \pid{f,g,h}$ is a time-space tradoff
+    \item When computing $I_{D+D'} = \pid{u, v, w}$, typically \[ \pid{u,v,w} = \pid{u,v} \] and $w$ is not needed
     \item When reducing $\pid{u, v}$, not all coefficients of $u, v$ are needed. 
     \item Addition and reduction each cost 1 finite field inversion.
-    \item Combine add/reduce can save 1 inversion at the cost of some multiplications. (Worth it.)
+    \item Combine add/reduce can save 1 inversion at the cost of some multiplications.
   \end{itemize}
 \end{frame}
 
@@ -565,6 +464,18 @@ Short form in $\Char K \neq 2,3$:
     \item Improvement in typical case
     \item Relax assumptions on $C$ to handle $\Char K = 2, 3$.
     \item Neatly handle non-disjointness with $\lcm$ and $\gcd$
+  \end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Future Work}
+  \begin{itemize}
+    \item Combine add/reduce and double/reduce for atypical cases
+    \item Represent ideals $I_D$ by a ``Dedekind basis''
+    \item Make us of $h$ polynomial when doubling degree 3 divisors
+    \item NUCOMP?
   \end{itemize}
 \end{frame}
 
@@ -704,6 +615,47 @@ Short form in $\Char K \neq 2,3$:
   Can compute $u, v, w$ in 1I 98M 71A.
 \end{frame}
 %\end{comment}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reduction Example}
+  \[ C : y^3 + x^4 + 1 \text{ over $\bb F_{11}$}\]
+  \begin{align*}
+    I_L &= \pid{ \begin{array}{l} 
+          y^2 + 4xy + 5x^2 + 5y + x - 2,\\
+          x^2y + 5x^3 - 3xy - 2x^2 - 3y - 4x - 1
+          \end{array} } \\
+        &= \pid{u, v}
+  \end{align*}
+  Generators for $\bar{\bar L}$ are known to have leading monomials $y, x^2$. Let
+  \begin{align*}
+    f'' &= y + f_1x + f_0 \\
+    g'' &= x^2 + g_2y + g_1x + g_0
+  \end{align*}
+  and solve
+  \[ f''v - g''u - g_2C = 0. \]
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\frametitle{Reduction Example}
+  Equating coefficients gives a system of equations
+  \begin{align*}
+    f_1 &= - 1 \\
+    g_2 &= - 5f_1 + 5 = - 1 \\
+    g_1 &= - 4g_2 - 3 = 1 \\
+    f_0 &= 3f_1 + 4g_1 + 5g_2 + 7 = 3 \\
+    g_0 &= - 5g_2 - 3 = 2
+  \end{align*}
+  and
+  \begin{align*}
+    I_{\bar{\bar L}}
+      &= \pid{y - x + 3, ~x^2 - y + x + 2} \\
+      &= \pid{y - x + 3, ~x^2 + 5}.
+  \end{align*}
+\end{frame}
 
 %------------------------------------------------
 
