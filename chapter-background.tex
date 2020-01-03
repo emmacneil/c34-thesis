@@ -10,7 +10,7 @@
 This introduction will be light on definitions.
 Full details of the topics mentioned may be found later in this thesis or in other cited works.
 For now, it should be enough to know that an \defn{algebraic plane curve} is the set of points $(x,y)$
-at which $f(x, y) = 0$, for some field $K$ and polynomial $f \in K[x,y]$.
+at which $f(x, y) = 0$, for some field $K$ and polynomial $f \in K[x,y]$, plus possibly some points ``at infinity''.
 Examples of algebraic plane curves include elliptic curves, hyperelliptic curves,
 and the subject of this thesis, $C_{3,4}$ curves.
 An \defn{elliptic curve} is the set of zeroes of a polynomial
@@ -55,7 +55,7 @@ Together with an addition operation, this forms the \defn{divisor class group} o
 Let $\bb F_q$ be the finite field of order $q$ and suppose $E$ is an elliptic curve defined over $\bb F_q$,
 meaning that $E$ is the set of zeroes of a polynomial in $\bb F_q[x,y]$ of the form in Equation \ref{eq_elliptic}.
 The following theorem, due to Helmut Hasse (1898 -- 1979), says that
-the number of rational points (i.e. points in $\bb F_q \times \bb F_q$) on $E$
+the number of rational points (i.e. points in $\bb F_q \times \bb F_q$ plus an additional point at infinity) on $E$
 lies in some interval that is small compared to the order of $\bb F_q$.
 \begin{theorem}[Hasse]
   Let $E$ be an elliptic curve over a finite field $\bb F_q$.
@@ -116,7 +116,7 @@ is the Birch and Swinnerton-Dyer Conjecture.
   Then $L(E/\bb Q, s)$ has a zero at $s = 1$ of order equal to the rank of $E(\bb Q)$.
 \end{conjecture}
 
-In order to test this conjecture against a given curve $E/\bb Q$,
+In order to test this conjecture for a given curve $E/\bb Q$,
 one may wish to compute $L(E, 1)$, which requires computing $L_p(\frac 1 p)$ at many primes $p$,
 in turn requiring one to count points on many elliptic curves.
 
@@ -127,7 +127,7 @@ Hasse's Theorem has a generalization to higher genus curves
   Let $C$ be an algebraic curve of genus $g$ over a finite field $\bb F_q$.
   The number of points on $C$ differs from $q + 1$ by at most $2g \sqrt q$.
   That is,
-  \[ | \#E(\bb F_q) - (q + 1) | \leq 2g \sqrt q. \]
+  \[ | \#C(\bb F_q) - (q + 1) | \leq 2g \sqrt q. \]
 \end{theorem}
 
 The Sato-Tate Conjecture and the Birch and Swinnerton-Dyer conjectures
@@ -147,24 +147,24 @@ If one has a good estimate in advance for the order of the group, this may be en
 to compute this order.
 The Baby-step/Giant-step and Pollard-Rho algorithms are general algorithms that
 require that one have another algorithm to perform the group operations in the group
-whose order one is compuring.
+whose order one is computing.
 Thus, in order to compute the order of the divisor class group of a curve,
 and ultimately to compute terms in the $L$-series of the curve,
 we need an algorithm to efficiently carry out addition in the divisor class group.
 
-The above-mentioned conjectures have been studied on genus 1 and genus 2 curves \cite{kedlaya08}
+The above-mentioned conjectures have been studied for genus 1 and genus 2 curves \cite{kedlaya08}.
 Attention has turned recently towards studying them on genus 3 curves.
 Genus 3 algebraic plane curves fall into two categories: hyperelliptic and non-hyperelliptic.
 Non-hyperelliptic genus 3 curves are also called $C_{3,4}$ curves, a special case of the broader family of $C_{a,b}$ curves.
 In order to add in the divisor class group of genus 3 curves,
-we need fast algorithms are needed to compute in the divisor class group of $C_{3,4}$ curves in particular.
+we need fast algorithms to compute in the divisor class group of $C_{3,4}$ curves in particular.
 
 The goal of this thesis is find such algorithms.
 More accurately, the goal of this thesis is to find \defn{explicit formulae} describing arithmetic in a $C_{3,4}$ curve's divisor class group.
-In brief, a divisor class $[D]$ will be typically be represented by a triple of polynomials $\pid{f,g,h}$.
+In brief, a divisor class $[D]$ will typically be represented by a triple of polynomials $\pid{f,g,h}$.
 To find explicit formulae for the sum $[D''] = [D] + [D']$ is to find formulae expressing the coefficients of the
 polynomials representing $[D'']$ in terms of the coefficients representing $[D]$ and $[D']$.
-To compare the efficiency of our formulae in comparison to earlier works,
+To compare the efficiency of our formulae to earlier works,
 we will count the number of finite field inversions, multiplications, and additions needed to evaluate these formulae.
 
 
@@ -184,7 +184,8 @@ who adds divisors in 1I+67M (1 finite field inversion and 67 multiplications) an
 For split genus 3 hyperelliptic curves, Sutherland \cite{sutherland18} recently published explicit formulae
 requiring 1I+79M/1I+82M to add/double.
 Rezai Rad \emph{et al.} \cite{rezairad16} \cite{rezairad19} found comparably fast explicit formulae to add/double
-in the infrastructure of a hyperelliptic curve in 1I+74M+1SQ/1I+81M.
+in the infrastructure of a hyperelliptic curve in 1I+74M+1S/1I+81M
+(where S denotes squaring in a finite field).
 The relationship between the divisor class group and the infrastructure is explored in \cite{rezairad16} and \cite{rezairad19}.
 Faster hyperelliptic curve arithmetic remains a subject of ongoing research at the University of Calgary.
 
@@ -233,7 +234,7 @@ In addition to assuming that divisors are disjoint and have no multiple points,
 they assume that divisors being added or doubled are typical and mimic techniques from hyperelliptic curve arithmetic ---
 they represent divisors in a manner similar to the Mumford representation used for divisors of hyperelliptic curves,
 and follow an algorithm similar to Cantor's algorithm (see \S 10.3 in \cite{galbraith12}).
-The result is an algorithm requiring 2I+148M+15SQ/2I+165M+20SQ, where SQ denotes squaring in a finite field.
+The result is an algorithm requiring 2I+148M+15S/2I+165M+20S.
 
 In \cite{salem07}, Abu Salem and Khuri-Makdisi make the same assumptions as in \cite{flon08}.
 They represent divisors by a pair of polynomials of minimal degree and compute sums of divisors
@@ -258,7 +259,7 @@ in order to produce fast and fully general explicit formulae describing all case
 More specifically,
 \begin{itemize}[itemsep=0pt]
   \item the curve equation may be over a finite field of any size, small or large;
-  \item the curve equation may be over a finite field of any characteristic, including 2 and 3;
+  \item the curve equation may be over a field of any characteristic, including 0, 2, and 3;
   \item the curve equation may be in long or short form;
   \item divisors may be typical or atypical;
   \item divisors may have multiple points;
@@ -272,7 +273,7 @@ When restricting the resulting formulae to the typical case
 (specifically, adding/doubling disjoint typical divisors on a curve in short form over a field of characteristic greater than 3)
 and comparing to prior work, we also obtain an improvement in efficiency over the previous state-of-the-art.
 This is summarized in Table \ref{tab_op_count_intro},
-where I, M, S, A refer to the number of inversions, multiplications, squares, and additions in a finite field
+where I, M, S, A refer to the number of inversions, multiplications, squarings, and additions in a finite field
 required to evaluate the formulae.
 The trade-off between inversions and multiplications is discussed in Chapter \ref{chap_typical_case}.
 Besides the typical case,
@@ -290,10 +291,10 @@ making this contribution all the more significant.
       \hline
       & I & M & S & A & I & M & S & A \\
       \hline
-      Arita         & 5 & 204 & -- &  -- & 5 & 284 & -- &  -- \\
-      Flon et al    & 2 & 148 & 15 &  -- & 2 & 165 & 20 &  -- \\
-      Makdisi/Salem & 2 &  98 &  1 & 132 & 2 & 110 &  3 & 155 \\
-      MacNeil       & 1 & 111 &  3 &  99 & 1 & 135 &  3 & 116 
+      Arita                   & 5 & 204 & -- &  -- & 5 & 284 & -- &  -- \\
+      Flon et al              & 2 & 148 & 15 &  -- & 2 & 165 & 20 &  -- \\
+      Khuri-Makdisi/Abu Salem & 2 &  98 &  1 & 132 & 2 & 110 &  3 & 155 \\
+      MacNeil                 & 1 & 111 &  3 &  99 & 1 & 135 &  3 & 116 
     \end{tabular}
   \end{center}
 \end{table}
@@ -323,7 +324,6 @@ and comparing the results to Sage's own provided ideal arithmetic.
 
 \subsection{Thesis Outline}
 
-
 We begin by reviewing some background material necessary for understanding this thesis.
 Familiarity with common algebraic structures ---
 including monoids, groups, rings, fields, modules, and vector spaces --- is assumed.
@@ -332,21 +332,25 @@ as well as related objects, such as a curve's coordinate ring.
 In Chapter \ref{chap_groebner}, we review Gr\"obner bases,
 which are central to Arita's representation of divisors, which we have adopted here.
 In Chapter \ref{chap_differentials}, we review differentials, which arise when doubling divisors.
+In Chapter \ref{chap_divisors}, we introduce divisors and the divisor class group of a $C_{3,4}$ curve.
 
-Beginning with Chapter \ref{chap_divisors}, we work with divisors.
-In Chapter \ref{chap_divisors}, we introduce divisors on curves and give some basic properties of the divisor class group.
+In Chapters \ref{chap_ideals} and \ref{chap_representation},
+we continue to present background theory, though we give alternative proofs of known results.
+This is to avoid invoking the theory of algebraic varieties and schemes or Riemann-Roch spaces,
+requiring instead only an understanding of more basic algebraic structures.
 In Chapter \ref{chap_ideals}, we introduce the ideal class group and exhibit an isomorphism between the divisor class group and the ideal class group.
 We use this isomorphism in Chapter \ref{chap_representation} to represent divisors by ideals,
-in turn represented by Gr\"obner bases.
+in turn represented by reduced Gr\"obner bases.
 We then define what it means for a divisor to be reduced or typical
 and prove several properties of these divisors.
 
-Beginning with Chapter \ref{chap_addition}, we present algorithms to operate in the divisor class group of a $C_{3,4}$ curve.
+This thesis' original results begin with Chapter \ref{chap_addition},
+where we present a generalization of Khuri-Makdisi and Abu Salem's algorithms \cite{salem07,kmakdisi18} to accomplish the goals outlined in the previous section.
 Chapters \ref{chap_addition}, \ref{chap_doubling}, and \ref{chap_reduction}
 describe algorithms for adding, doubling, and reducing divisors, respectively.
 In Chapter \ref{chap_typical_case}, we combine addition and reduction into a single add-reduce operation
 as well as doubling and reduction into single double-reduce operation.
-Combining these operations saves an inversion and several additions at the cost of some multiplications.
+Combining these operations saves an expensive inversion operation and several additions at the cost of some multiplications.
 We argue that this tradeoff is worthwhile and gives an improvement over the current state-of-the-art in $C_{3,4}$ curve arithmetic.
 
 The results and contributions of this thesis are summarized in the concluding Chapter \ref{chap_conclusion}.

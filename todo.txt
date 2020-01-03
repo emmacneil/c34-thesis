@@ -1,0 +1,2 @@
+Citation for Hasse's Theorem and Hasse-Weil Theorem
+In all chapters: change SQ to S for operation counts
