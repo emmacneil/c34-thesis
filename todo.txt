@@ -1,2 +1,7 @@
 Citation for Hasse's Theorem and Hasse-Weil Theorem
 In all chapters: change SQ to S for operation counts
+Citation for fact that order of vanishing at point = valuation at point
+Give citations in chapter 2 for sources of definitions etc
+Give context on why one should care about definitions in chapter 2
+	Just allude to what we will do with them later
+Chapter 3: Justify Groebner basis vs HNF representation in intro

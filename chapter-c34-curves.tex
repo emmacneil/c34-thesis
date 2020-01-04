@@ -77,7 +77,7 @@ The \defn{affine model} of $C_F$ is
 \[ C_f : \{ (x, y) ~|~ f(x,y) = 0 \} \cup C_\infty, \]
 the set of points at which the dehomogenization $f$ of $F$ is zero,
 together with the set $C_\infty$ of \defn{points at infinity}.
-This set is $C_\infty = \{ (x:y:0) | F(X,Y,0) = 0 \}$.
+This set is $C_\infty = \{ (x:y:0) \in \bb P_{\bar K}^2 | F(X,Y,0) = 0 \}$.
 These are precisely the points that do not fall under the domain of $\phi\inv$.
 The points in $C_f$ are in bijection with the points in $C_F$.
 An \defn{affine algebraic plane curve} $C_f$ over $K$
@@ -260,9 +260,10 @@ Its unique maximal ideal is $\frak m_P := \frak m_{\frak p}$. Explicitly,
 
 Given a non-zero prime ideal $\frak p$, $\cal O_{\frak p}$ is not only a local ring,
 but also a discrete valuation ring, or DVR (Theorem VIII.6.10 in \cite{hungerford}).
-For more on DVRs, see \cite{eisenbud95}.
 Rather than define here what discrete valuations and DVRs are in general,
-we briefly describe the valuation of a function at a prime ideal.
+we briefly describe the valuation of a function at a prime ideal,
+For more on DVRs, see Chapter 11 of \cite{eisenbud95}.
+
 Let $f \in K[C]$.
 The \defn{order} or \defn{valuation} of $f$ at $\frak p$, denoted $\nu_{\frak p}(f)$, is
 \[ \nu_{\frak p}(f) := \max\{ r \in \bb N ~|~ f \in \frak m_P^r \}, \]
@@ -327,7 +328,7 @@ and is tangent to $C$ at $P$ if and only if $\nu_P(f) \geq 2$.
 The generator $u$ of $\frak m_{\frak p}$ is called a \defn{uniformizer} or \defn{local parameter} at $\frak p$.
 Uniformizers are not unique.
 Any element $u \in \frak m_{\frak p} - \frak m_{\frak p}^2$,
-i.e. any element $u$ for which $\nu_{\frak p}(i) = 1$ is a uniformizer.
+i.e. any element $u$ for which $\nu_{\frak p}(u) = 1$ is a uniformizer.
 For a point $P$, this means any function $u$ that passes through but is not tangent to $C$ at $P$ is a uniformizer.
 
 A consequence of Corollary \ref{cor_orb} from the previous section
@@ -351,7 +352,7 @@ then $P$ and $\sigma(P)$ induce the same prime ideal $\frak p$. Thus we have
 \subsection{$C_{3,4}$ Curves}
 \label{sec_c34_curves}
 
-A $C_{3,4}$ curve is a special case of a broader class of $C_{a,b}$ curves.
+A $C_{3,4}$ curve is a special case of the broader class of $C_{a,b}$ curves.
 The class of $C_{3,4}$ curves was first described by Miura \cite{miura97}.
 One definition is the following (an equivalent characterization will come at the end of this chapter).
 
@@ -380,15 +381,15 @@ with corners $(0, 0)$, $(0, a)$, and $(b, 0)$.
 \begin{proof}
   It is easy to see $F$ has degree $b$
   and that $c_{b,0}x^b$ is the only term in $F$ of degree $b$.
-  Let $F^*(X,Y,Z)$ be the homogenization of $F(x,y)$ and evaluate $F^*$ at $Z = 0$.
-  We get $F^*(X,Y,0) = c_{b,0}X^b$.
+  Let $\bar F(X,Y,Z)$ be the homogenization of $F(x,y)$ and evaluate $\bar F$ at $Z = 0$.
+  We get $\bar F(X,Y,0) = c_{b,0}X^b$.
   
   Now suppose $(u:v:0)$ is a point at infinity on the curve.
-  Then $F^*(u,v,0) = c_{b,0}u^b = 0$, so $u = 0$ and $(u : v : 0) = (0 : v : 0) = (0 : 1 : 0)$.
+  Then $\bar F(u,v,0) = c_{b,0}u^b = 0$, so $u = 0$ and $(u : v : 0) = (0 : v : 0) = (0 : 1 : 0)$.
 \end{proof}
 We will denote the unique point at infinity on a $C_{a,b}$ curve by $P_{\infty}$.
 
-A few special cases of $C_{1,b}$ curves are worth mentioning.
+A few special cases of $C_{a,b}$ curves are worth mentioning.
 When $a = 2$ and $b = 3$, we get an elliptic curve.
 When $a = 2$ and $b = 7$, we get a genus 2 ramified hyperelliptic curve.
 See Equations \ref{eq_elliptic} and \ref{eq_genus_3_hyperelliptic}.
@@ -403,7 +404,7 @@ when $a = 3$ and $b = 4$, we get a $C_{3,4}$ curve.
   given by an affine equation\footnote{
   The subscripts on the coefficients of $C$ are numbered according to the $C_{3,4}$ monomial order,
   Definition \ref{def_cab_order}.}
-  \[ C = c_{10}y^3 + c_9x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0, \]
+  \[ F = c_{10}y^3 + c_9x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0, \]
   where $c_{9}$ and $c_{10}$ are non-zero.
 \end{definition}
 
@@ -417,45 +418,47 @@ In fact, the point $P_\infty$ on a $C_{3,4}$ is never singular.
 \end{proposition}
 \begin{proof}
   To show that $C$ is non-singular at $P_\infty$,
-  we show that one of the formal partial derivatives of $C$ is non-zero at $P_\infty$.
+  we show that one of the formal partial derivatives of $F$,
+  the defining polynomial of $C$, is non-zero at $P_\infty$.
   Since $P_\infty$ is not a finite point,
-  this requires that we work with the homogenization of $C$'s defining polynomial,
+  this requires that we work with the homogenization, $\bar F$, of $C$'s defining polynomial,
   \begin{align*}
-    \bar C &= c_{10}Y^3Z + c_9X^4 + c_8XY^2Z + c_7X^2YZ + c_6X^3Z + c_5Y^2Z^2 \\ 
+    \bar F &= c_{10}Y^3Z + c_9X^4 + c_8XY^2Z + c_7X^2YZ + c_6X^3Z + c_5Y^2Z^2 \\ 
            &+ c_4XYZ^2 + c_3X^2Z^2 + c_2YZ^3 + c_1XZ^3 + c_0Z^4.
   \end{align*}
-  The formal partial derivative of $\bar C$ with respect to $Z$ is
+  The formal partial derivative of $\bar F$ with respect to $Z$ is
   \begin{align*}
-    \bar C_Z &= c_{10}Y^3 + c_8XY^2 + c_7X^2Y + c_6X^3 + 2c_5Y^2Z \\
+    \bar F_Z &= c_{10}Y^3 + c_8XY^2 + c_7X^2Y + c_6X^3 + 2c_5Y^2Z \\
              &+ 2c_4XYZ + 2c_3X^2Z + 3c_2YZ^2 + 3c_1XZ^2 + 4c_0Z^3.
   \end{align*}
-  Evaluated at $P_\infty$, $\bar C_Z(0 : 1 : 0) = c_{10} \neq 0$.
+  Evaluated at $P_\infty$, $\bar F_Z(0, 1, 0) = c_{10} \neq 0$.
 \end{proof}
 
 We will make some simplifying assumptions on the curve equation.
-Since $c_{10}$ is non-zero, we may assume that $c_{10} = 1$,
-as multiplying the defining polynomial by $c_{10}\inv$ does not change the set on which $F$ vanishes.
-We may also assume that $c_9 = 1$,
-otherwise we may perform the invertible change of variables $x \mapsto x / \sqrt[4]{c_{9}}$.
-This, however, may require we work over an algebraic extension of $K$ where $c_{4,0}$ has a quartic root.
-In light of these assumptions, we now assume $C$ is of the \defn{long form}
+We may assume that both $c_9$ and $c_{10}$ are 1.
+Otherwise, multiplying the whole curve equation by $\frac {c_9^3} {c_{10}^4}$
+and performing the invertible change of coordinates
+$X = \frac {c_9} {c_{10}} x$ and $Y = \frac {c_9} {c_{10}} y$
+gives a curve equation whose coefficients of $X^4$ and $Y^3$ are 1.
+In light of this, we now assume the curve equation of $C$ is of the \defn{long form}
 \begin{equation}
   \label{eq_c34}
-  C = y^3 + x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0.
+  F = y^3 + x^4 + c_8xy^2 + c_7x^2y + c_6x^3 + c_5y^2 + c_4xy + c_3x^2 + c_2y + c_1x + c_0.
 \end{equation}
 
-In fields of sufficiently large characteristic, one may also assume certain coefficients are zero.
+In fields of sufficiently large characteristic,
+one may also assume certain coefficients of $F$ are zero.
 If $\Char K \neq 2$, then the invertible change of variables $x = X - \frac {c_6} 4, y = Y$ gives
 \begin{equation}
   \label{eq_c34_char_not_2}
-  C(X,Y) = Y^3 + X^4 + d_8XY^2 + d_7X^2Y + d_5Y^2 + d_4XY + d_3X^2 + d_2Y + d_1X + d_0,
+  F(X,Y) = Y^3 + X^4 + d_8XY^2 + d_7X^2Y + d_5Y^2 + d_4XY + d_3X^2 + d_2Y + d_1X + d_0,
 \end{equation}
 for some new coefficients $d_i$.
-Notice that there is no $X^3$ term.
+Notice that the $X^3$ term vanishes.
 If $\Char K \neq 3$, then the invertible change of variables $x = X, y = Y - \frac{c_8X + c_5}{3}$ gives
 \begin{equation}
   \label{eq_c34_char_not_3}
-  C(X,Y) = Y^3 + X^4 + d_7X^2Y + d_6X^3 + d_4XY + d_3X^2 + d_2Y + d_1X + d_0,
+  F(X,Y) = Y^3 + X^4 + d_7X^2Y + d_6X^3 + d_4XY + d_3X^2 + d_2Y + d_1X + d_0,
 \end{equation}
 where there is no $Y^2$ or $XY^2$ term.
 If the characteristic of $K$ is neither 2 nor 3, we may perform both substitutions simultaneously. Let
@@ -468,7 +471,7 @@ and perform the change of variables
 Then this gives $C$ in \defn{short form}
 \begin{equation}
   \label{eq_c34_short}
-  C(X,Y) = Y^3 + X^4 + d_7X^2Y + d_4XY + d_3X^2 + d_2Y + d_1X + d_0.
+  F(X,Y) = Y^3 + X^4 + d_7X^2Y + d_4XY + d_3X^2 + d_2Y + d_1X + d_0.
 \end{equation}
 
 We now address the valuation at $P_\infty$ on a $C_{3,4}$ curve.
