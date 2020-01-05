@@ -52,6 +52,7 @@ a mathematical case of killing two birds with one stone.
   Rather than inverting $a$ and $b$ separately, compute
   \[ c := ab, ~~ d := \frac 1 c, ~~ \alpha := bd, ~~ \beta := ad. \]
   Then $\alpha = a\inv$ and $\beta = b\inv$, while only one inversion operation was performed.
+  One inversion is saved at the cost of 3 multipiclations.
 \end{example}
 Inversions in a finite field are expensive operations;
 it is worth eliminating one inversion even at the cost of many multiplications,
@@ -69,7 +70,7 @@ For the remainder of this chapter, we will assume that $C$ is a $C_{3,4}$ curve
 over a field $K$ with $\Char K = 0$ or $\Char K > 3$, defined by a polynomial $F$.
 The curve $C$ will be assumed to be given by an equation in short form (Equation \ref{eq_c34_short}),
 i.e. with coefficients $c_5$, $c_6$, and $c_8$ all equal to 0.
-Recall that in $\Char K$ other than 2 or 3, a $C_{3,4}$ curve may always be trnasformed to one in short form.
+Recall that over a field of characteristic other than 2 or 3, a $C_{3,4}$ curve may always be transformed to one in short form.
 The resulting formulae are collected and reproduced in one place at the end of Section \ref{sec_reducing}.
 
 
@@ -297,7 +298,7 @@ Noting that $f_1 - g_2 = g'_2$,
   The coefficients of $g'$ and $h'$ require 11M+13A to compute as written,
   however, the terms $g'_1g_1$, $g'_1g_2 + g'_2g_1$, and $g'_2g_2$ all appear.
   Given $g'_1g_1$ and $g'_2g_2$, rather than compute $g'_1g_2 + g'_2g_1$ in 2M+1A,
-  we may compute it in 1M+4A via
+  we may compute it in 1M+4A via Karatsuba multiplication:
   \[ g'_1g_2 + g'_2g_1 = (g'_1 + g'_2)(g_1 + g_2) - g'_1g_1 - g'_1g_2. \]
   Thus the coefficients of $g'$ and $h'$ are obtained in 10M+16A.
   
@@ -330,7 +331,7 @@ In the following, we delay inversion until the next section.
 Instead, we compute a multiple of $\rref(M)$.
 Consequently, we obtain a pair $\{U,V\}$ of non-monic polynomials that generate $I_A$.
 
-Recall that the elements of $M$ were
+Recall that the elements of $M$ are
 \[ M =
 \begin{pmatrix}
   a_1 & a_2 & a_3 & a_4 & a_5 \\
@@ -379,15 +380,15 @@ The kernel of $M$ is $\Span_K\{U,V\}$, where
   U &= Zxf - C_1h - B_1g - A_1f \\
   V &= Zxg - C_2h - B_2g - A_2f.
 \end{align*}
-Let $U_1, \ldots, U_5$ be the coefficients of $x, \ldots, y^2$ in $U$
+Let $U_1, \ldots, U_5$ be the coefficients of $x, y, x^2, xy, y^2$ in $U$
 and let $V_1, \ldots, V_5$ be the coefficients of $x, \ldots, y^2$ in $V$.
 These are given explicitly by
 \begin{align*}
-  U1 &= Zf_0 - C_1h_1 - B_1g_1 - A_1f_1 & V1 &= Zg_0 - C_2h_1 - B_2g_1 - A_2f_1 \\
-  U2 &=      - C_1h_2 - B_1g_2 - A_1f_2 & V2 &=      - C_2h_2 - B_2g_2 - A_2f_2 \\
-  U3 &= Zf_1 - A_1 & V3 &= Zg_1 - A_2 \\
-  U4 &= Zf_2 - B_1 & V4 &= Zg_2 - B_2 \\
-  U5 &=      - C_1 & V5 &=      - C_2.
+  U_1 &= Zf_0 - C_1h_1 - B_1g_1 - A_1f_1 & V_1 &= Zg_0 - C_2h_1 - B_2g_1 - A_2f_1 \\
+  U_2 &=      - C_1h_2 - B_1g_2 - A_1f_2 & V_2 &=      - C_2h_2 - B_2g_2 - A_2f_2 \\
+  U_3 &= Zf_1 - A_1 & V_3 &= Zg_1 - A_2 \\
+  U_4 &= Zf_2 - B_1 & V_4 &= Zg_2 - B_2 \\
+  U_5 &=      - C_1 & V_5 &=      - C_2.
 \end{align*}
 Note that in the computations to follow in the next section,
 we will not need the constant coefficients of $U$ and $V$.

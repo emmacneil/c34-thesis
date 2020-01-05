@@ -185,7 +185,7 @@ Every monomial order on $R[x_1, \ldots, x_n]$ is a weight order given by at most
 (see \cite{robbiano86} and Exercises 2.4.11 and 2.4.12 in \cite{cox07}).
 For example, the lexicographic ordering on $R = K[x_1, \ldots, x_n]$ with $x_n < \dots < x_1$ is given by the rows
 of the $n \times n$ identity matrix $I_n$.
-The graded lexicographic ordering with with $x_n < \dots < x_1$ is given by the rows of
+The graded lexicographic ordering with $x_n < \dots < x_1$ is given by the rows of
   \[ \begin{pmatrix}
        1 & 1 & 1 & \dots & 1 & 1 \\
        1 & 0 & 0 & \dots & 0 & 0 \\
@@ -203,7 +203,7 @@ Their chosen monomial order on $K[x,y]$ is one they define as the \defn{$C_{a,b}
   The \defn{$C_{a,b}$ order} on $R$ is the monomial order on $R$ determined by the rows of the matrix
   \[ \begin{pmatrix} a & b \\ 0 & 1 \end{pmatrix}. \]
 \end{definition}
-The $C_{a,b}$ order may also be seen as ordering ordering monomials
+The $C_{a,b}$ order may also be seen as ordering monomials
 according to their pole orders at infinity on a $C_{a,b}$ curve,
 with ties broken according to their degrees in $y$.
 \[ m < m' \iff
@@ -248,7 +248,7 @@ let $f \in R$ be a polynomial,
 and let $m \in \cal M_R$ be a monomial.
 Denote the \defn{coefficient of $m$ in $f$} by $\coeff(f, m)$.
 For example, if $f = 2x + 3y + 5x + 8$,
-then $\coeff(f, 1) = 8$, $\coeff(f, x) = 7$, $\coeff(f, y) = 3$, and $\coeff(f, x^2) = 0$.
+then $\coeff(f, 1) = 8$, $\coeff(f, x) = 2 + 5 = 7$, $\coeff(f, y) = 3$, and $\coeff(f, x^2) = 0$.
 
 Now let $\leq$ be a monomial order on $R$.
 Define also
@@ -417,7 +417,7 @@ Recall that $R = K[x,y]$ with the $C_{3,4}$ order.
 \end{theorem}
 
 Using Buchberger's Criterion and in light of Example \ref{ex_groebner_2b},
-one may now see why $\{x^2 + y, xy\}$ was not a Gr\"obner basis in Example \ref{ex_groebner_2}.
+one may now see why $\{x^2 + y, xy\}$ is not a Gr\"obner basis in Example \ref{ex_groebner_2}.
 However, $\{x^2 + y, xy, y^2\}$ \emph{is} a Gr\"obner basis.
 
 \begin{definition}

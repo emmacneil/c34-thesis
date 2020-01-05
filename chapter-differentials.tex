@@ -20,7 +20,7 @@ In this chapter, we define (K\"ahler) differentials of functions purely algebrai
 in a sufficient generality as to cover differentials of polynomials in $A = R[x_1, \ldots, x_n]$,
 multivariate polynomials with coefficients in a commutative ring with identity $R$.
 We will see how to extend this definition to differentials on functions in other spaces constructed from $A$,
-such that its field of fractions, quotients, and localizations.
+such as its field of fractions, quotients, and localizations.
 Along the way, we give a natural definition of the formal derivative and formal partial derivative.
 
 The contents of this chapter come mostly from a combination of the books
@@ -138,7 +138,7 @@ although note that $A$ must not have any zero divisors in order for its field of
   There is a unique $\delta' \in \Der_R(B, M)$ whose restriction to $A$ is $\delta'|_A = \delta$.
 \end{proposition}
 That is to say that if $\delta$ is a derivation from $A$ to $M$,
-it extends uniquely to a derivation from $\Frac A$.
+it extends uniquely to a derivation from $\Frac A$ to $M$.
 \begin{proof}
   If $A = B$, we are done.
   So suppose instead there is a $b \in B$ such that $b\in A$ but $b\inv \not \in A$.
@@ -440,12 +440,12 @@ Next applying Proposition \ref{prop_differential_module_of_polynomial_ring},
 The tensor product distributes over addition (Theorem IV.5.9 \cite{hungerford}), giving
 \[ \Omega_{K[C]/K} \cong \frac {\left(K[C] \tensor {K[x,y]} K[x,y]dx\right) \oplus
                                 \left(K[C] \tensor {K[x,y]} K[x,y]dy\right)} {\im d}. \]
-A basic property of the tensor product is that a $R$-module $A$ tensored with its ring $R$ is isomorphic to itself,
+A basic property of the tensor product is that an $R$-module $A$ tensored with its ring $R$ is isomorphic to itself,
 i.e. $A \tensor R R \cong A$ (Theorem IV.5.7 \cite{hungerford}), hence
 \[ \Omega_{K[C]/K} \cong \frac {K[C]dx \oplus K[C]dy} {\im d}. \]
 
 To determine the image of $d$, it is enough to know the image of the element $F \in \pid F / \pid{F^2}$.
-The element $F \in F \in \pid F / \pid{F^2}$ maps to $1 \otimes dF \in K[C] \otimes \Omega_{K[x,y]/K}$.
+The element $F \in \pid F / \pid{F^2}$ maps to $1 \otimes dF \in K[C] \otimes \Omega_{K[x,y]/K}$.
 Following the chain of isomorphisms we just produced, this then maps to $F_xdx + F_ydy \in K[C]dx \oplus K[C]dy$.
 Thus,
 \[ \Omega_{K[C]/K} \cong \frac {K[C]dx \oplus K[C]dy} {\pid{F_xdx + F_ydy}}. \]
@@ -456,8 +456,8 @@ This relation between $dx$ and $dy$ means that it is therefore a rank 1 $K[C]$-m
   \label{prop_differential_generator}
   There is a generator $dz$ for $\Omega_{K[C]/K}$ with the properties
   \begin{align*}
-    dx &\equiv C_ydz \\
-    dy &\equiv -C_xdz.
+    dx &\equiv F_ydz \\
+    dy &\equiv -F_xdz.
   \end{align*}
 \end{proposition}
 \begin{proof}
@@ -470,9 +470,9 @@ The generator in Proposition \ref{prop_differential_generator} is a natural choi
 that is useful for some proofs, and will be used in some atypical cases of divisor doubling.
 
 The differential of a function $f \in K[C]$ with respect to this generator $dz$ is
-\[ df = (f_xC_y - f_yC_x)dz. \]
+\[ df = (f_xF_y - f_yF_x)dz. \]
 If $I$ is an ideal of $K[C]$,
-we will say by abuse of notation that $df \in I$ if $f_xC_y - f_yC_x \in I$.
+we will say by abuse of notation that $df \in I$ if $f_xF_y - f_yF_x \in I$.
 Equivalently, we will say that $df \in I$ if $df$ vanishes modulo $I$.
 
 Now let $\cal O_{\frak p}$ be the local ring at a prime ideal $\frak p$ of $K[C]$.

@@ -7,15 +7,16 @@
 \section{Representation}
 \label{chap_representation}
 
-In Chapter \ref{chap_divisors}, we defined the divisor class group of a curve,
-and in Chapter \ref{chap_ideals}, we showed that this group is isomorphic to an ideal class group.
+In Chapter \ref{chap_divisors}, we defined the divisor class group of a curve $C$,
+and in Chapter \ref{chap_ideals}, we showed that this group is isomorphic
+to the ideal class group of the curve's coordinate ring, $K[C]$.
 This forms the foundation of our representation of divisors.
 We will represent an effective divisor by its associated integral ideal,
 or more specifically, by the unique reduced Gr\"obner basis of that ideal.
 These bases come in many forms, but if we place a bound on the degree of the divisors under consideration,
 these forms are only finite in number.
 
-In this chapter, we will tabulate all the different types of divisors of degree 6 or less.
+In this chapter, we will categorize all the different types of divisors of degree 6 or less.
 When adding divisors in Chapter \ref{chap_addition},
 we will always assume our summands are of degree 3 or less,
 thus it is unnecessary to tabulate divisors of degree 7 and higher.
@@ -145,6 +146,7 @@ We have the following equivalences of operations.
 where $f$ is the minimum polynomial\footnote{As in Definition \ref{def_minimum_polynomial}.} in $I_A$.
 This last operation we define now.
 \begin{definition}
+  \label{def_flip}
   Let $D$ be a divisor, with corresponding ideal $I_D$ in the ideal class group.
   Let $f$ be the minimum polynomial of $I_D$.
   The \defn{flip of $D$} is the divisor
@@ -246,7 +248,8 @@ this reduced representative is \emph{unique}.
   Every divisor class $[D]$ has a unique reduced representative.
 \end{theorem}
 \begin{proof}
-  If $[D]$ is a divisor class, then $\bar{\bar D}$ is a reduced divisor in the same class,
+  If $[D]$ is a divisor class, then by parts (ii) and (v) of Proposition \ref{prop_flip_properties},
+  $\bar{\bar D}$ is a reduced divisor in the same class,
   establishing existence.
   
   For uniqueness, suppose $A$ and $B$ are equivalent reduced divisors.
@@ -265,17 +268,21 @@ which we will make use of many times later in this chapter.
   Then $aI_B = bI_A$.
 \end{proposition}
 \begin{proof}
+  Since the divisor and ideal class groups are isomorphic,
+  we may move between the groups.
   \begin{align*}
     I_A &\equiv I_B \\
     A &\equiv B \\
-    \bar A &= \bar B \\
-    a : I_A &= b : I_B \\
+    \bar A &= \bar B
+      & \text{Prop. \ref{prop_flip_properties}.(iii)} \\
+    a : I_A &= b : I_B
+      & \text{Def. \ref{def_flip}} \\
     (a : I_A)I_AI_B &= (b : I_B)I_BI_A \\
     aI_B &= bI_A.
   \end{align*}
 \end{proof}
 
-If $D$ is a divisor, then the degree and type of $\bar D$ is determined by the type of $D$.
+If $D$ is a divisor, then the degree and type of $\bar D$ are determined by the type of $D$.
 We may use the formula
 \begin{equation}
   \label{eq_flip_degree}
@@ -325,7 +332,7 @@ After classifying reduced divisors, we will be able to do the same for divisors 
 \begin{example}
   Let $D$ be a type 11 divisor.
   Then the minimum polynomial of $I_D$ is $f = x + f_0$ for some $f_0 \in K$.
-  By equation \ref{eq_flip_degree}, $\deg(\bar D) = 2$, so $\bar D$ is of type 21 or 22.
+  By Equation \ref{eq_flip_degree}, $\deg(\bar D) = 2$, so $\bar D$ is of type 21 or 22.
   Since $f \in f : I_D = I_{\bar D}$, $\bar D$ must be of type 22 ---
   were $\bar D$ of type 21, its reduced Gr\"obner basis would have the form $\pid{y + \ldots, x^2 + \ldots}$,
   but such a basis cannot contain a polynomial with leading monomial $x$.
@@ -831,7 +838,7 @@ Here, we ascribe some geometric meaning to each divisor type of degree 3 or less
   If $D = P + Q + R$ is the sum of three distinct points, then these points are non-collinear.
   If $D = 2P + Q$ is the sum of a double point with a second distinct point,
   then the tangent line at $P$ does not pass through $Q$.
-  If $D = 3P$ is a triple point, then the $P$ is not an inflection point.
+  If $D = 3P$ is a triple point, then $P$ is not an inflection point.
 
 \subsubsection{Type 32}
   If $D$ is of type 32, then $I_D = \pid{f, g}$, where $f$ is the non-vertical line $y + f_1x + f_0$

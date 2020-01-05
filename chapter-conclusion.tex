@@ -29,7 +29,7 @@ and anyone who needs those formulae would probably prefer raw code over a pdf fi
 With regards to the improvement in the typical case,
 preliminary testing shows that we are able compute divisors faster than the previous state-of-the-art.
 This was accomplished primarily by avoiding computing some unnecessary polynomial coefficients,
-and by collection addition/doubling and reduction into a single step to eliminate a finite field inversion operation.
+and by collecting addition/doubling and reduction into a single step to eliminate a finite field inversion operation.
 The representation of a typical divisor by a three-polynomial Gr\"obner basis $\pid{f,g,h}$,
 rather than by a two-polynomial generating set $\pid{f,g}$ as in \cite{salem07},
 allows for the matrix $M_{\text{add}}$ to be computed especially fast.
@@ -65,7 +65,7 @@ The formulae in \cite{github} for handling the atypical cases perform addition/d
 An inversion could also be eliminated from these cases
 in much the same way as was done in Chapter \ref{chap_typical_case} for the typical case.
 However, this is a lot of work for very little gain,
-considering that any application for this arithmetic will likely spend very little time computing these atypical cases.
+considering that any application of this arithmetic will likely spend very little time computing these atypical cases.
 
 Representating divisors by Gr\"obner bases means carrying around some redundant information.
 Typically, we represent a divisor by an ideal $\pid{f,g,h}$ where $h$ may be computed from $f$ and $g$.

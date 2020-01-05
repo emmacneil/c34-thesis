@@ -198,6 +198,10 @@ not necessarily distinct, but counting multiplicity.
 Then $\div f = P + Q + R - 3P_\infty$, and in the divisor class group, $\div f \equiv 0$.
 Let $D' = D + n \div f$.
 Then $D' \equiv D$ in the divisor class group and $\ord_P(D') \geq 0$.
+At no finite point does $D'$ have lesser order than $D$.
+Hence, we can repeatedly add principal divisors to a divisor $D$
+to eliminate the points in $D$ with negative order,
+resulting in an effective divisor equivalent to $D$.
 
 Every divisor class therefore has a representative\footnote{
 It may have many representatives of this form.
@@ -205,7 +209,7 @@ Reduced divisors, introduced in Chapter \ref{chap_representation},
 are meant to be minimal unique representative of this form.}
 of the form
   \[ D = P_1 + \ldots + P_n - nP_\infty, \]
-where the points $P_i$'s are finite points, but not necessarily distinct.
+where the $P_i$'s are finite points, but not necessarily distinct.
 In other words, in the divisor class group,
 every divisor $D$ may be written in the form (i.e. is equivalent to a divisor of the form)
   \[ D \equiv D_+ - D_\infty \]
@@ -239,7 +243,9 @@ The divisor $D_\infty$ is uniquely determined by the $D_{\text{aff}}$.
 This leads to a more useful partial order on degree zero divisors.
 For $A, B \in \Div_K^0(C)$, define the partial order $\leq$ by
   \[ A \leq B \iff A_{\text{aff}} \preceq B_{\text{aff}}. \]
-Define also the set
+Define also the set\footnote{
+To clear up any possible confusion,
+that's a $K$ and $\geq$ in $\Div_K^{\geq 0}(C)$, not a $\bar K$ and $>$.}
   \[ \Div_K^{\geq 0}(C) := \{ D \in \Div_K^0(C) ~|~ D \geq 0 \}. \]
 The set $\Div_K^{\geq 0}(C)$ forms a monoid under addition,
 and $(\Div_K^{\geq 0}(C), \leq)$ forms a lattice with a minimum element, 0.

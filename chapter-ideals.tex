@@ -35,7 +35,7 @@ There is a relationship between prime ideals in $K[C]$ and prime divisors in $\D
 In fact, the relationship is a bijection, and the goal of this section is to explicitly describe that bijection.
 We will define a map $I_{(-)}$ sending prime divisors to non-zero prime ideals
 and a map $\div(-)$ sending non-zero prime ideals to prime divisors, then show that these are mutual inverses.
-We begin by defining the former map and showing that it is in fact a non-zero prime ideal.
+We begin by defining the former map and showing that it does in fact map primes to primes.
 
 \begin{definition}
   Let $[P]$ be a prime divisor on $C$, as per Proposition \ref{prop_prime_divisors}.
@@ -63,7 +63,7 @@ The proof that $I_{[P]}$ is prime is straightforward:
   \begin{enumerate}[label=(\roman*)]
     \item
     Suppose $f, g \in \frak p$. Then
-      \[ (f + g)(P) = f(P) + g(P) = 0 + 0 = 0, \]
+      \[ (fg)(P) = f(P) + g(P) = 0 + 0 = 0, \]
     so $f + g \in \frak p$.
     Suppose $f \in \frak p$ and $h \in K[C]$. Then
       \[ (hf)(P) = h(P)f(P) = h(P)\cdot 0 = 0, \]
@@ -75,8 +75,8 @@ The proof that $I_{[P]}$ is prime is straightforward:
     In the usual algebraic number theory sense of a unique monic polynomial in $K[x]$
     of minimal degree such that $m(x_0) = 0$.}
     of $x_0$.
-    We may view $m$ has a polynomial in $K[C]$.
-    Then $m$ is non-zero but is zero at $P$, so $\tilde m \in \frak p$.
+    We may view $m$ as a polynomial in $K[C]$.
+    Then $m$ is non-zero but is zero at $P$, so $m \in \frak p$.
     
     \item
     Suppose $fg \in \frak p$ for some $f, g \in K[C]$.
@@ -116,7 +116,7 @@ We now show that it maps distinct prime divisors to distinct prime ideals.
 \begin{lemma}
   \label{lemma_orbs_and_ideals}
   Let $P$ and $Q$ be affine points on $C$.
-  Then $I_{[P]} \neq I_{[Q]}$ if and only if $[P] = [Q]$.
+  Then $I_{[P]} = I_{[Q]}$ if and only if $[P] = [Q]$.
 \end{lemma}
 \begin{proof}
   Certainly if $[P] = [Q]$, then $I_{[P]} = I_{[Q]}$.
@@ -251,10 +251,8 @@ First, we establish a lemma.
 Proposition \ref{prop_prime_ideals_prime_divisors} has two important consequences.
 It shows that every non-zero prime ideal $\frak p$ of $K[C]$ arises from a prime divisor $[P]$,
 and every prime divisor $[P]$ arises from a non-zero prime ideal $\frak p$.
-This is the main result of the section,
-which we 
-This is summarized in the following theorem, the main result of this section,
-showing that prime ideals and prime divisors are in bijection
+This is summarized in the following theorem, the main result of this section.
+It shows that prime ideals and prime divisors are in bijection
 via the maps $I_{(-)}$ and $\div(-)$, which are mutual inverses.
 
 \begin{theorem}
@@ -267,7 +265,7 @@ via the maps $I_{(-)}$ and $\div(-)$, which are mutual inverses.
 \begin{proof}
   \begin{enumerate}[label=(\roman*)]
     \item
-      Let $\frak p$ be a non-zero prime idea of $K[C]$.
+      Let $\frak p$ be a non-zero prime ideal of $K[C]$.
       Then there is an affine point $P \in \supp(\div \frak p)$.
       Applying Proposition \ref{prop_prime_ideals_prime_divisors} twice,
       \[ \div I_{[P]} = \div \frak p = [P]. \]
@@ -287,11 +285,11 @@ via the maps $I_{(-)}$ and $\div(-)$, which are mutual inverses.
 
 The coordinate ring $K[C]$ is a Dedekind domain.
 The non-zero ideals of $K[C]$ may be factored into a product of prime ideals, and this factorization is unique.
-Our maps between prime ideals and prime divisors can now be extended
-to act on any non-zero ideal of $K[C]$ or any prime divisor of $\Div_K^0(C)$.
-This extension will be an isomorphism between the monoid of non-zero $K[C]$-ideals
-and the monoid $\Div_K^{\geq 0}$ of divisors $D \geq 0$,
-and will later be extended to an isomorphism between the ideal and divisor class groups.
+Our isomorphism between prime ideals and prime divisors can now be extended
+to an isomorphism between the monoid of non-zero $K[C]$-ideals
+and the monoid $\Div_K^{\geq 0}$ of divisors $D \geq 0$.
+In the sections to follow, we extend it even further
+to an isomorphism between the ideal and divisor class groups.
 
 Let $\frak a$ be a non-zero ideal of $K[C]$.
 Let its factorization into prime ideals be $\frak p_1^{k_1} \dots \frak p_n^{k_n}$.
@@ -363,7 +361,7 @@ We may extend the maps even further to fractional ideals and the entirety of $\D
 
 Let $\cal J_C$ denote the Abelian group of fractional ideals of $K[C]$.
 Let $\frak a \in \cal J_C$.
-Then $\frak a$ is of the form $\pid{\frac 1 f} \frak b$ for some polynomial $f \in K[C]$ and some integral ideal $\frak b$ of $K[C]$.
+Then $\frak a$ is of the form $\pid{\frac 1 f} \frak b$ for some non-zero polynomial $f \in K[C]$ and some integral ideal $\frak b$ of $K[C]$.
 Define
 \[ \div \frak a = \div \frak b - \div f. \]
 
