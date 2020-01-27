@@ -16,6 +16,11 @@ In this thesis, we wish to speak of derivatives and differentials of functions t
 but rather members of a polynomial ring $K[x,y]$ over a finite field or a quotient of that polynomial ring.
 It is not so clear anymore what is meant by the differential of a polynomial in these discrete spaces.
 
+Differentials arise when doubling divisors (or tripling, etc.).
+Doubling a divisor typically requires finding polynomials that are tangent to the curve at some prescribed points.
+This amounts to finding polynomials that pass through the given points
+and whose differentials also vanish at these points.
+
 In this chapter, we define (K\"ahler) differentials of functions purely algebraically
 in a sufficient generality as to cover differentials of polynomials in $A = R[x_1, \ldots, x_n]$,
 multivariate polynomials with coefficients in a commutative ring with identity $R$.
@@ -304,7 +309,8 @@ We may compose derivations with a morphisms of algebras to obtain new derivation
 \label{sec_kahler_differentials}
 
 In this section, we briefly present a construction of K\"ahler differentials and some important properties.
-For more detail, as well as alternative constructions,
+We will use K\"ahler differentials in Chapter \ref{chap_doubling} to solve the problem of doubling divisors.
+For more details of K\"ahler differentials, as well as alternative constructions,
 see \cite{eisenbud95}, \cite{eisenbud00}, \cite{goldschmidt03}, or \cite{stichtenoth09}.
 
 Let $A$ be an $R$-algebra.

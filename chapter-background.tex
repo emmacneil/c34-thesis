@@ -57,7 +57,7 @@ meaning that $E$ is the set of zeroes of a polynomial in $\bb F_q[x,y]$ of the f
 The following theorem, due to Helmut Hasse (1898 -- 1979), says that
 the number of rational points (i.e. points in $\bb F_q \times \bb F_q$ plus an additional point at infinity) on $E$
 lies in some interval that is small compared to the order of $\bb F_q$.
-\begin{theorem}[Hasse]
+\begin{theorem}[Hasse, \cite{hasse36}]
   Let $E$ be an elliptic curve over a finite field $\bb F_q$.
   The number of rational points on $E$ differs from $q + 1$ by at most $2 \sqrt q$. That is,
   \[ | \#E(\bb F_q) - (q + 1) | \leq 2 \sqrt q. \]
@@ -122,7 +122,7 @@ in turn requiring one to count points on many elliptic curves.
 
 Hasse's Theorem has a generalization to higher genus curves
 (elliptic curves have genus 1) that is easy to state.
-\begin{theorem}[Hasse-Weil]
+\begin{theorem}[Hasse-Weil, \cite{weil49}]
   \label{thm_hasse_weil}
   Let $C$ be an algebraic curve of genus $g$ over a finite field $\bb F_q$.
   The number of points on $C$ differs from $q + 1$ by at most $2g \sqrt q$.
@@ -211,8 +211,6 @@ In \cite{arita99}, Arita gives a $O(g^3)$ algorithm to compute in the divisor cl
 where divisors are identified with polynomial ideals and represented by the Gr\"obner bases of these ideals.
 In \cite{harasawa00}, Harasawa and Suzuki identify divisors with $K[x]$-modules rather than ideals and represent divisors by matrices in Hermite normal form,
 achieving a $O(g^2)$ algorithm.
-%In \cite{hess99}, Hess gives a $O(g^2)$ algorithm for determining the structure of the class group of a function field 
-%\note{(say more on this)}.
 
 This is only to highlight the choice of algorithms one might fall back on when the algorithms below fail.
 The asymptotic runtime of these algorithms are of little interest when we are working with curves of small genus ---
@@ -269,18 +267,20 @@ More specifically,
 This marriage of methods is facilitated by the fact that Salem/Khuri-Makdisi's representation of typical divisors resembles type 31 divisors from Arita's classification.
 
 All of these goals are attained in this thesis.
-When restricting the resulting formulae to the typical case
-(specifically, adding/doubling disjoint typical divisors on a curve in short form over a field of characteristic greater than 3)
-and comparing to prior work, we also obtain an improvement in efficiency over the previous state-of-the-art.
-This is summarized in Table \ref{tab_op_count_intro},
-where I, M, S, A refer to the number of inversions, multiplications, squarings, and additions in a finite field
-required to evaluate the formulae.
+Fully general algorithms for adding, doubling and reducing divisors are presented in
+Chapters \ref{chap_addition} through \ref{chap_reduction}.
+These algorithms are used to develop fast explicit formulae in Chapter \ref{chap_typical_case}
+handling the most typical cases\footnote{
+Specifically, adding/doubling disjoint typical divisors on a curve in short form over a field of characteristic greater than 3.}
+arising in $C_{3,4}$ curve divisor arithmetic.
+The operation counts of these formulae are summarized in Table \ref{tab_op_count_intro},
+where I, M, S, A refer to the number of inversions, multiplications, squarings, and additions in a finite field required to evaluate them.
 The trade-off between inversions and multiplications is discussed in Chapter \ref{chap_typical_case}.
-Besides the typical case,
-this thesis produces explicit formulae for all possible cases arising from adding and doubling divisors.
-These formulae are found in Chapter \ref{chap_typical_case}.
-No other publication has explicit formulae covering all cases,
-making this contribution all the more significant.
+The algorithms are also used to produce explicit formulae for all atypical cases\footnote{
+Including non-disjoint or atypical divisors and curves of arbitrary form and characteristic.}
+as well,
+though these cases are so numerous that we choose instead to publish them in the form of Sage code
+on GitHub \cite{github} and present their operation counts in Chapter \ref{chap_implementation}.
 
 \begin{table}[h]
   \caption{Comparison of operation counts in prior work}
@@ -348,10 +348,11 @@ This thesis' original results begin with Chapter \ref{chap_addition},
 where we present a generalization of Khuri-Makdisi and Abu Salem's algorithms \cite{salem07,kmakdisi18} to accomplish the goals outlined in the previous section.
 Chapters \ref{chap_addition}, \ref{chap_doubling}, and \ref{chap_reduction}
 describe algorithms for adding, doubling, and reducing divisors, respectively.
-In Chapter \ref{chap_typical_case}, we combine addition and reduction into a single add-reduce operation
-as well as doubling and reduction into single double-reduce operation.
-Combining these operations saves an expensive inversion operation and several additions at the cost of some multiplications.
-We argue that this tradeoff is worthwhile and gives an improvement over the current state-of-the-art in $C_{3,4}$ curve arithmetic.
-
+In Chapter \ref{chap_typical_case}, we examine the most common cases arising when
+adding and doubling divisors and present fast explicit formulae optimized for these particular cases.
+The Sage implementations of the formulae presented in Chapter \ref{chap_typical_case}
+is compared to an implementation of the Abu Salem and Khuri-Makdisi's formulae from \cite{salem07} and \cite{kmakdisi18} in Chapter \ref{chap_implementation},
+where we conclude that this thesis represents a significant improvement over the current state-of-the-art.
+Operation counts for the atypical cases are also presented in Chapter \ref{chap_implementation}.
 The results and contributions of this thesis are summarized in the concluding Chapter \ref{chap_conclusion}.
 

@@ -71,7 +71,7 @@ Proofs, in slightly greater generality, are given here.
       and $a \in \frak c : \frak b$.
       
       ($\impliedby$) Let $a \in \frak a$.
-      By hypothersis, $a \in \frak c : \frak b$, so $a \frak b \subseteq \frak c$.
+      By hypothesis, $a \in \frak c : \frak b$, so $a \frak b \subseteq \frak c$.
       Since the choice of $a$ was arbitrary, this means $\frak a \frak b \subseteq \frak c$.
       
     \item
@@ -142,7 +142,6 @@ In a Dedekind domain, we have $\frak a \frak b : \frak b = \frac {\frak a \frak 
   Suppose $\alpha \in \frak a \frak p : \frak p$.
   Then $(\alpha)\frak p \subseteq \frak a \frak p$
   and there exists a non-zero ideal $\frak b$ such that $(\alpha)\frak p = \frak a \frak b \frak p$.
-  %By \note{Conrad\footnote{{\tt https://kconrad.math.uconn.edu/blurbs/gradnumthy/idealfactor.pdf}} Corollary 3.3}, $(\alpha) = \frak a \frak b$,
   By Corollary 3.3 in \cite{conrad}, $(\alpha) = \frak a \frak b$,
   so $(\alpha) \subseteq \frak a$ and $\alpha \in \frak a$.
 \end{proof}
@@ -167,3 +166,19 @@ In a Dedekind domain, we have $\frak a \frak b : \frak b = \frac {\frak a \frak 
       &= \frak a.
   \end{align*}
 \end{proof}
+
+\begin{corollary}
+  \label{cor_ideal_times_quotient_is_principal}
+  Let $R$ be a Dedekind domain and let $\frak a$ be a non-zero $R$-ideal.
+  Let $a \in \frak a$. Then
+  \[ \frak a (a : \frak a) = \pid a. \]
+\end{corollary}
+\begin{proof}
+  We have $\frak a \subseteq \pid a$,
+  so there is an $R$-ideal $\frak b$ such that $\frak a \frak b = \pid a$.
+  Then by Corollary \ref{cor_ab_colon_b_is_a},
+  \[ a : \frak a = (\frak a \frak b) : \frak a = \frak b, \]
+  and
+  \[ \frak a (a : \frak a) = \frak a \frak b = \pid a. \]
+\end{proof}
+

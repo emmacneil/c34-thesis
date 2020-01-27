@@ -101,9 +101,12 @@ so we must also demonstrate that this algorithm terminates.
 
 \subsection{The Vector Space $W_D^m$}
 
-For any divisor $D$, the ideal $I_D$ has structure as an infinite-dimensional $K$-vector space, $W_D$.
+For any divisor $D$, the ideal $I_D$ has structure as an infinite-dimensional $K$-vector space,
+which we will denote by $W_D$.
+This is merely the vector space where addition of polynomials and scalar multiplication are as in $I_D$,
+but we forget multiplication between polynomials.
 Any $K$-basis for $W_D$ also generates $I_D$ as an ideal.
-However, the infinitely large basis for $W_D$ is more information than we need.
+However, the infinitely large basis for $W_D$ is difficult to compute with.
 We may restrict to a finite subspace without losing any information.
 Let $\cal M$ be the set of monomials of $K[x,y]$ and let $m \in \cal M$.
 Define the $K$-vector spaces
@@ -733,7 +736,12 @@ We proceed by computing the matrix $M_{\text{add}}$ in
 where the bottom row serves to show the dimensions of these spaces.
 The dimensions of $\ker M_{\text{add}}$ and $\im M_{\text{add}}$ are not yet known until we do some more calculations.
 
-The spaces $W_D^{x^4}$ and $W_{D'}^{x^4}$ are 7-dimensional, spanned by the polynomials
+The spaces $W_D^{x^4}$ and $W_{D'}^{x^4}$ are 7-dimensional.
+Any seven polynomials from one of these spaces with different valuations at $P_{\infty}$
+will form an echelon basis for that space.
+Choosing polynomials with different valuations at infinity amounts to choosing polynomials with different leading monomials while also taking into account the linear dependence on the monomials
+$1, x, \ldots, x^4, y^3$.
+The most obvious choice for bases of $W_D^{x^4}$ and $W_{D'}^{x^4}$, then, are
 \begin{align*}
   W_D^{x^4} &= \Span_K\{ f, g, h, xf, xg, xh, x^2f \} \\
   W_{D'}^{x^4} &= \Span_K\{ f', g', h', xf', xg', xh', x^2f' \}.
@@ -746,7 +754,7 @@ We reduce the basis of $W_D^{x^4}$ modulo $W_{D'}^{x^4}$ to get the matrix
 \end{pmatrix}, \]
 where, e.g., the reduction of $f$ is $\bar f = 8y + 4x + 7$,
 the reduction of $g$ is $\bar g = 8y + 8x$, etc.
-This matrix $M_{\text{add}}$ has the reduced row echelon form
+This matrix $M_{\text{add}}$ has the reduced row echelon form (RREF)
 and kernel
 \[ \rref(M_{\text{add}}) = \begin{pmatrix}
   1 & 0 & 6 & 0 & 6 & 9 & 2 \\

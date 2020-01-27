@@ -1,0 +1,673 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                                %%%%%
+%%%%%   Implementation and Testing   %%%%%
+%%%%%                                %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Implementation and Testing}
+\label{chap_implementation}
+
+An implementation in Sage of $C_{3,4}$ curve divisor class group arithmetic
+is available at \cite{github}.
+This implementation uses the explicit formulae derived at the end of Chapter \ref{chap_typical_case},
+as well as explicit formulae for the many, many atypical cases,
+derived following the methods described in
+Chapters \ref{chap_addition}, \ref{chap_doubling}, and \ref{chap_reduction}.
+
+The implementation defines {\tt C34Curve} and {\tt C34CurveDivisor} classes from which to instantiate objects.
+A {\tt C34Curve} may be constructed by specifying a base field and the curve coefficients.
+\begin{verbatim}
+  sage: C = C34Curve(GF(41), [1,2,3,4,5,6,7,8,9]); C
+  C34 curve defined by y^3 + x^4 + 9*x*y^2 + 8*x^2*y + 7*x^3 + 6*y^2
+  + 5*x*y + 4*x^2 + 3*y + 2*x + 1 over Finite Field of size 41
+\end{verbatim}
+An exception is thrown if the resulting curve would be singular.
+Alternatively, a {\tt C34Curve} over a specified base field may be generated randomly.
+\begin{verbatim}
+  sage: C = C34Curve.random_curve(GF(97)); C
+  C34 curve defined by y^3 + x^4 - 41*x^2*y - 48*x*y + 43*x^2 + 48*y
+  + 7*x over Finite Field of size 97
+\end{verbatim}
+
+A {\tt C34CurveDivisor} may be instantiated in several ways.
+A {\tt C34Curve} can create them randomly:
+\begin{verbatim}
+  sage: D1 = C.random_divisor(); D1
+  <x^2 + 46*y - 24*x + 40, x*y + 46*y - 46*x + 27, y^2 + 8*y + 23*x - 20>
+  sage: D2 = C.random_divisor_of_type(31, typical = False); D2
+  <x^2 + 34*x - 4, x*y + 31*y + 30*x - 40, y^2 + 8*y - 35*x + 11>
+  sage: D3 = C.random_divisor_of_type(32); D3
+  <y + 4*x + 46, x^3 - 21*x^2 + 29*x - 9>
+\end{verbatim}
+Details on random divisor generation are given in Section \ref{sec_random_divisors}.
+A divisor may also be constructed by specifying its points,
+\begin{verbatim}
+  sage: P1 = C.point(96, 76)
+  sage: P2 = C.random_rational_point()
+  sage: D = C.divisor([P1, P2]); D
+  <y - 47*x - 26, x^2 + 31*x + 30>
+  sage: D.formal_sum()
+  [((67 : 71 : 1), 1), ((96 : 76 : 1), 1)]
+\end{verbatim}
+or by specifying the polynomials forming a Gr\"obner basis.
+\begin{verbatim}
+  sage: R = C.polynomial_ring()
+  sage: x, y = R.gens()
+  sage: f = y - 41*x + 46
+  sage: g = x^2 - 17*x - 37
+  sage: D = C.divisor([f,g]); D
+  <y - 41*x + 46, x^2 - 17*x - 37>
+  sage: D.formal_sum()
+  [((5 : 62 : 1), 1), ((12 : 58 : 1), 1)]
+  sage: D.type
+  21
+\end{verbatim}
+
+Operators {\tt +} and {\tt -} are overloaded to act on divisors,
+while {\tt *} is overloaded to allow scalar multiplication of divisors by integers.
+\begin{verbatim}
+  sage: D1 = C.random_divisor(); D2 = C.random_divisor(); D1; D2
+  <x^2 + 24*y - 22*x + 37, x*y - 25*y - 25*x + 37, y^2 + 12*y - 24*x - 27>
+  <x^2 - 36*y - 12*x + 31, x*y - 22*y + 16*x + 1, y^2 - 26*y - 36*x + 35>
+  sage: D1 + D2
+  <x^2 + 4*y + 38*x - 41, x*y - 36*y + 21*x + 23, y^2 + 22*y - 25*x + 14>
+  sage: D1 - D1
+  <1>
+  sage: D3 = 999*D2; D3; D3.formal_sum()
+  <x^2 - 41*y + x - 24, x*y - 18*y + 22*x + 33, y^2 + 45*y + x + 40>
+  [((30 : 15 : 1), 1),
+   ((22*z2 + 31 : 74*z2 + 19 : 1), 1),
+   ((75*z2 + 53 : 23*z2 + 93 : 1), 1)]
+\end{verbatim}
+Here, {\tt z2} is a primitive element of the extension $\bb F_{97^2}/\bb F_{97}$.
+
+The arithmetic is fully implemented even for atypical divisors.
+\begin{verbatim}
+  sage: D1 = C.random_divisor_of_type(11); D1
+  <x + 47, y + 36>
+  sage: D2 = C.random_divisor_of_type(22); D2
+  <x - 5, y^2 - 35*y + 8>
+  sage: D1 + D2
+  <x^2 + 42*x - 41, x*y - 5*y + 36*x + 14, y^2 - 35*y + 12*x + 45>
+\end{verbatim}
+More complete documentation is available at \cite{github}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%             %%%%%
+%%%%%   Testing   %%%%%
+%%%%%             %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Testing}
+
+The formulae describing the typical cases in Chapter \ref{chap_typical_case}
+and the remaining formulae for the atypical cases found at \cite{github}
+were tested via unit testing and random testing.
+Producing test cases requires generating random divisors on curves.
+We describe below the testing methodology,
+and in Section \ref{sec_random_divisors} we describe how random divisors were generated.
+
+
+
+\subsubsection{Unit Testing}
+
+The code for adding distinct divisors is divided up into several subroutines.
+For every pair of non-zero reduced divisor types (11, 21, 22, and 31),
+there is one subroutine,
+e.g. {\tt add\_11\_11}, {\tt add\_21\_11}, {\tt add\_21\_21}, etc.
+For every non-zero reduced divisor type, there is a doubling subroutine,
+e.g. {\tt double\_11}, {\tt double\_21}, etc.
+There are also flip and reduction subroutines for every divisor type, reduced or not.
+
+Addition and doubling subroutines consist of several conditional branches.
+In the case of addition subroutines,
+for each possible type of the divisors' least common mulitple,
+there is a conditional branch.
+These branches also correspond to the different possiblities for
+the form (i.e. positions of the pivot elements)
+of the reduced row echelon form of $M_{\text{add}}$,
+the matrix whose construction was described in Chapter \ref{chap_addition}.
+For example, when adding a type 21 divisor $D_1$ to a type 11 divisor $D_2$,
+their least common multiple $L = \lcm(D_1, D_2)$ may be of type 31, 32, or 21.
+Consequently, there are 3 branches in {\tt add\_21\_11} corresponding to each of these possibilities.
+The case where $L$ is of type 21 (this happens when $D_2 < D_1$)
+further breaks down into the case where $D_1 = 2D_2$,
+in which case a tripling subroutine must be called,
+and the case where $D_1 \neq 2D_2$, in which case doubling is necessary.
+
+Doubling subroutines also consist of several different conditional branches.
+As was the case with addition,
+these branches correspond to the different possible positions
+of the pivot elements in $\rref(M_{\text{doub}})$.
+Unit tests were written to test each branch.
+
+Unit tests were written to test every branch of each addition and doubling subroutine.
+For each subroutine, the most commonly executed branch is tested several times
+using curves over each of the finite fields $\bb F_{2}$, $\bb F_{2^4}$,
+$\bb F_{3}$, $\bb F_{3^3}$, $\bb F_{31}$, $\bb F_{31^2}$, and $\bb F_{1009}$.
+The other branches are tested once, usually over $\bb F_{997}$ or $\bb F_{1009}$.
+The reason for only testing once is due to the difficulty in constructing instances of the atypical cases.
+These rare cases get tested further during random testing, discussed in the next subsection.
+
+These particular finite fields were chosen to test the code's correctness
+over fields of small order, where degenerate cases are more likely to be encountered;
+in characteristics 2 and 3, which were ignored by previous authors;
+and over finite fields of non-prime order.
+Over a very small field such as $\bb F_2$, it is possible that unit tests might accidentally pass
+even if the formulae being tested are incorrect.
+The fields $\bb F_{31^2}$, $\bb F_{997}$, and $\bb F_{1009}$ were chosen
+as they are large enough that this is unlikely to happen.
+
+Unit tests were also written for each reduction and flipping subroutine.
+These subroutines are tested on curves over each of the fields
+$\bb F_{2}$, $\bb F_{2^4}$, $\bb F_{3}$, $\bb F_{3^3}$, $\bb F_{31}$, $\bb F_{31^2}$, and $\bb F_{1009}$.
+Flipping subroutines for semitypical divisors (types 31, 41, 51, and 61) have three branches,
+one for each of the cases $\pid{f,g} = \pid{f,g,h}$, $\pid{f,g} \neq \pid{f,g,h} = \pid{f,h}$,
+and $\pid{f,g} \neq \pid{f,g,h} \neq \pid{f,h}$.
+Each of these cases are tested over each of the above fields.
+
+
+
+\subsubsection{Random Testing}
+
+Unit testing was useful in detecting errors while putting the explicit formulae into code
+or when making modifications to that code.
+However, unit testing alone is not sufficient to test the correctness of the formulae.
+It is not enough to test subroutines over a few select fields and curves.
+Random testing was also done to ensure correctness.
+That is, many hundreds of thousands of random divisors were added,
+on random curves over many base fields of small order.
+The results of the additions were compared against another library.
+
+More specifically, for every prime power $2 \leq q \leq 31$,
+100 random $C_{3,4}$ curves were generated.
+For each such curve $C$, 100 pairs of random reduced divisors $(D_1, D_2)$ were generated.
+These divisors may be of any type representing a reduced divisor (types 0, 11, 21, 22, and 31).
+See Section \ref{sec_random_divisors} for details on how these were generated.
+For each pair, we add $D_3 := D_1 + D_2$.
+To test whether the addition was correctly computed,
+we construct the ideals $I_{D_1}$ and $I_{D_2}$ using Sage's built-in ring ideal classes.
+We multiply $J := I_{D_1} I_{D_2}$.
+The test passes if the reduced Gr\"obner basis of $J$
+matches the reduced Gr\"obner basis we computed for $D_3$.
+
+Doubling is tested analogously.
+It proceeds as above,
+except for each trial we need only generate a single random reduced divisor, $D_1$,
+rather than a pair.
+Then we compute $D_2 := 2D_1$, $J := I_{D_1}^2$,
+and compare the reduced Gr\"obner bases of $J$ and $D_2$.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                               %%%%%
+%%%%%   Random divisor generation   %%%%%
+%%%%%                               %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Random divisor generation}
+\label{sec_random_divisors}
+
+In order to generate test cases, it is necessary to be able to generate random divisors on curves.
+Once one is able to generate reduced divisors,
+it is straightforward to extend the method to generate unreduced divisors of any desired type as well.
+Recall that if $D$ is a reduced divisor,
+then the minimal polynomial in $I_D$ has leading monomial $x^2$ or smaller
+(see Theorem \ref{thm_reduced_divisor_types} and Table \ref{tab_divisor_types}).
+The general idea is to randomly choose a polynomial $f$ with $\LM(f) \leq x^2$,
+then construct a divisor $D$ for which the minimal polynomial of $I_D$ is $f$.
+
+The details are as follows.
+Choose random coefficients $f_0, f_1, f_2, f_3 \in K$ and set $f := f_3x^2 + f_2y + f_1x + f_0$.
+If $f$ is constant, then return the zero divisor.
+Otherwise, the rest proceeds differently
+depending on whether the leading monomial of $f$ is $x^2$, $y$, or $x$.
+We will describe the most difficult case, when $\LM(f) = x^2$.
+In this case, we are about to construct a type 31 divisor, $D$.
+the other cases are handled similarly, but are greatly simplified by not needing to consider whether the divisor will be typical or atypical nor needing to generate a third polynomial.
+
+Suppose $f_2 \neq 0$.
+Then $D$ will be a typical type 31 divisor.
+We will find polynomials $g, h \in K[C]$ such that $I_D = \pid{f,g,h}$ is the ideal of a type 31 divisor.
+Since $\pid{f,g,h} = \pid{kf,g,h}$ for any scalar $k \in K$, we simply set $f_2 := 1$,
+so that $f := f_3x^2 + y + f_1x + f_0$.
+Set $\bar F(x) = F(x, -f_3x^2 - f_1x - f_0) \in K[x]$.
+Geometrically, $f$ is a parabola that intersects $C$ at 6 finite points.
+The $x$-coordinates of these points are the roots of $\bar F$.
+
+We now construct a degree 3 polynomial $g \in K[x]$ that divides $\bar F$.
+This is done by factoring $\bar F$ and choosing a random subset of its divisors whose product is of degree 3.
+If no such $g$ exists (perhaps $\bar F$ is irreducible or has only quadratic factors), then we must restart and generate a new polynomial $f$.
+
+Finally, we make $f$ monic by setting $f := - \frac 1 {f_3} f$,
+reduce $g$ modulo $f$ by setting $g := g \pmod f$,
+then compute $h$ via
+\[ h = \frac{(y + g_1)f - (x + f_1 - g_2)g}{f_2} \]
+and return $I_D = \pid{f,g,h}$.
+
+Suppose instead $f_2 = 0$.
+Set $f_3 := 1$, so that $f = x^2 + f_1x + f_0$.
+Then $D$ will be an atypical type 31 divisor.
+Every atypical type 31 divisor arises as the sum of a type 11 with a type 22 divisor.
+Thus, we must check if $f$ factors into linear terms $f = (x + x_1)(x + x_2)$.
+If not, restart and generate a new polynomial $f$.
+Otherwise, generate a type 11 divisor with minimal polynomial $f = x + x_1$ and a type 22 divisor with minimal polynomial $f = x + x_2$.
+
+If $\LM(f) = y$, then $D$ will be of type 21.
+If $\LM(f) = x$, then $D$ will be of type 11 or 22.
+Since type 11 and type 22 divisors are in bijection with one another,
+simply generate a type 11 divisor, then randomly decide whether to flip it afterwards.
+Generating type 11 and type 21 divisors is similar to generating type 31 divisors:
+Reduce the curve equation $F$ modulo $f$ to get a univariate polynomial $\bar F$,
+randomly generate a degree $\deg D$ factor $g$ of $\bar F$,
+and return $I_D = \pid{f, g \pmod f}$.
+
+Following this method allows one to generate random reduced divisors
+in such a way that no reduced divisor is left out.
+Every reduced divisor will occur with probability greater than 0.
+However, reduced divisors will not occur with uniform probability.
+If there are many divisors with the same minimal polynomial,
+each one will occur with lesser frequency than a divisor that shares a minimal polynomial only with its flip.
+
+
+Forcing random divisors to be of a particular type:
+
+The method above allows one to randomly generate a reduced divisor.
+One can generate a random reduced divisor of a chosen type (0, 11, 21, 22, or 31)
+by forcing certain coefficients of the random polynomial $f$ to be 0 or 1.
+
+It is then possible to generate a random unreduced divisor of any desired type
+by first generating a \emph{reduced} divisor $A$, then finding a divisor $D$ of the desired type
+whose flip is $\bar D = A$.
+
+To generate a random divisor of type $T$:
+\begin{itemize}
+  \item
+    Let $T_A$ be the type of the flip of a divisor of type $T$ (see Table \ref{tab_large_flip_type}).
+  \item
+    Generate a reduced divisor $A$ of type $T_A$.
+  \item
+    Let $m$ be the leading monomial of the minimum polynomial in the ideal of a divisor of type $T_D$
+    (see Table \ref{tab_divisor_types}).
+  \item
+    Choose a random polynomial $u$ in $I_A$ with $\LM(u) = m$.
+  \item
+    Compute $I_D = u : I_A$.
+    In a Sage implementation, this can be done using Sage's built-in ideal arithmetic, for example.
+  \item
+    Return $D$.
+\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%                                    %%%%%
+%%%%%   Comparison to State-of-the-art   %%%%%
+%%%%%                                    %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Comparison to State-of-the-art}
+
+Putting together the operation counts from the previous sections,
+we sum up the costs of adding and doubling typical divisors.
+\begin{theorem}
+  \label{thm_op_count}
+  Let $C$ be a $C_{3,4}$ curve over a field $K$.
+  Suppose that $\Char K = 0$ or $\Char K > 3$ and that $C$ is given by a polynomial in short form
+  (Equation \ref{eq_c34_short}).
+  Let $D$ and $D'$ be typical type 31 divisors on $C$,
+  given by reduced Gr\"obner bases of their ideals $I_D$ and $I_{D'}$.
+  \begin{enumerate}[label=(\roman*)]
+    \item
+    If $D + D'$ is a typical type 61 divisor,
+    then a reduced Gr\"obner basis for the ideal of $\bar{\bar{D + D'}}$ can be computed in 1I+111M+3S+99A.
+    \item
+    If $2D$ is a typical type 61 divisor, 
+    then a reduced Gr\"obner basis for the ideal of $\bar{\bar {2D}}$ can be computed in 1I+135M+3S+116A.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  Lemmas \ref{lem_Madd_op_count}, \ref{lem_Mdoub_op_count}, \ref{lem_UV_op_count}, and \ref{lem_fgh_op_count}.
+\end{proof}
+
+Now compare this to the current state-of-the-art given by
+Abu Salem and Khuri-Makdisi.\footnote{
+As \cite{kmakdisi18} and \cite{salem07} provided only counts for inversions and multiplications,
+their results being 2I+98M/2I+110M for addition/doubling. The counts in this table are my own.}
+\begin{center}
+\begin{tabular}{|l|rrrrr|rrrrr|}
+  \hline
+  & \multicolumn{5}{c|}{Addition} & \multicolumn{5}{c|}{Doubling} \\
+  Author                  & I &  M & S & C &   A & I &   M & S & C & A \\
+  \hline
+  Abu Salem/Khuri-Makdisi \cite{kmakdisi18,salem07}
+                          & 2 & 97 &  1 & 2 & 132 & 2 & 107 &  3 & 2 & 151 \\
+  This thesis             & 1 & 111 & 3 & 0 &  99 & 1 & 135 &  3 & 0 & 116 \\
+  \hline
+\end{tabular}
+\end{center}
+Abu Salem and Khuri-Makdisi also consider division by 2 in a finite field as being of negligeable cost.
+Here, division by 2 is labeled under C, multiplication by a constant.
+
+The explicit formulae produced by this thesis use considerably fewer additions, but considerably more multiplications.
+More importantly, they use one fewer inversion.
+Whether or not the formulae in this thesis are an improvement over the state-of-the-art depends
+on the cost of computing an inverse versus a product.
+While it is claimed in \cite{salem07} that an inversion costs approximately as much as 3 to 10 multiplications,
+\cite{dahmen07} claims that the cost may range anywhere from 4 to 80 multiplications, or higher on embedded devices,
+while \cite{hankerson04} assumes a cost of 80 multiplications.
+I have elected to create Sage implementations of both sets of formulae,
+those from Chapter \ref{chap_typical_case} and those from \cite{salem07} and \cite{kmakdisi18},
+to compare the number of additions and doublings each can compute in a unit of time.
+These implementations are available at \cite{github}.
+
+In order to do the fairest comparison between the two, the following steps were taken.
+Let $p$ be the prime number $p = 2^{28} - 57 = 268,435,399$
+and let $C$ be the $C_{3,4}$ curve over $\bb F_p$ defined by
+ \[y^3 + x^4 - 114167898x^2y - 126472665xy - 20302892x^2 + 56254855y + 63973501x + 65135542.\]
+The coefficients of this curve were chosen at random.
+The prime $p$ was chosen as it is the largest prime number less than $2^{28}$,
+a choice of prime corresponding to a real application where this $C_{3,4}$ curve arithmetic might be used;
+in \cite{sutherland16}, Sutherland computes Sato-Tate distributions
+on genus 3 ramified hyperelliptic curves over primes $p < 2^{28}$,
+Let $D_1$ and $D_2$ be the divisors
+\begin{align*}
+  D_1 &= \left\langle \begin{array}{r}
+    x^2 -  58199944y + 26531881x - 32437186 \\
+     xy - 121857018y + 87572390x - 13153072 \\
+    y^2 +   9642394y - 58287154x + 13450942
+  \end{array} \right\rangle \\
+  D_2 &= \left\langle \begin{array}{r}
+    x^2 - 91512999y -  67449632x + 64403020 \\
+     xy - 92024952y - 121602716x + 97210118 \\
+    y^2 + 43402044y - 11043566x  - 21890587
+  \end{array} \right\rangle
+\end{align*}
+chosen at random, and compute the Fibonacci-like sequence 
+  \[ D_{i+2} = D_{i+1} + D_i, ~~ i > 0. \]
+The implementation of the formulae from Chapter \ref{chap_typical_case} was able to compute
+the first 6,532,301 elements of this sequence in 10 minutes.
+The implementation of the formulae of Abu Salem and Khuri-Makdisi was able to compute
+the first 5,514,964 in the same period of time.
+This represents a speed-up of approximately 18.4\%.
+None of the divisors encountered in this sequence were atypical,
+nor was there ever a case where $D_{i+1} = D_{i}$
+(in which case we would be doubling, not adding).
+
+To compare doubling, let $D_1$ be as above,
+and repeatedly double $D_1$, computing the sequence
+  \[ D_{i+1} = 2D_i, ~~ i > 0. \]
+Note that the $D_2$ produced by this sequence is not the same as the $D_2$ from above.
+The implementation of the formulae from Chapter \ref{chap_typical_case} was able to compute
+the first 6,156,174 elements of this sequence in 10 minutes.
+The implementation of the formulae of Abu Salem and Khuri-Makdisi was able to compute
+the first 5,249,322 in the same period of time.
+This represents a speed-up of approximately 17.3\%.
+None of the divisors encountered in this sequence were atypical.
+
+These tests were run on a server with an 80 core 2.8GHz Intel Xeon E7-8891 and 256GB of RAM,
+running the operating system Red Hat Enterprise Linux 7.
+The initial results suggest an approximate speed-up of 17\%--18\%.
+However, there has been some variability in the results.
+Re-running the same tests (same sequences, curves, initial divisors, and computer)
+at different times has produced results, recording speed-ups anywhere between 15\% and 27\%.
+More testing is underway to ensure less variability in the results,
+and to perform comparisons over other curves and fields.
+
+The tests were repeated on an Aspire E 15 laptop computer,
+with a 4 core 2.5GHz Intel i5-7200U processor and 8GB of RAM,
+running the operating system Ubuntu 18.04.3 LTS.
+This time, the tests were performed over several curves
+over finite fields of order approximately $2^{28}$.
+The results are recorded in Table \ref{tab_timing_comparison}.
+In each trial, a different prime number $p$ is chosen;
+a curve $C$ over the field $\bb F_p$ and divisors $D$ and $D'$ on $C$ are chosen;
+and the sequences described above are computed.
+Table \ref{tab_timing_comparison} records how many terms in the sequence each algorithm was able to compute in 10 minutes.
+Since random curve and divisor generation is slow,
+timing began only after the initial curve and divisors were generated.
+
+\begin{table}[h]
+\caption{Efficiency gains over several curves and finite fields}
+\label{tab_timing_comparison}
+\begin{center}
+\begin{tabular}{|r|l|rrr|rrr|}
+  \hline
+        &     & \multicolumn{3}{c|}{Additions} & \multicolumn{3}{c|}{Doublings} \\
+  Trial & $p$ & MacNeil & AS/K-M & Adv. & MacNeil & AS/K-M & Adv. \\
+  \hline
+   1 & $2^{28} + 3$ & 8725 & 7324 & 19.1\% & 8623 & 6657 & 29.5\% \\
+   2 & $2^{28} + 7$ & 6981 & 6621 & 5.4\% & 7298 & 7195 & 1.4\% \\
+   3 & $2^{28} + 37$ & 8664 & 7528 & 15.1\% & 8204 & 7645 & 7.3\% \\
+   4 & $2^{28} + 67$ & 8975 & 7333 & 22.4\% & 8656 & 7150 & 21.1\% \\
+   5 & $2^{28} + 81$ & 8613 & 7649 & 12.6\% & 8356 & 7507 & 11.3\% \\
+   6 & $2^{28} + 105$ & 8983 & 7865 & 14.2\% & 8639 & 7594 & 13.8\% \\
+   7 & $2^{28} + 121$ & 8549 & 7782 & 9.9\% & 8549 & 7550 & 13.2\% \\
+   8 & $2^{28} + 123$ & 8814 & 7618 & 15.7\% & 8413 & 7565 & 11.2\% \\
+   9 & $2^{28} + 141$ & 8845 & 7717 & 14.6\% & 8510 & 7582 & 12.2\% \\
+  10 & $2^{28} + 175$ & 8793 & 7767 & 13.2\% & 8450 & 7576 & 11.5\% \\
+  11 & $2^{28} + 183$ & 8735 & 7689 & 13.6\% & 8521 & 7645 & 11.5\% \\
+  12 & $2^{28} + 193$ & 8854 & 7710 & 14.8\% & 8517 & 7556 & 12.7\% \\
+  13 & $2^{28} + 213$ & 8750 & 7826 & 11.8\% & 8592 & 7641 & 12.4\% \\
+  14 & $2^{28} + 241$ & 8745 & 6967 & 25.5\% & 8286 & 7121 & 16.4\% \\
+  15 & $2^{28} + 255$ & 8748 & 7828 & 11.8\% & 8635 & 7687 & 12.3\% \\
+  16 & $2^{28} + 267$ & 8760 & 7795 & 12.4\% & 8497 & 7056 & 20.4\% \\
+  17 & $2^{28} + 291$ & 8392 & 7665 & 9.5\% & 8110 & 7653 & 6.0\% \\
+  18 & $2^{28} + 295$ & 8918 & 6570 & 35.7\% & 8171 & 6596 & 23.9\% \\
+  19 & $2^{28} + 301$ & 8589 & 7865 & 9.2\% & 8621 & 7624 & 13.1\% \\
+  20 & $2^{28} + 357$ & 8928 & 7925 & 12.7\% & 8556 & 7641 & 12.0\% \\
+  \hline
+  \multicolumn{2}{|r|}{Total:} & 173361 & 151044 & 14.8\% & 168204 & 148241 & 13.5\% \\
+  \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+\subsection{Summary of Operation Costs}
+
+Here we list all subroutines implemented in Sage at \cite{github}, beginning with addition subroutines. There is one addition subroutine for every pair of non-zero reduced divisor types
+(11, 21, 21, and 31).
+The subroutines branch conditionally on the type of the divisor $L = \lcm(D, D')$,
+where $D$ and $D'$ are the input divisors.
+Operation counts are given for every branch.
+When divisors are non-disjoint (i.e. when $\deg L < \deg D + \deg D'$),
+the recursive addition algorithm requires that a subroutine call another addition or doubling subroutine.
+This leads to an explosion of more cases to consider.
+Rather than consider each of these individually, operation counts for the worst case are given in
+Table \ref{tab_addition_costs}.
+Operation counts in this table also include the cost of reducing $D + D'$.
+
+The computational cost of adding two divisors
+\begin{longtable}{|l|rrrr|c|}
+  \caption{Operation counts for addition subroutines\label{tab_addition_costs}}\\
+  \hline
+  & \multicolumn{4}{c|}{Operation count} & \\
+  Subroutine & I & M & S & A & Type$(L)$ \\
+  \hline  
+  {\tt add\_11\_11}  & -- & -- & -- & -- & 21 \\
+  {\tt add\_11\_11}  & -- & -- & -- & -- & 22 \\
+  \hline  
+  {\tt add\_21\_11}  & -- & -- & -- & -- & 31 \\
+  {\tt add\_21\_11}  & -- & -- & -- & -- & 32 \\
+  {\tt add\_21\_11}  & -- & -- & -- & -- & 21 \\
+  \hline
+  {\tt add\_21\_21}  & -- & -- & -- & -- & 41 \\
+  {\tt add\_21\_21}  & -- & -- & -- & -- & 43 \\
+  {\tt add\_21\_21}  & -- & -- & -- & -- & 44 \\
+  {\tt add\_21\_21}  & -- & -- & -- & -- & 31 \\
+  {\tt add\_21\_21}  & -- & -- & -- & -- & 32 \\
+  \hline
+  {\tt add\_21\_22}  & -- & -- & -- & -- & 41 \\
+  {\tt add\_21\_22}  & -- & -- & -- & -- & 42 \\
+  {\tt add\_21\_22}  & -- & -- & -- & -- & 31 \\
+  {\tt add\_21\_22}  & -- & -- & -- & -- & 32 \\
+  \hline
+  {\tt add\_22\_11}  & -- & -- & -- & -- & 31 \\
+  {\tt add\_22\_11}  & -- & -- & -- & -- & 33 \\
+  {\tt add\_22\_11}  & -- & -- & -- & -- & 22 \\
+  \hline
+  {\tt add\_22\_22}  & -- & -- & -- & -- & 43 \\
+  {\tt add\_22\_22}  & -- & -- & -- & -- & 33 \\
+  \hline
+  {\tt add\_31\_11}  & -- & -- & -- & -- & 41 \\
+  {\tt add\_31\_11}  & -- & -- & -- & -- & 42 \\
+  {\tt add\_31\_11}  & -- & -- & -- & -- & 43 \\
+  {\tt add\_31\_11}  & -- & -- & -- & -- & 31 \\
+  \hline
+  {\tt add\_31\_21}  & -- & -- & -- & -- & 51 \\
+  {\tt add\_31\_21}  & -- & -- & -- & -- & 52 \\
+  {\tt add\_31\_21}  & -- & -- & -- & -- & 53 \\
+  {\tt add\_31\_21}  & -- & -- & -- & -- & 54 \\
+  {\tt add\_31\_21}  & -- & -- & -- & -- & 41 \\
+  {\tt add\_31\_21}  & -- & -- & -- & -- & 42 \\
+  {\tt add\_31\_21}  & -- & -- & -- & -- & 43 \\
+  {\tt add\_31\_21}  & -- & -- & -- & -- & 31 \\
+  \hline
+  {\tt add\_31\_22}  & -- & -- & -- & -- & 51 \\
+  {\tt add\_31\_22}  & -- & -- & -- & -- & 53 \\
+  {\tt add\_31\_22}  & -- & -- & -- & -- & 54 \\
+  {\tt add\_31\_22}  & -- & -- & -- & -- & 41 \\
+  {\tt add\_31\_22}  & -- & -- & -- & -- & 42 \\
+  {\tt add\_31\_22}  & -- & -- & -- & -- & 43 \\
+  {\tt add\_31\_22}  & -- & -- & -- & -- & 31 \\
+  \hline
+  {\tt add\_31\_31\_high\_char}  & -- & -- & -- & -- & 61 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 61 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 62 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 63 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 64 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 65 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 51 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 52 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 53 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 54 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 41 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 42 \\
+  {\tt add\_31\_31}  & -- & -- & -- & -- & 43 \\
+  \hline
+\end{longtable}
+
+There are fewer cases to consider when doubling divisors.
+
+\begin{longtable}{|l|rrrr|c|}
+  \caption{Operation counts for addition subroutines\label{tab_doubling_costs}}\\
+  \hline
+  & \multicolumn{4}{c|}{Operation count} & \\
+  Subroutine & I & M & S & A & Type$(D_1)$ \\
+  \hline
+  {\tt double\_11}  & -- & -- & -- & -- & 21 \\
+  {\tt double\_11}  & -- & -- & -- & -- & 22 \\
+  \hline  
+  {\tt double\_21}  & -- & -- & -- & -- & 41 \\
+  {\tt double\_21}  & -- & -- & -- & -- & 42 \\
+  {\tt double\_21}  & -- & -- & -- & -- & 43 \\
+  {\tt double\_21}  & -- & -- & -- & -- & 44 \\
+  \hline
+  {\tt double\_22}  & -- & -- & -- & -- & 42 \\
+  {\tt double\_22}  & -- & -- & -- & -- & 43 \\
+  {\tt double\_22}  & -- & -- & -- & -- & 44 \\
+  \hline
+  {\tt double\_31\_high\_char}  & -- & -- & -- & -- & 61 \\
+  {\tt double\_31t}  & -- & -- & -- & -- & 61 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 61 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 62 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 63 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 64 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 65 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 51 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 52 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 53 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 54 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 41 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 42 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 43 \\
+  {\tt double\_31}  & -- & -- & -- & -- & 44 \\
+  \hline
+\end{longtable}
+
+\begin{comment}
+Divisors of types 0, 11, 21, 22, 31 already reduced,
+therefore no reduction subroutines are needed for these types.
+Divisors of types 33, 44, 65 are principal divisors;
+they may be reduced at no cost by returning the zero divisor.
+Reduction subroutines for types 41, 51, and 61
+are implemented only for typical divisors.
+Atypical divisors of types 41, 51, and 61 are reduced by flipping twice.
+\end{comment}
+\begin{table}[h]
+  \caption{Operation counts for reduction subroutines}
+  \label{tab_reduction_costs}
+\begin{center}
+\begin{tabular}{|l|rrrr|}
+  \hline
+  & \multicolumn{4}{c|}{Operation count} \\
+  Subroutine & I & M & S & A \\
+  \hline  
+  {\tt reduce\_32}  & 0 & 8 & 0 & 11 \\
+  {\tt reduce\_33}  & 0 & 0 & 0 & 0 \\
+  {\tt reduce\_41t} & 1 & 23 & 1 & 28 \\
+  {\tt reduce\_42}  & 0 & 0 & 0 & 1 \\
+  {\tt reduce\_43}  & 0 & 6 & 0 & 11 \\
+  {\tt reduce\_44}  & 0 & 0 & 0 & 0 \\
+  {\tt reduce\_51t} & 1 & 24 & 0 & 32 \\
+  {\tt reduce\_52}  & 0 & 1 & 0 & 3 \\
+  {\tt reduce\_53}  & 0 & 12 & 0 & 14 \\
+  {\tt reduce\_54}  & 0 & 7 & 0 & 10 \\
+  {\tt reduce\_61t} & 1 & 35 & 0 & 46 \\
+  {\tt reduce\_62}  & 0 & 2 & 0 & 5 \\
+  {\tt reduce\_63}  & 0 & 8 & 0 & 13 \\
+  {\tt reduce\_64}  & 0 & 12 & 0 & 21 \\
+  {\tt reduce\_65}  & 0 & 0 & 0 & 0 \\
+  \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[h]
+  \caption{Operation counts for flipping subroutines}
+  \label{tab_flipping_costs}
+\begin{center}
+\begin{tabular}{|l|rrrr|l|}
+  \hline
+  & \multicolumn{4}{c|}{Operation count} & \\
+  Subroutine & I & M & S & A & Case \\
+  \hline  
+  {\tt flip\_11}  & -- & -- & -- & -- & \\
+  {\tt flip\_21}  & -- & -- & -- & -- & \\
+  {\tt flip\_22}  & -- & -- & -- & -- & \\
+  {\tt flip\_31}  & -- & -- & -- & -- & $\pid{f,g} = \pid{f,g,h}$ \\
+  {\tt flip\_31}  & -- & -- & -- & -- & $\pid{f,g} \neq \pid{f,g,h}$ \\
+  {\tt flip\_32}  & -- & -- & -- & -- & \\
+  {\tt flip\_33}  & -- & -- & -- & -- & \\
+  {\tt flip\_41}  & -- & -- & -- & -- & $\pid{f,g} = \pid{f,g,h}$ \\
+  {\tt flip\_41}  & -- & -- & -- & -- & $\pid{f,g} \neq \pid{f,g,h} = \pid{f,h}$ \\
+  {\tt flip\_41}  & -- & -- & -- & -- & $\pid{f,g} \neq \pid{f,g,h} \neq \pid{f,h}$ \\
+  {\tt flip\_42}  & -- & -- & -- & -- & \\
+  {\tt flip\_43}  & -- & -- & -- & -- & \\
+  {\tt flip\_44}  & -- & -- & -- & -- & \\
+  {\tt flip\_51}  & -- & -- & -- & -- & $\pid{f,g} = \pid{f,g,h}$ \\
+  {\tt flip\_51}  & -- & -- & -- & -- & $\pid{f,g} \neq \pid{f,g,h} = \pid{f,h}$ \\
+  {\tt flip\_51}  & -- & -- & -- & -- & $\pid{f,g} \neq \pid{f,g,h} \neq \pid{f,h}$ \\
+  {\tt flip\_52}  & -- & -- & -- & -- & \\
+  {\tt flip\_53}  & -- & -- & -- & -- & \\
+  {\tt flip\_54}  & -- & -- & -- & -- & \\
+  {\tt flip\_61}  & -- & -- & -- & -- & $\pid{f,g} = \pid{f,g,h}$ \\
+  {\tt flip\_61}  & -- & -- & -- & -- & $\pid{f,g} \neq \pid{f,g,h} = \pid{f,h}$ \\
+  {\tt flip\_61}  & -- & -- & -- & -- & $\pid{f,g} \neq \pid{f,g,h} \neq \pid{f,h}$ \\
+  {\tt flip\_62}  & -- & -- & -- & -- & \\
+  {\tt flip\_63}  & -- & -- & -- & -- & \\
+  {\tt flip\_64}  & -- & -- & -- & -- & \\
+  {\tt flip\_65}  & -- & -- & -- & -- & \\
+  \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+
+

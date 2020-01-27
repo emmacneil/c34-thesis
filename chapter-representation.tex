@@ -272,13 +272,15 @@ which we will make use of many times later in this chapter.
   we may move between the groups.
   \begin{align*}
     I_A &\equiv I_B \\
-    A &\equiv B \\
+    A &\equiv B
+      & \text{Thm. \ref{thm_ideals_divisors_isomorphic}} \\
     \bar A &= \bar B
       & \text{Prop. \ref{prop_flip_properties}.(iii)} \\
     a : I_A &= b : I_B
       & \text{Def. \ref{def_flip}} \\
     (a : I_A)I_AI_B &= (b : I_B)I_BI_A \\
-    aI_B &= bI_A.
+    aI_B &= bI_A
+      & \text{Prop. \ref{prop_integral_ideal_inverse}.}
   \end{align*}
 \end{proof}
 
@@ -327,7 +329,7 @@ we can compute the degree of $\bar D$ for $D$ of any divisor type.
 We can do even better.
 Not only can we determine the degree of $\bar D$, but also its type.
 We begin by giving an example of this determination for a divisor of small degree.
-After classifying reduced divisors, we will be able to do the same for divisors of degree greater than 3.
+After classifying reduced divisors, we will be able to do the same for divisors of degree greater than three.
 
 \begin{example}
   Let $D$ be a type 11 divisor.
@@ -450,7 +452,7 @@ the most efficient algorithms have been from those publications that have focuse
 \cite{salem07, kmakdisi18, flon08}.
 These divisors are typical in the sense that, as $q \to \infty$,
 over a finite field of order $q$,
-the probability that a divisor chosen uniformly at random is typical is approximately $\frac {q - 1} q$;
+the probability that a divisor chosen uniformly at random is atypical is $O\left(\frac 1 q\right)$ (see Theorem 2.10 in \cite{kmakdisi18});
 the chance of encountering an atypical divisor becomes vanishingly small over large finite fields.
 
 In \cite{kmakdisi18}, Khuri-Makdisi defines semi-typical and typical divisors of arbitrary curves
@@ -833,7 +835,7 @@ Here, we ascribe some geometric meaning to each divisor type of degree 3 or less
   
   Either $D$ is the sum of three distinct points,
   the sum of a double point with a second distinct point,
-  or a triple points.
+  or a triple point.
   
   If $D = P + Q + R$ is the sum of three distinct points, then these points are non-collinear.
   If $D = 2P + Q$ is the sum of a double point with a second distinct point,

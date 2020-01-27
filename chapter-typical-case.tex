@@ -13,7 +13,7 @@ double any reduced divisor, and reduce any unreduced divisor.
 
 Suppose $C$ is a $C_{3,4}$ curve over the finite field $\bb F_q$.
 As $q \to \infty$, the chance that a divisor of $C$ chosen uniformly at random is atypical
-tends toward $\frac 1 q$.
+tends toward $\frac 1 q$ (Theorem 2.10 in \cite{kmakdisi18}).
 Consequently, if we are adding or doubling divisors,
 we will spend most of our time ---
 almost all of it if $q$ is very large ---
@@ -324,7 +324,7 @@ If we are adding, let $M = M_{\text{add}}$ and $A = D + D'$.
 If we are doubling, let $M = M_{\text{doub}}$ and $A = 2D$ instead.
 
 In Chapters \ref{chap_addition} and \ref{chap_doubling},
-we would find a reduced Gr\"obner basis for $A$ by finding a reduced echelon basis for $\ker M$.
+we found a reduced Gr\"obner basis for $A$ by finding a reduced echelon basis for $\ker M$.
 Reducing $M$ to its reduced row echelon form typically requires an inversion in $\bb F_q$
 and this ensures that the resulting Gr\"obner basis for $A$ is monic.
 In the following, we delay inversion until the next section.
@@ -478,7 +478,7 @@ We would find that $G_3 = u_5$ and we would then compute the reduction of $G$ mo
 We do both at once by instead computing $f''$ and $g'' = xy + g''_2y + g''_1x + g''_0$
 such that $f''v \equiv (g'' + u_5f'')u \pmod F$.
 Equating coefficients in the equation\footnote{
-$f_2v_5 - u_5(x + f'_2u_5 + g_2)$ is chosen so that the left-hand side contains to $y^3$ term.}
+$f_2v_5 - u_5(x + f'_2u_5 + g_2)$ is chosen so that the left-hand side contains no $y^3$ term.}
 \[f''v - (g'' + u_5f'')u - (f_2v_5 - u_5(x + f'_2u_5 + g_2))F = 0 \]
 gives
 \begin{align*}
@@ -544,489 +544,270 @@ The coefficients of $h''$ are given by
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%                       %%%%%
-%%%%%   Explicit Formulae   %%%%%
-%%%%%                       %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagebreak
+\subsection{Explicit Formulae}
 
-\setlength{\tempabovedisplayskip}{\abovedisplayskip}
-\setlength{\tempbelowdisplayskip}{\belowdisplayskip}
-\setlength{\abovedisplayskip}{-10pt}
-\setlength{\belowdisplayskip}{-10pt}
-%\setlength{\abovedisplayshortskip}{0pt}
-%\setlength{\belowdisplayshortskip}{0pt}
-\begin{tabularx}{\linewidth}{|Xr|}
-  \hline
-  Addition & 1I+111M+3S+99A \\
-  Input: $I_D = \pid{f, g, h}$, $I_{D'} = \pid{f',g',h'}$ & \\
-  {\begin{align*}
-  f &= x^2 + f_2y + f_1x + f_0 & f' = x^2 + f'_2y + f'_1x + f'_0 \\
-  g &=  xy + g_2y + g_1x + g_0 & g' =  xy + g'_2y + g'_1x + g'_0 \\
-  h &= y^2 + h_2y + h_1x + h_0 & h' = y^2 + h'_2y + h'_1x + h'_0
-  \end{align*}} & \\
-  Output: $I_{\bar{\bar{D + D'}}} = \pid{f'', g'', h''}$, $(f''_2)\inv$ & \\
-  {\begin{align*}
-  f'' &= x^2 + f''_2y + f''_1x + f''_0 \\
-  g'' &=  xy + g''_2y + g''_1x + g''_0 \\
-  h'' &= y^2 + h''_2y + h''_1x + h''_0
-  \end{align*}} & \\
-  \hline
-  Compute elements $a_i$ of $M_{\text{add}}$ & 12M+17A \\
-  \hline
-  {\begin{align*}
-    a_1    &= f_0 - f'_0 & a_2    &= g_0 - g'_0 & a_3    &= h_0 - h'_0 \\
-    a_6    &= f_1 - f'_1 & a_7    &= g_1 - g'_1 & a_8    &= h_1 - h'_1 \\
-    a_{11} &= f_2 - f'_2 & a_{12} &= g_2 - g'_2 & a_{13} &= h_2 - h'_2
-  \end{align*}} & \\
-  {\begin{align*}
-    a_4    &=     - f'_0a_6 - g'_0a_{11} & a_5    &=     - f'_0a_7 - g'_0a_{12} \\
-    a_9    &= a_1 - f'_1a_6 - g'_1a_{11} & a_{10} &= a_2 - f'_1a_7 - g'_1a_{12} \\
-    a_{14} &=     - f'_2a_6 - g'_2a_{11} & a_{15} &=     - f'_2a_7 - g'_2a_{12}
-  \end{align*}} & \\
-  If $a_1, a_6, a_{11}$ are all zero, then abort. & \\
-  If $a_1 = 0$ but $a_6$ or $a_{11}$ is non-zero, then swap rows so that $a_1 \neq 0$. & \\
-  \hline
-  Compute row echelon form $M'_{\text{add}}$ of $M_{\text{add}}$ & 21M+12A \\
-  \hline
-  {\begin{align*}
-    d_1 &= a_1a_{12} - a_2a_{11} & d_2 &= a_6a_{12} - a_7a_{11} 
-  \end{align*}} & \\
-  {\begin{align*}
-    b_1 &= a_1a_7    - a_2a_6 & b_5 &= b_1a_{13} - d_1a_8    + d_2a_3 \\
-    b_2 &= a_1a_8    - a_3a_6 & b_6 &= b_1a_{14} - d_1a_9    + d_2a_4 \\
-    b_3 &= a_1a_9    - a_4a_6 & b_7 &= b_1a_{15} - d_1a_{10} + d_2a_5 \\
-    b_4 &= a_1a_{10} - a_5a_6
-  \end{align*}} & \\
-  If $b_1 =0$ or $b_5 = 0$, then abort. & \\
-  \hline
-\end{tabularx}
+We collect the lemmas from the previous sections
+to get a statement about the total cost of adding divisors,
+in the typical case.
 
-\pagebreak
-\begin{tabularx}{\linewidth}{|Xr|}
-  \hline
-  Compute $Z \cdot \rref\left(M_{\text{add}}\right)$ & 18M+6A \\
-  \hline
-  {\begin{align*}
-    Y &= a_1b_1 & e_1 &= b_3b_5 - b_2b_6 \\
-    Z &= Yb_5   & e_2 &= b_4b_5 - b_2b_7
-  \end{align*}} & \\
-  {\begin{align*}
-    A_1 &= b_1(a_4b_5 - b_6a_3) - a_2e_1 & B_1 &= a_1e_1 & C_1 &= Yb_6 \\
-    A_2 &= b_1(a_5b_5 - b_7a_3) - a_2e_2 & B_2 &= a_1e_2 & C_2 &= Yb_7
-  \end{align*}} & \\
-  \hline
-    Compute $\ker M_{\text{add}}$ & 18M+14A \\
-  \hline
-  {\begin{align*}
-    U1 &= Zf_0 - C_1h_1 - B_1g_1 - A_1f_1 & V1 &= Zg_0 - C_2h_1 - B_2g_1 - A_2f_1 \\
-    U2 &=      - C_1h_2 - B_1g_2 - A_1f_2 & V2 &=      - C_2h_2 - B_2g_2 - A_2f_2 \\
-    U3 &= Zf_1 - A_1 & V3 &= Zg_1 - A_2 \\
-    U4 &= Zf_2 - B_1 & V4 &= Zg_2 - B_2 \\
-    U5 &=      - C_1 & V5 &=      - C_2.
-  \end{align*}} & \\
-  \hline
-    Compute $\zeta, \tau$ & 1I+5M+2S+3A \\
-  \hline
-  {\begin{align*}
-    z_0 &= U_5^2 + Z(u_4 - v_5) & z_1 &= Zz_0 \\
-    z_2 &= \frac 1 {z_1} & z_3 &= Zz_2 \\
-    \zeta &= z_0z_2 & \tau  &= Z^2z_3
-  \end{align*}} & \\
-  If $z_0 = 0$, then abort. & \\
-  \hline
-    Compute $u_1, \ldots, u_5, v_1, \ldots, v_5$ & 10M \\
-  \hline
-  {\begin{align*}
-    u_1 &= \zeta U_1 & u_4 &= \zeta U_4 & v_1 &= \zeta V_1 & v_4 &= \zeta V_4 \\
-    u_2 &= \zeta U_2 & u_5 &= \zeta U_5 & v_2 &= \zeta V_2 & v_5 &= \zeta V_5 \\
-    u_3 &= \zeta U_3                    & v_3 &= \zeta V_3
-  \end{align*}} & \\
-  \hline
-\end{tabularx}
-
-\pagebreak
-\begin{tabularx}{\linewidth}{|Xr|}
-  \hline
-    Compute $f'', g'', h''$ & 27M+1S+37A \\
-  \hline
-  {\begin{align*}
-    f''_2 &= u_5^2 + u_4 - v_5 \\
-    r_0   &= u_5(f''_2 + u_4 - c_7) + u_3 - v_4 \\
-    r_1   &= f''_2(f''_2 - u_4) \\
-    g''_1 &= r_1 - u_5(u_3 + r_0) + v_3 \\
-    g''_2 &= -u_4u_5 + v_4 - r_0 + \tau(u_4r_0 - u_5g''_1 - u_2) \\
-    f''_1 &= r_0 + g''_2 \\
-    f''_0 &= -c_7(r_1 + g''_2u_5) + u_5(f''_2u_3 + f''_1u_4 - c_4 + u_2) \\
-          &~~~ + g''_2u_3 + g''_1u_4 - f''_2v_3 - f''_1v_4 + u_1 - v_2 \\
-    g''_0 &= u_5(c_3 - f''_0 - u_1 - f''_1u_3) - g''_1u_3 + f''_1v_3 + v_1 \\
-    h''_0 &= \tau(f''_0g''_1 - g''_0r_0) \\
-    h''_1 &= \tau(g''_1g''_2 - g''_0) \\
-    h''_2 &= g''_1 + \tau(f''_0 - g''_2r_0)
-  \end{align*}} & \\
-  \hline
-    Output $f''_0, f''_1, f''_2, g''_0, g''_1, g''_2, h''_0, h''_1, h''_2$, and $(f''_2)\inv = \tau$ & \\
-  \hline
-\end{tabularx}
-
-\pagebreak
-\begin{tabularx}{\linewidth}{|Xr|}
-  \hline
-  Doubling & 1I+135M+3S+116A \\
-  Input: $I_D = \pid{f, g, h}$ & \\
-  {\begin{align*}
-  f &= x^2 + f_2y + f_1x + f_0 & f_2 \neq 0 \\
-  g &=  xy + g_2y + g_1x + g_0 \\
-  h &= y^2 + h_2y + h_1x + h_0
-  \end{align*}} & \\
-  Output: $I_{\bar{\bar{2D}}} = \pid{f'', g'', h''}$, $(f''_2)\inv$ & \\
-  {\begin{align*}
-  f'' &= x^2 + f''_2y + f''_1x + f''_0 & \phantom{f_2 \neq 0} \\
-  g'' &=  xy + g''_2y + g''_1x + g''_0 \\
-  h'' &= y^2 + h''_2y + h''_1x + h''_0
-  \end{align*}} & \\
-  \hline
-  Compute polynomials $g',h'$ such that $fh' \equiv gg' \pmod F$ & 10M+16A \\
-  \hline
-  {\begin{align*}
-    h'_3 &= f_2 \\
-    g'_2 &= f_1 - g_2 \\
-    k_0  &= g_2g'_2 \\
-    h'_2 &= \phi(k_0 - f_0) \\ 
-    g'_1 &= f_2(f_2 - c_7) + h'_2 - g_1 \\
-    k_1  &= g_1g'_1 \\
-    h'_1 &= -f_1f_2 \\
-    g'_0 &= h'_2f_1 + f_2(h'_1 - c_4) \\
-         & ~~~ - (g_1 + g_2)(g'_1 + g'_2) + k_0 + k_1 - g_0 \\
-    h'_0 &= f_2(c_3 - f_0) - h'_1f_1 + k_1
-  \end{align*}} & \\
-  \hline
-\end{tabularx}
-
-\pagebreak
-\begin{tabularx}{\linewidth}{|Xr|}
-  \hline
-  Compute elements $a_i$ of $M_{\text{doub}}$ & 26M+28A \\
-  \hline
-  {\begin{align*}
-    a_1    &= g'_0 - g_0 & a_2    &= h'_0 - h_0 - f_0f_2 \\
-    a_6    &= g'_1 - g_1 & a_7    &= h'_1 - h_1 - f_1f_2 \\
-    a_{11} &= g'_2 - g_2 & a_{12} &= h'_2 - h_2 - f_2f_2
-  \end{align*}} & \\
-  {\begin{align*}
-    a_4    &=     - f_0a_6 - g_0a_{11} & a_5    &=     - f_0a_7 - g_0a_{12} \\
-    a_9    &= a_1 - f_1a_6 - g_1a_{11} & a_{10} &= a_2 - f_1a_7 - g_1a_{12} \\
-    a_{14} &=     - f_2a_6 - g_2a_{11} & a_{15} &=     - f_2a_7 - g_2a_{12}
-  \end{align*}} & \\
-  {\begin{align*}
-    a_3    &= \phi \left(     - g_0a_6 - h_0a_{11} + g_1a_1    - a_5    - g'_2a_2    \right) \\
-    a_8    &= \phi \left(              - h_1a_{11}             - a_{10} - g'_2a_7    \right) \\
-    a_{13} &= \phi \left( a_1 - g_2a_6 - (h_2 - g_1)a_{11}     - a_{15} - g'_2a_{12} \right)
-  \end{align*}} & \\
-  If $a_1, a_6, a_{11}$ are all zero, then abort. & \\
-  If $a_1 = 0$ but $a_6$ or $a_{11}$ is non-zero, then swap rows so that $a_1 \neq 0$. & \\
-  \hline
-  Compute row echelon form $M'_{\text{doub}}$ of $M_{\text{doub}}$ & 21M+12A \\
-  \hline
-  {\begin{align*}
-    d_1 &= a_1a_{12} - a_2a_{11} & d_2 &= a_6a_{12} - a_7a_{11} 
-  \end{align*}} & \\
-  {\begin{align*}
-    b_1 &= a_1a_7    - a_2a_6 & b_5 &= b_1a_{13} - d_1a_8    + d_2a_3 \\
-    b_2 &= a_1a_8    - a_3a_6 & b_6 &= b_1a_{14} - d_1a_9    + d_2a_4 \\
-    b_3 &= a_1a_9    - a_4a_6 & b_7 &= b_1a_{15} - d_1a_{10} + d_2a_5 \\
-    b_4 &= a_1a_{10} - a_5a_6
-  \end{align*}} & \\
-  If $b_1 =0$ or $b_5 = 0$, then abort. & \\
-  \hline
-  Compute $Z \cdot \rref\left(M_{\text{doub}}\right)$ & 18M+6A \\
-  \hline
-  {\begin{align*}
-    Y &= a_1b_1 & e_1 &= b_3b_5 - b_2b_6 \\
-    Z &= Yb_5   & e_2 &= b_4b_5 - b_2b_7
-  \end{align*}} & \\
-  {\begin{align*}
-    A_1 &= b_1(a_4b_5 - b_6a_3) - a_2e_1 & B_1 &= a_1e_1 & C_1 &= Yb_6 \\
-    A_2 &= b_1(a_5b_5 - b_7a_3) - a_2e_2 & B_2 &= a_1e_2 & C_2 &= Yb_7
-  \end{align*}} & \\
-  \hline
-\end{tabularx}
-
-\pagebreak
-\begin{tabularx}{\linewidth}{|Xr|}
-  \hline
-    Compute $\ker M_{\text{doub}}$ & 18M+14A \\
-  \hline
-  {\begin{align*}
-    U1 &= Zf_0 - C_1h_1 - B_1g_1 - A_1f_1 & V1 &= Zg_0 - C_2h_1 - B_2g_1 - A_2f_1 \\
-    U2 &=      - C_1h_2 - B_1g_2 - A_1f_2 & V2 &=      - C_2h_2 - B_2g_2 - A_2f_2 \\
-    U3 &= Zf_1 - A_1 & V3 &= Zg_1 - A_2 \\
-    U4 &= Zf_2 - B_1 & V4 &= Zg_2 - B_2 \\
-    U5 &=      - C_1 & V5 &=      - C_2.
-  \end{align*}} & \\
-  \hline
-    Compute $\zeta, \tau$ & 1I+5M+2S+3A \\
-  \hline
-  {\begin{align*}
-    z_0 &= U_5^2 + Z(u_4 - v_5) & z_1 &= Zz_0 \\
-    z_2 &= \frac 1 {z_1} & z_3 &= Zz_2 \\
-    \zeta &= z_0z_2 & \tau  &= Z^2z_3
-  \end{align*}} & \\
-  If $z_0 = 0$, then abort. & \\
-  \hline
-    Compute $u_1, \ldots, u_5, v_1, \ldots, v_5$ & 10M \\
-  \hline
-  {\begin{align*}
-    u_1 &= \zeta U_1 & u_4 &= \zeta U_4 & v_1 &= \zeta V_1 & v_4 &= \zeta V_4 \\
-    u_2 &= \zeta U_2 & u_5 &= \zeta U_5 & v_2 &= \zeta V_2 & v_5 &= \zeta V_5 \\
-    u_3 &= \zeta U_3                    & v_3 &= \zeta V_3
-  \end{align*}} & \\
-  \hline
-\end{tabularx}
-
-\pagebreak
-\begin{tabularx}{\linewidth}{|Xr|}
-  \hline
-    Compute $f'', g'', h''$ & 27M+1S+37A \\
-  \hline
-  {\begin{align*}
-    f''_2 &= u_5^2 + u_4 - v_5 \\
-    r_0   &= u_5(f''_2 + u_4 - c_7) + u_3 - v_4 \\
-    r_1   &= f''_2(f''_2 - u_4) \\
-    g''_1 &= r_1 - u_5(u_3 + r_0) + v_3 \\
-    g''_2 &= -u_4u_5 + v_4 - r_0 + \tau(u_4r_0 - u_5g''_1 - u_2) \\
-    f''_1 &= r_0 + g''_2 \\
-    f''_0 &= -c_7(r_1 + g''_2u_5) + u_5(f''_2u_3 + f''_1u_4 - c_4 + u_2) \\
-          &~~~ + g''_2u_3 + g''_1u_4 - f''_2v_3 - f''_1v_4 + u_1 - v_2 \\
-    g''_0 &= u_5(c_3 - f''_0 - u_1 - f''_1u_3) - g''_1u_3 + f''_1v_3 + v_1 \\
-    h''_0 &= \tau(f''_0g''_1 - g''_0r_0) \\
-    h''_1 &= \tau(g''_1g''_2 - g''_0) \\
-    h''_2 &= g''_1 + \tau(f''_0 - g''_2r_0)
-  \end{align*}} & \\
-  \hline
-    Output $f''_0, f''_1, f''_2, g''_0, g''_1, g''_2, h''_0, h''_1, h''_2$, and $(f''_2)\inv = \tau$ & \\
-  \hline
-\end{tabularx}
-
-\setlength{\abovedisplayskip}{\tempabovedisplayskip}
-\setlength{\belowdisplayskip}{\tempbelowdisplayskip}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%                                %%%%%
-%%%%%   Implementation and Testing   %%%%%
-%%%%%                                %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Implementation and Testing}
-
-An implementation in Sage of the above formulae is available at \cite{github}.
-The implementation defines {\tt C34Curve} and {\tt C34CurveDivisor} classes from which to instantiate objects.
-A {\tt C34Curve} may be constructed by specifying a base field and the curve coefficients.
-\begin{verbatim}
-  sage: C = C34Curve(GF(41), [1,2,3,4,5,6,7,8,9]); C
-  C34 curve defined by y^3 + x^4 + 9*x*y^2 + 8*x^2*y + 7*x^3 + 6*y^2
-  + 5*x*y + 4*x^2 + 3*y + 2*x + 1 over Finite Field of size 41
-\end{verbatim}
-An exception is thrown if the resulting curve would be singular.
-Alternatively, a {\tt C34Curve} over a specified basefield may be generated randomly.
-\begin{verbatim}
-  sage: C = C34Curve.random_curve(GF(97)); C
-  C34 curve defined by y^3 + x^4 - 41*x^2*y - 48*x*y + 43*x^2 + 48*y
-  + 7*x over Finite Field of size 97
-\end{verbatim}
-A {\tt C34CurveDivisor} may be instantiated in several ways.
-A {\tt C34Curve} can create them randomly,
-\begin{verbatim}
-  sage: D1 = C.random_divisor(); D1
-  <x^2 + 46*y - 24*x + 40, x*y + 46*y - 46*x + 27, y^2 + 8*y + 23*x - 20>
-  sage: D2 = C.random_divisor_of_type(31, typical = False); D2
-  <x^2 + 34*x - 4, x*y + 31*y + 30*x - 40, y^2 + 8*y - 35*x + 11>
-  sage: D3 = C.random_divisor_of_type(32); D3
-  <y + 4*x + 46, x^3 - 21*x^2 + 29*x - 9>
-\end{verbatim}
-or by specifying its points.
-\begin{verbatim}
-  sage: P1 = C.point(96, 76)
-  sage: P2 = C.random_rational_point()
-  sage: D = C.divisor([P1, P2]); D
-  <y - 47*x - 26, x^2 + 31*x + 30>
-  sage: D.formal_sum()
-  [((67 : 71 : 1), 1), ((96 : 76 : 1), 1)]
-\end{verbatim}
-The {\tt C34CurveDivisor} constructor may be invoked directly,
-by giving it a parent curve and a {\tt list} of polynomials specifying a Gr\"obner basis.
-\begin{verbatim}
-  sage: R = C.polynomial_ring()
-  sage: x, y = R.gens()
-  sage: f = y - 41*x + 46
-  sage: g = x^2 - 17*x - 37
-  sage: D = C34CurveDivisor(C, [f,g]); D
-  <y - 41*x + 46, x^2 - 17*x - 37>
-  sage: D.formal_sum()
-  [((5 : 62 : 1), 1), ((12 : 58 : 1), 1)]
-  sage: D.type
-  21
-\end{verbatim}
-Operators {\tt +} and {\tt -} are overloaded to operate on divisors,
-while {\tt *} is overloaded to allow scalar multiplication of divisors by integers.
-\begin{verbatim}
-  sage: D1 = C.random_divisor(); D2 = C.random_divisor(); D1; D2
-  <x^2 + 24*y - 22*x + 37, x*y - 25*y - 25*x + 37, y^2 + 12*y - 24*x - 27>
-  <x^2 - 36*y - 12*x + 31, x*y - 22*y + 16*x + 1, y^2 - 26*y - 36*x + 35>
-  sage: D1 + D2
-  <x^2 + 4*y + 38*x - 41, x*y - 36*y + 21*x + 23, y^2 + 22*y - 25*x + 14>
-  sage: D1 - D1
-  <1>
-  sage: D3 = 999*D2; D3; D3.formal_sum()
-  <x^2 - 41*y + x - 24, x*y - 18*y + 22*x + 33, y^2 + 45*y + x + 40>
-  [((30 : 15 : 1), 1),
-   ((22*z2 + 31 : 74*z2 + 19 : 1), 1),
-   ((75*z2 + 53 : 23*z2 + 93 : 1), 1)]
-\end{verbatim}
-The arithmetic is fully implemented even for atypical divisors.
-\begin{verbatim}
-  sage: D1 = C.random_divisor_of_type(11); D1
-  <x + 47, y + 36>
-  sage: D2 = C.random_divisor_of_type(22); D2
-  <x - 5, y^2 - 35*y + 8>
-  sage: D1 + D2
-  <x^2 + 42*x - 41, x*y - 5*y + 36*x + 14, y^2 - 35*y + 12*x + 45>
-\end{verbatim}
-The interface is still a work in progress.
-Documentation will be available at \cite{github}.
-
-The correctness of the formulae found in this chapter,
-as well as the formulae describing the atypical cases found at \cite{github},
-has been tested by two means.
-Unit tests have been created testing every case arising from divisor arithmetic,
-e.g. adding two type 31 divisors whose unreduced sum is type 61,
-adding two type 31 divisors whose unreduced sum is type 62, etc.
-Each case is tested over several curves and base fields.
-A script has also been written to add hundreds of thousands
-of random divisors over randomly chosen curves and fields.
-The results are compared against Sage's built-in ideal arithmetic.
-The test suites are also found at \cite{github}.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%                                    %%%%%
-%%%%%   Comparison to State-of-the-art   %%%%%
-%%%%%                                    %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Comparison to State-of-the-art}
-
-Putting together the operation counts from the previous sections,
-we sum up the costs of adding and doubling typical divisors.
 \begin{theorem}
-  \label{thm_op_count}
-  Let $C$ be a $C_{3,4}$ curve over a field $K$.
-  Suppose that $\Char K = 0$ or $\Char K > 3$ and that $C$ is given by a polynomial in short form
-  (Equation \ref{eq_c34_short}).
-  Let $D$ and $D'$ be typical type 31 divisors on $C$,
-  given by reduced Gr\"obner bases of their ideals $I_D$ and $I_{D'}$.
+  Let $D$ and $D'$ be type 31 divisors,
+  represented by reduced Gr\"obner bases of their ideals $I_D$ and $I_{D'}$.
   \begin{enumerate}[label=(\roman*)]
     \item
-    If $D + D'$ is a typical type 61 divisor,
-    then a reduced Gr\"obner basis for the ideal of $\bar{\bar{D + D'}}$ can be computed in 1I+111M+3S+99A.
+    Let $D'' = \bar{\bar{D + D'}}$.
+    If $D''$ is typical, then a reduced Gr\"obner basis for $I_{D''}$
+    can be computed in 1I+111M+3S+99A.
+
     \item
-    If $2D$ is a typical type 61 divisor, 
-    then a reduced Gr\"obner basis for the ideal of $\bar{\bar {2D}}$ can be computed in 1I+135M+3S+116A.
+    Let $D'' = \bar{\bar{2D}}$.
+    If $D$ and $D''$ are typical, then a reduced Gr\"obner basis for $I_{D''}$
+    can be computed in 1I+135M+3S+116A.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
-  Lemmas \ref{lem_Madd_op_count}, \ref{lem_Mdoub_op_count}, \ref{lem_UV_op_count}, and \ref{lem_fgh_op_count}.
+  For part (i), add the operation counts in Lemmas
+  \ref{lem_Madd_op_count}, \ref{lem_UV_op_count}, and \ref{lem_fgh_op_count}.
+  For part (ii), add the operation counts in Lemmas
+  \ref{lem_Mdoub_op_count}, \ref{lem_UV_op_count}, and \ref{lem_fgh_op_count}.
 \end{proof}
 
-Now compare this to the current state-of-the-art given by
-Abu Salem and Khuri-Makdisi.\footnote{
-As \cite{kmakdisi18} and \cite{salem07} provided only counts for inversions and multiplications,
-their results being 2I+98M/2I+110M for addition/doubling. The counts in this table are my own.}
-\begin{center}
-\begin{tabular}{|l|rrrrr|rrrrr|}
+The formulae presented in the previous sections are also collected
+in Tables \ref{tab_add_31_31} and \ref{tab_double_31}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%   Explicit Formulae : ADDITION   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{longtable}{|l|r|}
+  \caption{Explicit Formulae for adding two type 31 divisors (typical case)\label{tab_add_31_31}}\\
   \hline
-  & \multicolumn{5}{c|}{Addition} & \multicolumn{5}{c|}{Doubling} \\
-  Author                  & I &  M & S & C &   A & I &   M & S & C & A \\
+  Addition & 1I+111M+3S+99A \\
+  Input: $I_D = \pid{f, g, h}$, $I_{D'} = \pid{f',g',h'}$ & \\
+  $\begin{aligned}[t]
+  f &= x^2 + f_2y + f_1x + f_0 & f' = x^2 + f'_2y + f'_1x + f'_0 \\
+  g &=  xy + g_2y + g_1x + g_0 & g' =  xy + g'_2y + g'_1x + g'_0 \\
+  h &= y^2 + h_2y + h_1x + h_0 & h' = y^2 + h'_2y + h'_1x + h'_0
+  \end{aligned}$ & \\
+  Output: $I_{\bar{\bar{D + D'}}} = \pid{f'', g'', h''}$, $(f''_2)\inv$ & \\
+  $\begin{aligned}[t]
+  f'' &= x^2 + f''_2y + f''_1x + f''_0 \\
+  g'' &=  xy + g''_2y + g''_1x + g''_0 \\
+  h'' &= y^2 + h''_2y + h''_1x + h''_0 
+  \end{aligned}$ & \\
+  \hline \hline
+  Compute elements $a_i$ of $M_{\text{add}}$ & 12M+17A \\
   \hline
-  Abu Salem/Khuri-Makdisi \cite{kmakdisi18,salem07}
-                          & 2 & 97 &  1 & 2 & 132 & 2 & 107 &  3 & 2 & 151 \\
-  This thesis             & 1 & 111 & 3 & 0 &  99 & 1 & 135 &  3 & 0 & 116 \\
+  $\begin{aligned}[t]
+    a_1    &= f_0 - f'_0 & a_2    &= g_0 - g'_0 & a_3    &= h_0 - h'_0 \\
+    a_6    &= f_1 - f'_1 & a_7    &= g_1 - g'_1 & a_8    &= h_1 - h'_1 \\
+    a_{11} &= f_2 - f'_2 & a_{12} &= g_2 - g'_2 & a_{13} &= h_2 - h'_2
+  \end{aligned}$ & \\
+  $\begin{aligned}[t]
+    a_4    &=     - f'_0a_6 - g'_0a_{11} & a_5    &=     - f'_0a_7 - g'_0a_{12} \\
+    a_9    &= a_1 - f'_1a_6 - g'_1a_{11} & a_{10} &= a_2 - f'_1a_7 - g'_1a_{12} \\
+    a_{14} &=     - f'_2a_6 - g'_2a_{11} & a_{15} &=     - f'_2a_7 - g'_2a_{12}
+  \end{aligned}$ & \\
+  If $a_1, a_6, a_{11}$ are all zero, then abort. & \\
+  If $a_1 = 0$ but $a_6$ or $a_{11}$ is non-zero, then swap rows so that $a_1 \neq 0$. & \\
+  \hline \hline
+  Compute row echelon form $M'_{\text{add}}$ of $M_{\text{add}}$ & 21M+12A \\
   \hline
-\end{tabular}
-\end{center}
-Abu Salem and Khuri-Makdisi also consider division by 2 in a finite field as being of negligeable cost.
-Here, division by 2 is labeled under C, multiplication by a constant.
+  $\begin{aligned}[t]
+    d_1 &= a_1a_{12} - a_2a_{11} & d_2 &= a_6a_{12} - a_7a_{11} 
+  \end{aligned}$ & \\
+  $\begin{aligned}[t]
+    b_1 &= a_1a_7    - a_2a_6 & b_5 &= b_1a_{13} - d_1a_8    + d_2a_3 \\
+    b_2 &= a_1a_8    - a_3a_6 & b_6 &= b_1a_{14} - d_1a_9    + d_2a_4 \\
+    b_3 &= a_1a_9    - a_4a_6 & b_7 &= b_1a_{15} - d_1a_{10} + d_2a_5 \\
+    b_4 &= a_1a_{10} - a_5a_6
+  \end{aligned}$ & \\
+  If $b_1 =0$ or $b_5 = 0$, then abort. & \\
+  \hline \hline
+  Compute $Z \cdot \rref\left(M_{\text{add}}\right)$ & 18M+6A \\
+  \hline
+  $\begin{aligned}[t]
+    Y &= a_1b_1 & e_1 &= b_3b_5 - b_2b_6 \\
+    Z &= Yb_5   & e_2 &= b_4b_5 - b_2b_7
+  \end{aligned}$ & \\
+  $\begin{aligned}[t]
+    A_1 &= b_1(a_4b_5 - b_6a_3) - a_2e_1 & B_1 &= a_1e_1 & C_1 &= Yb_6 \\
+    A_2 &= b_1(a_5b_5 - b_7a_3) - a_2e_2 & B_2 &= a_1e_2 & C_2 &= Yb_7
+  \end{aligned}$ & \\
+  \hline \hline
+    Compute $\ker M_{\text{add}}$ & 18M+14A \\
+  \hline
+  $\begin{aligned}[t]
+    U1 &= Zf_0 - C_1h_1 - B_1g_1 - A_1f_1 & V1 &= Zg_0 - C_2h_1 - B_2g_1 - A_2f_1 \\
+    U2 &=      - C_1h_2 - B_1g_2 - A_1f_2 & V2 &=      - C_2h_2 - B_2g_2 - A_2f_2 \\
+    U3 &= Zf_1 - A_1 & V3 &= Zg_1 - A_2 \\
+    U4 &= Zf_2 - B_1 & V4 &= Zg_2 - B_2 \\
+    U5 &=      - C_1 & V5 &=      - C_2.
+  \end{aligned}$ & \\
+  \hline \hline
+    Compute $\zeta, \tau$ & 1I+5M+2S+3A \\
+  \hline
+  $\begin{aligned}[t]
+    z_0 &= U_5^2 + Z(u_4 - v_5) & z_1 &= Zz_0 \\
+    z_2 &= \frac 1 {z_1} & z_3 &= Zz_2 \\
+    \zeta &= z_0z_2 & \tau  &= Z^2z_3
+  \end{aligned}$ & \\
+  If $z_0 = 0$, then abort. & \\
+  \hline \hline
+    Compute $u_1, \ldots, u_5, v_1, \ldots, v_5$ & 10M \\
+  \hline
+  $\begin{aligned}[t]
+    u_1 &= \zeta U_1 & u_4 &= \zeta U_4 & v_1 &= \zeta V_1 & v_4 &= \zeta V_4 \\
+    u_2 &= \zeta U_2 & u_5 &= \zeta U_5 & v_2 &= \zeta V_2 & v_5 &= \zeta V_5 \\
+    u_3 &= \zeta U_3                    & v_3 &= \zeta V_3
+  \end{aligned}$ & \\
+  \hline  \hline
+    Compute $f'', g'', h''$ & 27M+1S+37A \\
+  \hline
+    $f''_2 = u_5^2 + u_4 - v_5$ & \\
+    $r_0   = u_5(f''_2 + u_4 - c_7) + u_3 - v_4$ & \\
+    $r_1   = f''_2(f''_2 - u_4)$ & \\
+    $g''_1 = r_1 - u_5(u_3 + r_0) + v_3$ & \\
+    $g''_2 = -u_4u_5 + v_4 - r_0 + \tau(u_4r_0 - u_5g''_1 - u_2)$ & \\
+    $f''_1 = r_0 + g''_2$ & \\
+    $\begin{aligned}[t]
+    f''_0 &= -c_7(r_1 + g''_2u_5) + u_5(f''_2u_3 + f''_1u_4 - c_4 + u_2) \\
+          &~~~ + g''_2u_3 + g''_1u_4 - f''_2v_3 - f''_1v_4 + u_1 - v_2
+    \end{aligned}$ & \\
+    $g''_0 = u_5(c_3 - f''_0 - u_1 - f''_1u_3) - g''_1u_3 + f''_1v_3 + v_1$ & \\
+    $h''_0 = \tau(f''_0g''_1 - g''_0r_0)$ & \\
+    $h''_1 = \tau(g''_1g''_2 - g''_0)$ & \\
+    $h''_2 = g''_1 + \tau(f''_0 - g''_2r_0)$ & \\
+  \hline  \hline
+    Output $f''_0, f''_1, f''_2, g''_0, g''_1, g''_2, h''_0, h''_1, h''_2$, and $(f''_2)\inv = \tau$ & \\
+  \hline
+\end{longtable}
 
-The explicit formulae produced by this thesis use considerably fewer additions, but considerably more multiplications.
-More importantly, they use one fewer inversion.
-Whether or not the formulae in this thesis are an improvement over the state-of-the-art depends
-on the cost of computing an inverse versus a product.
-While it is claimed in \cite{salem07} that an inversion costs approximately as much as 3 to 10 multiplications,
-\cite{dahmen07} claims that the cost may range anywhere from 4 to 80 multiplications, or higher on embedded devices,
-while \cite{hankerson04} assumes a cost of 80 multiplications.
-I have elected to create Sage implementations of both sets of formulae,
-those from Chapter \ref{chap_typical_case} and those from \cite{salem07} and \cite{kmakdisi18},
-to compare the number of additions and doublings each can compute in a unit of time.
-These implementations are available at \cite{github}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%   Explicit Formulae : DOUBLING   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In order to do the fairest comparison between the two, these steps were followed.
-Let $p$ be the prime number $p = 2^{28} - 57 = 268,435,399$
-and let $C$ be the $C_{3,4}$ curve over $\bb F_p$ defined by
- \[y^3 + x^4 - 114167898x^2y - 126472665xy - 20302892x^2 + 56254855y + 63973501x + 65135542.\]
-The coefficients of this curve were chosen at random.
-The prime $p$ was chosen as it is the largest prime number less than $2^{28}$;
-in \cite{sutherland16}, Sutherland computes Sato-Tate distributions
-on genus 3 ramified hyperelliptic curves over primes $p < 2^{28}$,
-thus this choice of prime corresponds to a real application where this $C_{3,4}$ curve arithmetic might be used.
-Let $D_1$ and $D_2$ be the divisors
-\begin{align*}
-  D_1 &= \left\langle \begin{array}{r}
-    x^2 -  58199944y + 26531881x - 32437186 \\
-     xy - 121857018y + 87572390x - 13153072 \\
-    y^2 +   9642394y - 58287154x + 13450942
-  \end{array} \right\rangle \\
-  D_2 &= \left\langle \begin{array}{r}
-    x^2 - 91512999y -  67449632x + 64403020 \\
-     xy - 92024952y - 121602716x + 97210118 \\
-    y^2 + 43402044y - 11043566x  - 21890587
-  \end{array} \right\rangle
-\end{align*}
-chosen at random, and compute the Fibonacci-like sequence 
-  \[ D_{i+2} = D_{i+1} + D_i, ~~ i > 0. \]
-The implementation of the formulae from Chapter \ref{chap_typical_case} was able to compute
-the first 6,532,301 elements of this sequence in 10 minutes.
-The implementation of the formulae of Abu Salem and Khuri-Makdisi was able to compute
-the first 5,514,964 in the same period of time.
-This represents a speed-up of approximately 18.4\%.
-None of the divisors encountered in this sequence were atypical,
-nor was there ever a case where $D_{i+1} = D_{i}$
-(in which case we would be doubling, not adding).
-
-To compare doubling, let $D_1$ be as above,
-and repeatedly double $D_1$, computing the sequence
-  \[ D_{i+1} = 2D_i, ~~ i > 0. \]
-Note that the $D_2$ produced by this sequence is not the same as the $D_2$ from above.
-The implementation of the formulae from Chapter \ref{chap_typical_case} was able to compute
-the first 6,156,174 elements of this sequence in 10 minutes.
-The implementation of the formulae of Abu Salem and Khuri-Makdisi was able to compute
-the first 5,249,322 in the same period of time.
-This represents a speed-up of approximately 17.3\%.
-None of the divisors encountered in this sequence were atypical.
-
-These tests were run on a server with an 80 core 2.8GHz Intel Xeon E7-8891 and 256GB of RAM,
-running the operating system Red Hat Enterprise Linux 7.
-The initial results suggest an approximate speed-up of 17\%--18\%.
-However, there has been some variability in the results.
-Re-running the same tests (same sequences, curves, initial divisors, and computer)
-at different times has produced results, recording speed-ups anywhere between 15\% and 27\%.
-More testing is underway to ensure less variability in the results,
-and to perform comparisons over other curves and fields.
-
-
-
-
+\begin{longtable}{|l|r|}
+  \caption{Explicit Formulae for doubling type 31 divisors (typical case)\label{tab_double_31}}\\
+  \hline
+  Doubling & 1I+135M+3S+116A \\
+  Input: $I_D = \pid{f, g, h}$, $\phi$ & \\
+  $\begin{aligned}[t]
+    f &= x^2 + f_2y + f_1x + f_0 & f_2 \neq 0 \\
+    g &=  xy + g_2y + g_1x + g_0 & \phi = \frac 1 {f_2} \\
+    h &= y^2 + h_2y + h_1x + h_0
+  \end{aligned}$ & \\
+  Output: $I_{\bar{\bar{2D}}} = \pid{f'', g'', h''}$, $(f''_2)\inv$ & \\
+  $\begin{aligned}[t]
+    f'' &= x^2 + f''_2y + f''_1x + f''_0 \\
+    g'' &=  xy + g''_2y + g''_1x + g''_0 \\
+    h'' &= y^2 + h''_2y + h''_1x + h''_0 
+  \end{aligned}$ & \\
+  \hline \hline
+  Compute polynomials $g'$ and $h'$ such that $fh' \equiv gg' \pmod F$ & 10M+16A \\
+  \hline
+  $h'_3 = f_2$ & \\
+  $g'_2 = f_1 - g_2$ & \\
+  $k_0  = g_2g'_2$ & \\
+  $h'_2 = \phi(k_0 - f_0)$ & \\
+  $g'_1 = f_2(f_2 - c_7) + h'_2 - g_1$ & \\
+  $k_1  = g_1g'_1$ & \\
+  $h'_1 = -f_1f_2$ & \\
+  $\begin{aligned}[t]
+    g'_0 &= h'_2f_1 + f_2(h'_1 - c_4) \\
+         & ~~~ - (g_1 + g_2)(g'_1 + g'_2) + k_0 + k_1 - g_0 \\
+  \end{aligned}$ & \\
+  $h'_0 = f_2(c_3 - f_0) - h'_1f_1 + k_1$ & \\
+  \hline \hline
+  Compute elements $a_i$ of $M_{\text{doub}}$ & 26M+28A \\
+  \hline
+  $\begin{aligned}[t]
+    a_1    &= g'_0 - g_0 & a_2    &= h'_0 - h_0 - f_0f_2 \\
+    a_6    &= g'_1 - g_1 & a_7    &= h'_1 - h_1 - f_1f_2 \\
+    a_{11} &= g'_2 - g_2 & a_{12} &= h'_2 - h_2 - f_2f_2
+  \end{aligned}$ & \\
+  $\begin{aligned}[t]
+    a_4    &=     - f_0a_6 - g_0a_{11} & a_5    &=     - f_0a_7 - g_0a_{12} \\
+    a_9    &= a_1 - f_1a_6 - g_1a_{11} & a_{10} &= a_2 - f_1a_7 - g_1a_{12} \\
+    a_{14} &=     - f_2a_6 - g_2a_{11} & a_{15} &=     - f_2a_7 - g_2a_{12}
+  \end{aligned}$ & \\
+  $\begin{aligned}[t]
+    a_3    &= \phi \left(     - g_0a_6 - h_0a_{11} + g_1a_1    - a_5    - g'_2a_2    \right) \\
+    a_8    &= \phi \left(              - h_1a_{11}             - a_{10} - g'_2a_7    \right) \\
+    a_{13} &= \phi \left( a_1 - g_2a_6 - (h_2 - g_1)a_{11}     - a_{15} - g'_2a_{12} \right)
+  \end{aligned}$ & \\
+  If $a_1, a_6, a_{11}$ are all zero, then abort. & \\
+  If $a_1 = 0$ but $a_6$ or $a_{11}$ is non-zero, then swap rows so that $a_1 \neq 0$. & \\
+  \hline \hline
+  Compute row echelon form $M'_{\text{doub}}$ of $M_{\text{doub}}$ & 21M+12A \\
+  \hline
+  $\begin{aligned}[t]
+    d_1 &= a_1a_{12} - a_2a_{11} & d_2 &= a_6a_{12} - a_7a_{11} 
+  \end{aligned}$ & \\
+  $\begin{aligned}[t]
+    b_1 &= a_1a_7    - a_2a_6 & b_5 &= b_1a_{13} - d_1a_8    + d_2a_3 \\
+    b_2 &= a_1a_8    - a_3a_6 & b_6 &= b_1a_{14} - d_1a_9    + d_2a_4 \\
+    b_3 &= a_1a_9    - a_4a_6 & b_7 &= b_1a_{15} - d_1a_{10} + d_2a_5 \\
+    b_4 &= a_1a_{10} - a_5a_6
+  \end{aligned}$ & \\
+  If $b_1 =0$ or $b_5 = 0$, then abort. & \\
+  \hline \hline
+  Compute $Z \cdot \rref\left(M_{\text{doub}}\right)$ & 18M+6A \\
+  \hline
+  $\begin{aligned}[t]
+    Y &= a_1b_1 & e_1 &= b_3b_5 - b_2b_6 \\
+    Z &= Yb_5   & e_2 &= b_4b_5 - b_2b_7
+  \end{aligned}$ & \\
+  $\begin{aligned}[t]
+    A_1 &= b_1(a_4b_5 - b_6a_3) - a_2e_1 & B_1 &= a_1e_1 & C_1 &= Yb_6 \\
+    A_2 &= b_1(a_5b_5 - b_7a_3) - a_2e_2 & B_2 &= a_1e_2 & C_2 &= Yb_7
+  \end{aligned}$ & \\
+  \hline \hline
+    Compute $\ker M_{\text{doub}}$ & 18M+14A \\
+  \hline
+  $\begin{aligned}[t]
+    U1 &= Zf_0 - C_1h_1 - B_1g_1 - A_1f_1 & V1 &= Zg_0 - C_2h_1 - B_2g_1 - A_2f_1 \\
+    U2 &=      - C_1h_2 - B_1g_2 - A_1f_2 & V2 &=      - C_2h_2 - B_2g_2 - A_2f_2 \\
+    U3 &= Zf_1 - A_1 & V3 &= Zg_1 - A_2 \\
+    U4 &= Zf_2 - B_1 & V4 &= Zg_2 - B_2 \\
+    U5 &=      - C_1 & V5 &=      - C_2.
+  \end{aligned}$ & \\
+  \hline \hline
+    Compute $\zeta, \tau$ & 1I+5M+2S+3A \\
+  \hline
+  $\begin{aligned}[t]
+    z_0 &= U_5^2 + Z(u_4 - v_5) & z_1 &= Zz_0 \\
+    z_2 &= \frac 1 {z_1} & z_3 &= Zz_2 \\
+    \zeta &= z_0z_2 & \tau  &= Z^2z_3
+  \end{aligned}$ & \\
+  If $z_0 = 0$, then abort. & \\
+  \hline \hline
+    Compute $u_1, \ldots, u_5, v_1, \ldots, v_5$ & 10M \\
+  \hline
+  $\begin{aligned}[t]
+    u_1 &= \zeta U_1 & u_4 &= \zeta U_4 & v_1 &= \zeta V_1 & v_4 &= \zeta V_4 \\
+    u_2 &= \zeta U_2 & u_5 &= \zeta U_5 & v_2 &= \zeta V_2 & v_5 &= \zeta V_5 \\
+    u_3 &= \zeta U_3                    & v_3 &= \zeta V_3
+  \end{aligned}$ & \\
+  \hline  \hline
+    Compute $f'', g'', h''$ & 27M+1S+37A \\
+  \hline
+    $f''_2 = u_5^2 + u_4 - v_5$ & \\
+    $r_0   = u_5(f''_2 + u_4 - c_7) + u_3 - v_4$ & \\
+    $r_1   = f''_2(f''_2 - u_4)$ & \\
+    $g''_1 = r_1 - u_5(u_3 + r_0) + v_3$ & \\
+    $g''_2 = -u_4u_5 + v_4 - r_0 + \tau(u_4r_0 - u_5g''_1 - u_2)$ & \\
+    $f''_1 = r_0 + g''_2$ & \\
+    $\begin{aligned}[t]
+    f''_0 &= -c_7(r_1 + g''_2u_5) + u_5(f''_2u_3 + f''_1u_4 - c_4 + u_2) \\
+          &~~~ + g''_2u_3 + g''_1u_4 - f''_2v_3 - f''_1v_4 + u_1 - v_2
+    \end{aligned}$ & \\
+    $g''_0 = u_5(c_3 - f''_0 - u_1 - f''_1u_3) - g''_1u_3 + f''_1v_3 + v_1$ & \\
+    $h''_0 = \tau(f''_0g''_1 - g''_0r_0)$ & \\
+    $h''_1 = \tau(g''_1g''_2 - g''_0)$ & \\
+    $h''_2 = g''_1 + \tau(f''_0 - g''_2r_0)$ & \\
+  \hline  \hline
+    Output $f''_0, f''_1, f''_2, g''_0, g''_1, g''_2, h''_0, h''_1, h''_2$, and $(f''_2)\inv = \tau$ & \\
+  \hline
+\end{longtable}
 
